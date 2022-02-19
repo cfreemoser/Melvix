@@ -1,14 +1,28 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:netflix_gallery/bloc/profiles_bloc.dart';
 import 'package:netflix_gallery/pages/profiles.dart';
+import 'package:netflix_gallery/service/config_service.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  ConfigService myConfigService = ConfigService();
+  dynamic app = MyApp(myConfigService: myConfigService);
+  // Right before you would be doing any loading
+  WidgetsFlutterBinding.ensureInitialized();
+
+  String configJson = await rootBundle.loadString("assets/config.json");
+  myConfigService.loadConfigFromJson(configJson);
+  runApp(app);
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final ConfigService myConfigService;
+
+  const MyApp({Key? key, required this.myConfigService}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -18,7 +32,7 @@ class MyApp extends StatelessWidget {
       initialRoute: "/profiles",
       routes: {
         "/profiles": (context) => BlocProvider(
-              create: (context) => ProfilesBloc(),
+              create: (context) => ProfilesBloc(myConfigService),
               child: Profiles(),
             ),
       },

@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:netflix_gallery/bloc/profiles_bloc.dart';
 import 'package:netflix_gallery/helpers/constants.dart';
 
 class Profiles extends StatelessWidget {
@@ -39,10 +43,44 @@ class Profiles extends StatelessWidget {
                       padding: const EdgeInsets.all(32.0),
                       child: SizedBox(
                         height: 400,
-                        width: 400,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: [ProfileCardWidget(), ProfileCardWidget()],
+                        width: constraints.maxWidth,
+                        child: BlocBuilder<ProfilesBloc, ProfilesState>(
+                          builder: (context, state) {
+                            if (state is ProfilesInitial) {
+                              return Center(
+                                child: ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: state.profiles.length,
+                                    itemBuilder: (context, index) {
+                                      if (index == state.profiles.length - 1) {
+                                        return ProfileCardWidget(
+                                          name: state.profiles[index].name,
+                                          profileImage: state
+                                              .profiles[index].profileImage,
+                                        );
+                                      }
+                                      return Row(
+                                        children: [
+                                          ProfileCardWidget(
+                                            name: state.profiles[index].name,
+                                            profileImage: state
+                                                .profiles[index].profileImage,
+                                          ),
+                                          const SizedBox(
+                                            width: 16,
+                                          ),
+                                        ],
+                                      );
+                                    }),
+                              );
+                            }
+                            return Container(
+                                child: const Text(
+                              "ARGH",
+                              style: TextStyle(color: Colors.white),
+                            ));
+                          },
                         ),
                       ),
                     ),
@@ -58,25 +96,65 @@ class Profiles extends StatelessWidget {
 }
 
 class ProfileCardWidget extends StatelessWidget {
-  const ProfileCardWidget({
-    Key? key,
-  }) : super(key: key);
+  final String name;
+  final Image profileImage;
+
+  ProfileCardWidget({
+    required this.name,
+    required this.profileImage,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 200,
-          width: 200,
-          child: Image.asset("assets/images/Netflix-avatar.png"),
-        ),
-        const Padding(
-          padding: EdgeInsets.all(8.0),
-          child:
-              Text("Gääm", style: TextStyle(color: Colors.grey, fontSize: 20)),
-        ),
-      ],
+    return OnHover(builder: (isHovered) {
+      log("hover");
+      return Column(
+        children: [
+          SizedBox(
+            height: 206,
+            width: 206,
+            child: Container(
+                decoration: BoxDecoration(
+                    border: isHovered
+                        ? Border.all(width: 6, color: Colors.white)
+                        : Border.all(
+                            width: 6, color: Constants.netflix_background)),
+                child: profileImage),
+          ),
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(name,
+                style: isHovered
+                    ? TextStyle(color: Colors.white, fontSize: 20)
+                    : TextStyle(color: Colors.grey, fontSize: 20)),
+          ),
+        ],
+      );
+    });
+  }
+}
+
+class OnHover extends StatefulWidget {
+  final Widget Function(bool isHovered) builder;
+  const OnHover({Key? key, required this.builder}) : super(key: key);
+  @override
+  _OnHoverState createState() => _OnHoverState();
+}
+
+class _OnHoverState extends State<OnHover> {
+  bool isHovered = false;
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => onEntered(true),
+      onExit: (_) => onEntered(false),
+      child: widget.builder(isHovered),
     );
+  }
+
+  void onEntered(bool isHovered) {
+    setState(() {
+      this.isHovered = isHovered;
+    });
   }
 }
