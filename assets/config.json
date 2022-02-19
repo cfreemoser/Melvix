@@ -1,6 +1,7 @@
 {
     "profiles" : [
         { "name" : "Gääm", "assetID" : "assets/images/Netflix-avatar.png" },
+        { "name" : "Dominic", "assetID" : "assets/images/Netflix-avatar.png" },
         { "name" : "Dominic", "assetID" : "assets/images/Netflix-avatar.png" }
     ]
 }
