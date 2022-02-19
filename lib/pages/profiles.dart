@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:netflix_gallery/helpers/constants.dart';
 
 class Profiles extends StatelessWidget {
@@ -15,6 +16,13 @@ class Profiles extends StatelessWidget {
                 height: constraints.maxHeight,
                 width: constraints.maxWidth,
                 color: Constants.netflix_background,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0, left: 64.0),
+                child: SvgPicture.asset(
+                  "assets/images/Netflix_2015_logo.svg",
+                  width: 100,
+                ),
               ),
               Container(
                 height: constraints.maxHeight,
@@ -66,7 +74,7 @@ class ProfileCardWidget extends StatelessWidget {
         const Padding(
           padding: EdgeInsets.all(8.0),
           child:
-              Text("Cem", style: TextStyle(color: Colors.grey, fontSize: 20)),
+              Text("Gääm", style: TextStyle(color: Colors.grey, fontSize: 20)),
         ),
       ],
     );
