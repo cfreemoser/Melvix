@@ -38,6 +38,8 @@ class Profiles extends StatelessWidget {
                       ? Constants.netflix_icon_small
                       : Constants.netflix_icon_full,
                   width: smallScreen ? 20 : 100,
+                  semanticsLabel: "netflix icon",
+                  placeholderBuilder: (context) => const Text("loading..."),
                 ),
               ),
               Positioned(
