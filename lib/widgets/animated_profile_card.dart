@@ -5,11 +5,16 @@ import 'package:netflix_gallery/helpers/constants.dart';
 class AnimatedProfileCard extends StatefulWidget {
   final String name;
   final Image profileImage;
+  final double width;
+  final double fontSize;
 
-  AnimatedProfileCard({
+  const AnimatedProfileCard({
+    Key? key,
     required this.name,
     required this.profileImage,
-  });
+    required this.width,
+    required this.fontSize,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => AnimatedProfileCardState();
@@ -17,33 +22,38 @@ class AnimatedProfileCard extends StatefulWidget {
 
 class AnimatedProfileCardState extends State<AnimatedProfileCard> {
   bool isHovered = false;
+  double borderWidth = 6;
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => onEntered(true),
-      onExit: (_) => onEntered(false),
-      child: Column(
-        children: [
-          SizedBox(
-            height: 206,
-            width: 206,
-            child: Container(
+    return SizedBox(
+      child: MouseRegion(
+        onEnter: (_) => onEntered(true),
+        onExit: (_) => onEntered(false),
+        child: Column(
+          children: [
+            Container(
                 decoration: BoxDecoration(
                     border: isHovered
-                        ? Border.all(width: 6, color: Colors.white)
+                        ? Border.all(width: borderWidth, color: Colors.white)
                         : Border.all(
-                            width: 6, color: Constants.netflix_background)),
-                child: widget.profileImage),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(widget.name,
-                style: isHovered
-                    ? const TextStyle(color: Colors.white, fontSize: 20)
-                    : const TextStyle(color: Colors.grey, fontSize: 20)),
-          ),
-        ],
+                            width: borderWidth,
+                            color: Constants.netflix_background)),
+                child: Image(
+                  image: widget.profileImage.image,
+                  fit: BoxFit.fitWidth,
+                )),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(widget.name,
+                  style: isHovered
+                      ? TextStyle(
+                          color: Colors.white, fontSize: widget.fontSize)
+                      : TextStyle(
+                          color: Colors.grey, fontSize: widget.fontSize)),
+            ),
+          ],
+        ),
       ),
     );
   }

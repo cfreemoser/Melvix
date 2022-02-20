@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,6 +12,13 @@ class Profiles extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
+      bool smallScreen = constraints.maxWidth < 600;
+      developer.log(smallScreen.toString());
+
+      double topCenterDistance = smallScreen
+          ? constraints.maxHeight * 0.3
+          : constraints.maxHeight * 0.5;
+
       return Scaffold(
         body: SizedBox(
           height: constraints.minHeight,
@@ -23,59 +32,67 @@ class Profiles extends StatelessWidget {
               ),
               Positioned(
                 top: 16,
-                left: 64,
+                left: smallScreen ? 16 : 64,
                 child: SvgPicture.asset(
-                  Constants.netflix_icon_full,
-                  width: 100,
+                  smallScreen
+                      ? Constants.netflix_icon_small
+                      : Constants.netflix_icon_full,
+                  width: smallScreen ? 20 : 100,
                 ),
               ),
               Positioned(
-                height: constraints.maxHeight,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Text(
+                  top: topCenterDistance - 32 - 150,
+                  width: constraints.maxWidth,
+                  height: 40,
+                  child: const Center(
+                    child: Text(
                       Constants.profiles_select_text,
-                      style: TextStyle(color: Colors.white, fontSize: 40),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(32.0),
-                      child: SizedBox(
-                        height: 300,
-                        width: constraints.maxWidth,
-                        child: BlocBuilder<ProfilesBloc, ProfilesState>(
-                          builder: (context, state) {
-                            if (state is ProfilesInitial) {
-                              return Center(
-                                child: GridView.builder(
-                                    gridDelegate:
-                                        const SliverGridDelegateWithMaxCrossAxisExtent(
-                                            maxCrossAxisExtent: 300,
-                                            childAspectRatio: 1.4,
-                                            crossAxisSpacing: 0,
-                                            mainAxisSpacing: 0),
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: state.profiles.length,
-                                    itemBuilder: (context, index) {
-                                      return AnimatedProfileCard(
-                                        name: state.profiles[index].name,
-                                        profileImage:
-                                            state.profiles[index].profileImage,
-                                      );
-                                    }),
-                              );
-                            }
-                            return const Text(
-                              Constants.profiles_empty,
-                              style: TextStyle(color: Colors.white),
-                            );
-                          },
-                        ),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 40,
                       ),
                     ),
-                  ],
+                  )),
+              Positioned(
+                height: constraints.maxHeight - topCenterDistance,
+                width: constraints.maxWidth,
+                top: (topCenterDistance + 40) - 150,
+                child: Center(
+                  child: BlocBuilder<ProfilesBloc, ProfilesState>(
+                    builder: (context, state) {
+                      if (state is ProfilesInitial) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: GridView.builder(
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                      mainAxisSpacing: 0,
+                                      childAspectRatio: smallScreen ? 0.8 : 3,
+                                      crossAxisCount: smallScreen ? 2 : 1),
+                              shrinkWrap: true,
+                              scrollDirection:
+                                  smallScreen ? Axis.vertical : Axis.horizontal,
+                              itemCount: state.profiles.length,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () => developer.log("hallo"),
+                                  child: AnimatedProfileCard(
+                                    width: 120,
+                                    fontSize: 20,
+                                    name: state.profiles[index].name,
+                                    profileImage:
+                                        state.profiles[index].profileImage,
+                                  ),
+                                );
+                              }),
+                        );
+                      }
+                      return const Text(
+                        Constants.profiles_empty,
+                        style: TextStyle(color: Colors.white),
+                      );
+                    },
+                  ),
                 ),
               )
             ],
