@@ -33,7 +33,7 @@ class Profiles extends StatelessWidget {
               Positioned(
                 top: 16,
                 left: smallScreen ? 16 : 64,
-                child: SvgPicture.asset(
+                child: SvgPicture.network(
                   smallScreen
                       ? Constants.netflix_icon_small
                       : Constants.netflix_icon_full,
