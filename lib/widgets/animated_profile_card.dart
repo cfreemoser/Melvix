@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:netflix_gallery/helpers/constants.dart';
 
 class AnimatedProfileCard extends StatefulWidget {
@@ -27,7 +26,8 @@ class AnimatedProfileCardState extends State<AnimatedProfileCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => onEntered(true),
+      onTapDown: (_) => onEntered(true),
+      onTapUp: (_) => onEntered(false),
       child: SizedBox(
         child: MouseRegion(
           onEnter: (_) => onEntered(true),

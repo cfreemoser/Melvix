@@ -18,7 +18,7 @@ class Profiles extends StatelessWidget {
       developer.log(smallScreen.toString());
 
       double topCenterDistance = smallScreen
-          ? netflixLogoHeight + selectTextHeight
+          ? netflixLogoHeight + selectTextHeight + 16
           : constraints.maxHeight * 0.5;
 
       return Scaffold(
