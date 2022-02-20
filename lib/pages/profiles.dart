@@ -46,7 +46,7 @@ class Profiles extends StatelessWidget {
               ),
               Positioned(
                   top: smallScreen
-                      ? netflixLogoHeight
+                      ? netflixLogoHeight + 20
                       : topCenterDistance - 32 - 150,
                   width: constraints.maxWidth,
                   height: selectTextHeight,
