@@ -26,6 +26,7 @@ class AnimatedProfileCardState extends State<AnimatedProfileCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: () => onEntered(true),
       onTapDown: (_) => onEntered(true),
       onTapUp: (_) => onEntered(false),
       child: SizedBox(
