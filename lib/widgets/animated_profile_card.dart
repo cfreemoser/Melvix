@@ -26,33 +26,36 @@ class AnimatedProfileCardState extends State<AnimatedProfileCard> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: MouseRegion(
-        onEnter: (_) => onEntered(true),
-        onExit: (_) => onEntered(false),
-        child: Column(
-          children: [
-            Container(
-                decoration: BoxDecoration(
-                    border: isHovered
-                        ? Border.all(width: borderWidth, color: Colors.white)
-                        : Border.all(
-                            width: borderWidth,
-                            color: Constants.netflix_background)),
-                child: Image(
-                  image: widget.profileImage.image,
-                  fit: BoxFit.fitWidth,
-                )),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(widget.name,
-                  style: isHovered
-                      ? TextStyle(
-                          color: Colors.white, fontSize: widget.fontSize)
-                      : TextStyle(
-                          color: Colors.grey, fontSize: widget.fontSize)),
-            ),
-          ],
+    return GestureDetector(
+      onTap: () => onEntered(true),
+      child: SizedBox(
+        child: MouseRegion(
+          onEnter: (_) => onEntered(true),
+          onExit: (_) => onEntered(false),
+          child: Column(
+            children: [
+              Container(
+                  decoration: BoxDecoration(
+                      border: isHovered
+                          ? Border.all(width: borderWidth, color: Colors.white)
+                          : Border.all(
+                              width: borderWidth,
+                              color: Constants.netflix_background)),
+                  child: Image(
+                    image: widget.profileImage.image,
+                    fit: BoxFit.fitWidth,
+                  )),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(widget.name,
+                    style: isHovered
+                        ? TextStyle(
+                            color: Colors.white, fontSize: widget.fontSize)
+                        : TextStyle(
+                            color: Colors.grey, fontSize: widget.fontSize)),
+              ),
+            ],
+          ),
         ),
       ),
     );

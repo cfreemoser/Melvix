@@ -13,10 +13,12 @@ class Profiles extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       bool smallScreen = constraints.maxWidth < 600;
+      double netflixLogoHeight = 40;
+      double selectTextHeight = 40;
       developer.log(smallScreen.toString());
 
       double topCenterDistance = smallScreen
-          ? constraints.maxHeight * 0.3
+          ? netflixLogoHeight + selectTextHeight
           : constraints.maxHeight * 0.5;
 
       return Scaffold(
@@ -38,14 +40,17 @@ class Profiles extends StatelessWidget {
                       ? "https://upload.wikimedia.org/wikipedia/commons/0/0c/Netflix_2015_N_logo.svg"
                       : "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
                   width: smallScreen ? 20 : 100,
+                  height: netflixLogoHeight,
                   semanticsLabel: "netflix icon",
                   placeholderBuilder: (context) => const Text("loading..."),
                 ),
               ),
               Positioned(
-                  top: topCenterDistance - 32 - 150,
+                  top: smallScreen
+                      ? netflixLogoHeight
+                      : topCenterDistance - 32 - 150,
                   width: constraints.maxWidth,
-                  height: 40,
+                  height: selectTextHeight,
                   child: const Center(
                     child: Text(
                       Constants.profiles_select_text,
@@ -56,7 +61,7 @@ class Profiles extends StatelessWidget {
                     ),
                   )),
               Positioned(
-                height: constraints.maxHeight - topCenterDistance,
+                height: constraints.maxHeight,
                 width: constraints.maxWidth,
                 top: (topCenterDistance + 40) - 150,
                 child: Center(
@@ -76,15 +81,12 @@ class Profiles extends StatelessWidget {
                                   smallScreen ? Axis.vertical : Axis.horizontal,
                               itemCount: state.profiles.length,
                               itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () => developer.log("hallo"),
-                                  child: AnimatedProfileCard(
-                                    width: 120,
-                                    fontSize: 20,
-                                    name: state.profiles[index].name,
-                                    profileImage:
-                                        state.profiles[index].profileImage,
-                                  ),
+                                return AnimatedProfileCard(
+                                  width: 120,
+                                  fontSize: 20,
+                                  name: state.profiles[index].name,
+                                  profileImage:
+                                      state.profiles[index].profileImage,
                                 );
                               }),
                         );
