@@ -9,7 +9,7 @@ class Constants {
 
   // icons
   static const String netflix_icon_full =
-      "/assets/assets/images/netflix_2015_logo.svg";
+      "assets/images/netflix_2015_logo.png";
   static const String netflix_icon_small =
-      "/assets/assets/images/netflix_2015_N_logo.svg";
+      "assets/images/netflix_2015_N_logo.png";
 }

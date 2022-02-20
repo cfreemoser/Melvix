@@ -35,8 +35,8 @@ class Profiles extends StatelessWidget {
                 left: smallScreen ? 16 : 64,
                 child: SvgPicture.network(
                   smallScreen
-                      ? Constants.netflix_icon_small
-                      : Constants.netflix_icon_full,
+                      ? "https://upload.wikimedia.org/wikipedia/commons/0/0c/Netflix_2015_N_logo.svg"
+                      : "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
                   width: smallScreen ? 20 : 100,
                   semanticsLabel: "netflix icon",
                   placeholderBuilder: (context) => const Text("loading..."),
