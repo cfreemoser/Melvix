@@ -8,7 +8,7 @@ class Constants {
   static const String profiles_empty = "Geen profielen gevonden";
 
   // icons
-  static const String netflix_icon_full = "assets/images/Netflix_2015_logo.png";
+  static const String netflix_icon_full = "assets/images/Netflix-logo.png";
   static const String netflix_icon_small =
-      "assets/images/Netflix_2015_N_logo.png";
+      "assets/images/Netflix-N-logo.png";
 }
