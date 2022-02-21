@@ -14,6 +14,7 @@ class Profiles extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Constants.netflix_background,
       body: LayoutBuilder(
         builder: (context, constraints) {
           bool smallScreen = constraints.maxWidth < 600;
@@ -152,7 +153,7 @@ class Profiles extends StatelessWidget {
             child: Center(
                 child: SizedBox(
               width: constraints.maxWidth * 0.6,
-              height: 180,
+              height: 600,
               child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       childAspectRatio: 2.6 / 2.4, crossAxisCount: 2),
@@ -160,7 +161,7 @@ class Profiles extends StatelessWidget {
                   itemCount: state.profiles.length,
                   itemBuilder: (context, index) {
                     return AnimatedProfileCard(
-                      width: 60,
+                      width: 80,
                       fontSize: 10,
                       name: state.profiles[index].name,
                       profileImage: state.profiles[index].profileImage,
