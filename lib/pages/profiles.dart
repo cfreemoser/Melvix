@@ -67,7 +67,7 @@ class Profiles extends StatelessWidget {
                       Expanded(
                         child: Center(
                           child: SizedBox(
-                            height: 200,
+                            height: 400,
                             child: Column(
                               children: [
                                 Container(
@@ -150,7 +150,7 @@ class Profiles extends StatelessWidget {
             child: Center(
                 child: SizedBox(
               width: constraints.maxWidth * 0.6,
-              height: 600,
+              height: 200,
               child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       childAspectRatio: 2.6 / 2.4, crossAxisCount: 2),
