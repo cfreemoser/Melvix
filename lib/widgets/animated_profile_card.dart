@@ -6,6 +6,7 @@ class AnimatedProfileCard extends StatefulWidget {
   final Image profileImage;
   final double width;
   final double fontSize;
+  final Function onTap;
 
   const AnimatedProfileCard({
     Key? key,
@@ -13,6 +14,7 @@ class AnimatedProfileCard extends StatefulWidget {
     required this.profileImage,
     required this.width,
     required this.fontSize,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -28,7 +30,7 @@ class AnimatedProfileCardState extends State<AnimatedProfileCard> {
     return SizedBox(
       width: widget.width,
       child: GestureDetector(
-        onTapDown: (_) => onEntered(true),
+        onTapDown: (_) => widget.onTap(),
         onTapUp: (_) => onEntered(false),
         child: SizedBox(
           child: MouseRegion(

@@ -9,3 +9,4 @@ class ProfilesInitial extends ProfilesState {
   ProfilesInitial({required this.profiles});
 }
 
+class ProfileSelectedState extends ProfilesState {}

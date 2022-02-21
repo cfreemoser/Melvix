@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:netflix_gallery/domain/profile.dart';
@@ -11,6 +13,8 @@ class ProfilesBloc extends Bloc<ProfilesEvent, ProfilesState> {
   final ConfigService _configService;
 
   ProfilesBloc(this._configService)
-      : super(ProfilesInitial(
-            profiles: _configService.getProfilesFromConfig())) {}
+      : super(
+            ProfilesInitial(profiles: _configService.getProfilesFromConfig())) {
+    on<ProfileSelected>((event, emit) => emit(ProfileSelectedState()));
+  }
 }
