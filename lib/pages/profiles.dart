@@ -150,7 +150,7 @@ class Profiles extends StatelessWidget {
             child: Center(
                 child: SizedBox(
               width: constraints.maxWidth * 0.6,
-              height: 200,
+              height: 300,
               child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       childAspectRatio: 2.6 / 2.4, crossAxisCount: 2),
@@ -219,20 +219,32 @@ class Profiles extends StatelessWidget {
   Future<void> _buildPinDialog(BuildContext context) async {
     return showDialog<void>(
         context: context,
-        barrierDismissible: false, // user must tap button!
+        barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text('PIN-Eingabe erforderlich'),
+            title: const Text(Constants.profiles_pin_text),
             backgroundColor: Constants.netflix_background,
             titleTextStyle: const TextStyle(
                 color: Colors.white, fontFamily: "NetflixSans", fontSize: 20),
+            actions: <Widget>[
+              TextButton(
+                child: const Text(Constants.profiles_forgot_text,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: "NetflixSans",
+                        fontSize: 16)),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
             content: PinCodeTextField(
               autofocus: true,
               hideCharacter: true,
               highlight: true,
               highlightColor: Colors.grey,
               defaultBorderColor: Colors.grey,
-              hasTextBorderColor: Colors.white,
+              hasTextBorderColor: Constants.netflix_background,
               pinBoxColor: Colors.white,
               maskCharacter: "*",
               maxLength: 4,
