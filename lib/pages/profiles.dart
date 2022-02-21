@@ -11,97 +11,104 @@ class Profiles extends StatelessWidget {
   const Profiles({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      bool smallScreen = constraints.maxWidth < 600;
-      double netflixLogoHeight = 40;
-      double selectTextHeight = 40;
-      developer.log(smallScreen.toString());
+    return Scaffold(
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          bool smallScreen = constraints.maxWidth < 600;
+          double netflixLogoHeight = 40;
+          double selectTextHeight = 40;
 
-      double topCenterDistance =
-          smallScreen ? 150 : constraints.maxHeight * 0.5;
-
-      return Scaffold(
-        body: SizedBox(
-          height: constraints.minHeight,
-          width: constraints.maxWidth,
-          child: Stack(
+          return Stack(
             children: [
               Container(
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                      Colors.black,
+                      Constants.netflix_background,
+                      Constants.netflix_background
+                    ])),
                 height: constraints.maxHeight,
                 width: constraints.maxWidth,
-                color: Constants.netflix_background,
               ),
-              Positioned(
-                top: 16,
-                left: smallScreen ? 16 : 64,
-                child: SvgPicture.network(
-                  smallScreen
-                      ? "https://upload.wikimedia.org/wikipedia/commons/0/0c/Netflix_2015_N_logo.svg"
-                      : "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
-                  width: smallScreen ? 20 : 100,
-                  height: netflixLogoHeight,
-                  semanticsLabel: "netflix icon",
-                  placeholderBuilder: (context) => const Text("loading..."),
-                ),
-              ),
-              Positioned(
-                  top: smallScreen
-                      ? netflixLogoHeight + 20
-                      : topCenterDistance - 32 - 150,
-                  width: constraints.maxWidth,
-                  height: selectTextHeight,
-                  child: const Center(
-                    child: Text(
-                      Constants.profiles_select_text,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 40,
+              Expanded(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                      padding:
+                          EdgeInsets.only(top: 20, left: smallScreen ? 16 : 64),
+                      child: SvgPicture.network(
+                        smallScreen
+                            ? "https://upload.wikimedia.org/wikipedia/commons/0/0c/Netflix_2015_N_logo.svg"
+                            : "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
+                        width: smallScreen ? 20 : 100,
+                        height: netflixLogoHeight,
+                        semanticsLabel: "netflix icon",
+                        placeholderBuilder: (context) =>
+                            const Text("loading..."),
+                      )),
+                  Container(
+                    margin: EdgeInsets.only(
+                        top: smallScreen ? 80 : constraints.maxHeight / 4,
+                        bottom: 20),
+                    child: const Center(
+                      child: Text(
+                        Constants.profiles_select_text,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 40,
+                        ),
                       ),
                     ),
-                  )),
-              Positioned(
-                height: constraints.maxHeight,
-                width: constraints.maxWidth,
-                top: (topCenterDistance + 40) - 150,
-                child: Center(
-                  child: BlocBuilder<ProfilesBloc, ProfilesState>(
-                    builder: (context, state) {
-                      if (state is ProfilesInitial) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: GridView.builder(
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      mainAxisSpacing: 0,
-                                      childAspectRatio: smallScreen ? 0.8 : 3,
-                                      crossAxisCount: smallScreen ? 2 : 1),
-                              shrinkWrap: true,
-                              scrollDirection:
-                                  smallScreen ? Axis.vertical : Axis.horizontal,
-                              itemCount: state.profiles.length,
-                              itemBuilder: (context, index) {
-                                return AnimatedProfileCard(
-                                  width: 120,
-                                  fontSize: 20,
-                                  name: state.profiles[index].name,
-                                  profileImage:
-                                      state.profiles[index].profileImage,
-                                );
-                              }),
-                        );
-                      }
-                      return const Text(
-                        Constants.profiles_empty,
-                        style: TextStyle(color: Colors.white),
-                      );
-                    },
                   ),
-                ),
-              )
+                  Expanded(
+                    child: BlocBuilder<ProfilesBloc, ProfilesState>(
+                      builder: (context, state) {
+                        if (state is ProfilesInitial) {
+                          return SizedBox(
+                            width: constraints.maxWidth,
+                            child: Center(
+                              child: GridView.builder(
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                          childAspectRatio:
+                                              smallScreen ? 5 / 5 : 3,
+                                          crossAxisCount: smallScreen ? 2 : 1),
+                                  shrinkWrap: true,
+                                  scrollDirection: smallScreen
+                                      ? Axis.vertical
+                                      : Axis.horizontal,
+                                  itemCount: state.profiles.length,
+                                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                  itemBuilder: (context, index) {
+                                    return AnimatedProfileCard(
+                                      width: smallScreen ? 100 : 200,
+                                      fontSize: 20,
+                                      name: state.profiles[index].name,
+                                      profileImage:
+                                          state.profiles[index].profileImage,
+                                    );
+                                  }),
+                            ),
+                          );
+                        }
+                        return const Text(
+                          Constants.profiles_empty,
+                          style: TextStyle(color: Colors.white),
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ))
             ],
-          ),
-        ),
-      );
-    });
+          );
+        },
+      ),
+    );
   }
 }

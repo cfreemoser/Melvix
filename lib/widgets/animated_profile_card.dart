@@ -25,37 +25,42 @@ class AnimatedProfileCardState extends State<AnimatedProfileCard> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => onEntered(true),
-      onTapDown: (_) => onEntered(true),
-      onTapUp: (_) => onEntered(false),
-      child: SizedBox(
-        child: MouseRegion(
-          onEnter: (_) => onEntered(true),
-          onExit: (_) => onEntered(false),
-          child: Column(
-            children: [
-              Container(
+    return SizedBox(
+      width: widget.width,
+      child: GestureDetector(
+        onTap: () => onEntered(true),
+        onTapDown: (_) => onEntered(true),
+        onTapUp: (_) => onEntered(false),
+        child: SizedBox(
+          child: MouseRegion(
+            onEnter: (_) => onEntered(true),
+            onExit: (_) => onEntered(false),
+            child: Column(
+              children: [
+                Container(
+                  height: widget.width,
+                  width: widget.width,
                   decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      image: DecorationImage(
+                          image: widget.profileImage.image, fit: BoxFit.cover),
                       border: isHovered
                           ? Border.all(width: borderWidth, color: Colors.white)
                           : Border.all(
                               width: borderWidth,
                               color: Constants.netflix_background)),
-                  child: Image(
-                    image: widget.profileImage.image,
-                    fit: BoxFit.fitWidth,
-                  )),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(widget.name,
-                    style: isHovered
-                        ? TextStyle(
-                            color: Colors.white, fontSize: widget.fontSize)
-                        : TextStyle(
-                            color: Colors.grey, fontSize: widget.fontSize)),
-              ),
-            ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(widget.name,
+                      style: isHovered
+                          ? TextStyle(
+                              color: Colors.white, fontSize: widget.fontSize)
+                          : TextStyle(
+                              color: Colors.grey, fontSize: widget.fontSize)),
+                ),
+              ],
+            ),
           ),
         ),
       ),
