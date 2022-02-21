@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:netflix_gallery/bloc/profiles_bloc.dart';
 import 'package:netflix_gallery/helpers/constants.dart';
 import 'package:netflix_gallery/widgets/animated_profile_card.dart';
+import 'package:netflix_gallery/widgets/pin_dialog.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
 
 class Profiles extends StatelessWidget {
@@ -198,12 +200,11 @@ class Profiles extends StatelessWidget {
   Widget _buildNetflixLogo(bool smallScreen) {
     return SizedBox(
         child: Row(children: [
-      Image.asset(
-        smallScreen
-            ? Constants.netflix_icon_small
-            : Constants.netflix_icon_full,
-        height: 40,
-      )
+      SvgPicture.asset(
+          smallScreen
+              ? Constants.netflix_icon_small
+              : Constants.netflix_icon_full,
+          height: 40)
     ]));
   }
 
@@ -221,48 +222,7 @@ class Profiles extends StatelessWidget {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text(Constants.profiles_pin_text),
-            backgroundColor: Constants.netflix_background,
-            titleTextStyle: const TextStyle(
-                color: Colors.white, fontFamily: "NetflixSans", fontSize: 20),
-            actions: <Widget>[
-              TextButton(
-                child: const Text(Constants.profiles_forgot_text,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: "NetflixSans",
-                        fontSize: 16)),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-            content: PinCodeTextField(
-              autofocus: true,
-              hideCharacter: true,
-              highlight: true,
-              highlightColor: Colors.grey,
-              defaultBorderColor: Colors.grey,
-              hasTextBorderColor: Constants.netflix_background,
-              pinBoxColor: Colors.white,
-              maskCharacter: "*",
-              maxLength: 4,
-              pinBoxWidth: 50,
-              pinBoxHeight: 64,
-              hasUnderline: true,
-              wrapAlignment: WrapAlignment.spaceAround,
-              pinBoxDecoration:
-                  ProvidedPinBoxDecoration.defaultPinBoxDecoration,
-              pinTextStyle: const TextStyle(fontSize: 22.0),
-              pinTextAnimatedSwitcherTransition:
-                  ProvidedPinBoxTextAnimation.scalingTransition,
-              pinTextAnimatedSwitcherDuration: Duration(milliseconds: 300),
-              highlightAnimationBeginColor: Colors.black,
-              highlightAnimationEndColor: Colors.white12,
-              keyboardType: TextInputType.number,
-            ),
-          );
+          return PinDialog();
         });
   }
 }
