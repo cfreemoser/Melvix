@@ -67,7 +67,7 @@ class Profiles extends StatelessWidget {
                       Expanded(
                         child: Center(
                           child: SizedBox(
-                            height: 400,
+                            height: 200,
                             child: Column(
                               children: [
                                 Container(
