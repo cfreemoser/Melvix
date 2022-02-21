@@ -42,12 +42,11 @@ class AnimatedProfileCardState extends State<AnimatedProfileCard> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       image: DecorationImage(
-                          image: widget.profileImage.image, fit: BoxFit.cover),
+                          image: widget.profileImage.image, fit: BoxFit.fill),
                       border: isHovered
                           ? Border.all(width: borderWidth, color: Colors.white)
                           : Border.all(
-                              width: borderWidth,
-                              color: Constants.netflix_background)),
+                              width: borderWidth, color: Colors.transparent)),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
