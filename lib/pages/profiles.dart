@@ -1,6 +1,3 @@
-import 'dart:developer' as developer;
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:netflix_gallery/bloc/profiles_bloc.dart';
@@ -202,9 +199,7 @@ class Profiles extends StatelessWidget {
     return SizedBox(
         child: Row(children: [
       Image.asset(
-        smallScreen
-            ? Constants.netflix_icon_small
-            : Constants.netflix_icon_full,
+        "assets/images/netflix_2015_N_logo.png",
         height: 40,
       )
     ]));
