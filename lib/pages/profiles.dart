@@ -199,7 +199,9 @@ class Profiles extends StatelessWidget {
     return SizedBox(
         child: Row(children: [
       Image.asset(
-        "assets/images/netflix_2015_N_logo.png",
+        smallScreen
+            ? Constants.netflix_icon_small
+            : Constants.netflix_icon_full,
         height: 40,
       )
     ]));
