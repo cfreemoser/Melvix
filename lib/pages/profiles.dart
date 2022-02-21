@@ -1,4 +1,5 @@
 import 'dart:developer' as developer;
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,78 +34,92 @@ class Profiles extends StatelessWidget {
                 height: constraints.maxHeight,
                 width: constraints.maxWidth,
               ),
-              Expanded(
+              SizedBox(
+                  height: constraints.maxHeight,
+                  width: constraints.maxWidth,
                   child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                      padding:
-                          EdgeInsets.only(top: 20, left: smallScreen ? 16 : 64),
-                      child: SvgPicture.network(
-                        smallScreen
-                            ? "https://upload.wikimedia.org/wikipedia/commons/0/0c/Netflix_2015_N_logo.svg"
-                            : "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
-                        width: smallScreen ? 20 : 100,
-                        height: netflixLogoHeight,
-                        semanticsLabel: "netflix icon",
-                        placeholderBuilder: (context) =>
-                            const Text("loading..."),
-                      )),
-                  Container(
-                    margin: EdgeInsets.only(
-                        top: smallScreen ? 80 : constraints.maxHeight / 4,
-                        bottom: 20),
-                    child: const Center(
-                      child: Text(
-                        Constants.profiles_select_text,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 40,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        child: Padding(
+                            padding: EdgeInsets.only(
+                                top: 20, left: smallScreen ? 16 : 64),
+                            child: Image.asset(
+                              smallScreen
+                                  ? Constants.netflix_icon_small
+                                  : Constants.netflix_icon_full,
+                              height: netflixLogoHeight,
+                            )),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(
+                            top: smallScreen ? 80 : constraints.maxHeight / 4,
+                            bottom: 20),
+                        child: const Center(
+                          child: Text(
+                            Constants.profiles_select_text,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 40,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  Expanded(
-                    child: BlocBuilder<ProfilesBloc, ProfilesState>(
-                      builder: (context, state) {
-                        if (state is ProfilesInitial) {
-                          return SizedBox(
-                            width: constraints.maxWidth,
-                            child: Center(
-                              child: GridView.builder(
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                          childAspectRatio:
-                                              smallScreen ? 5 / 5 : 3,
-                                          crossAxisCount: smallScreen ? 2 : 1),
-                                  shrinkWrap: true,
-                                  scrollDirection: smallScreen
-                                      ? Axis.vertical
-                                      : Axis.horizontal,
-                                  itemCount: state.profiles.length,
-                                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                  itemBuilder: (context, index) {
-                                    return AnimatedProfileCard(
-                                      width: smallScreen ? 100 : 200,
-                                      fontSize: 20,
-                                      name: state.profiles[index].name,
-                                      profileImage:
-                                          state.profiles[index].profileImage,
-                                    );
-                                  }),
-                            ),
-                          );
-                        }
-                        return const Text(
-                          Constants.profiles_empty,
-                          style: TextStyle(color: Colors.white),
-                        );
-                      },
-                    ),
-                  )
-                ],
-              ))
+                      Expanded(
+                        child: BlocBuilder<ProfilesBloc, ProfilesState>(
+                          builder: (context, state) {
+                            if (state is ProfilesInitial) {
+                              return SizedBox(
+                                width: constraints.maxWidth,
+                                child: Center(
+                                  child: smallScreen
+                                      ? GridView.builder(
+                                          gridDelegate:
+                                              SliverGridDelegateWithFixedCrossAxisCount(
+                                                  childAspectRatio:
+                                                      smallScreen ? 5 / 5 : 3,
+                                                  crossAxisCount:
+                                                      smallScreen ? 2 : 1),
+                                          shrinkWrap: true,
+                                          scrollDirection: smallScreen
+                                              ? Axis.vertical
+                                              : Axis.horizontal,
+                                          itemCount: state.profiles.length,
+                                          itemBuilder: (context, index) {
+                                            return AnimatedProfileCard(
+                                              width: 100,
+                                              fontSize: 20,
+                                              name: state.profiles[index].name,
+                                              profileImage: state
+                                                  .profiles[index].profileImage,
+                                            );
+                                          })
+                                      : ListView.builder(
+                                          shrinkWrap: true,
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: state.profiles.length,
+                                          itemBuilder: (context, index) {
+                                            return AnimatedProfileCard(
+                                              width: 200,
+                                              fontSize: 20,
+                                              name: state.profiles[index].name,
+                                              profileImage: state
+                                                  .profiles[index].profileImage,
+                                            );
+                                          }),
+                                ),
+                              );
+                            }
+                            return const Text(
+                              Constants.profiles_empty,
+                              style: TextStyle(color: Colors.white),
+                            );
+                          },
+                        ),
+                      )
+                    ],
+                  ))
             ],
           );
         },

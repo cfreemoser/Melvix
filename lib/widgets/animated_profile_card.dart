@@ -28,7 +28,6 @@ class AnimatedProfileCardState extends State<AnimatedProfileCard> {
     return SizedBox(
       width: widget.width,
       child: GestureDetector(
-        onTap: () => onEntered(true),
         onTapDown: (_) => onEntered(true),
         onTapUp: (_) => onEntered(false),
         child: SizedBox(
