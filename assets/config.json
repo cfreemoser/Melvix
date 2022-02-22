@@ -1,7 +1,8 @@
 {
     "profiles" : [
         { "name" : "Gääm", "assetID" : "assets/images/Netflix-avatar.png" },
-        { "name" : "Dominic", "assetID" : "assets/images/Netflix-avatar.png" },
-        { "name" : "Dominic", "assetID" : "assets/images/Netflix-avatar.png" }
+        { "name" : "Dominic", "assetID" : "assets/images/Netflix-avatar2.jpeg" },
+        { "name" : "Leon", "assetID" : "assets/images/Netflix-avatar.png" },
+        { "name" : "Hunt", "assetID" : "assets/images/Netflix-avatar2.jpeg", "pinCode" : 5431  }
     ]
 }

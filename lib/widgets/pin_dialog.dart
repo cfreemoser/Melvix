@@ -3,11 +3,19 @@ import 'package:netflix_gallery/helpers/constants.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
 
 class PinDialog extends StatefulWidget {
+  final int targetPin;
+  final Function onSuccess;
+
+  const PinDialog({Key? key, required this.targetPin, required this.onSuccess})
+      : super(key: key);
+
   @override
   State<StatefulWidget> createState() => PinDialogState();
 }
 
 class PinDialogState extends State<PinDialog> {
+  bool hasError = false;
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -49,6 +57,17 @@ class PinDialogState extends State<PinDialog> {
         highlightAnimationBeginColor: Colors.black,
         highlightAnimationEndColor: Colors.white12,
         keyboardType: TextInputType.number,
+        hasError: hasError,
+        onTextChanged: (text) {
+          setState(() {
+            var targetPin = widget.targetPin.toString();
+            if (targetPin == text) {
+              widget.onSuccess();
+            } else {
+              hasError = !targetPin.startsWith(text);
+            }
+          });
+        },
       ),
     );
   }

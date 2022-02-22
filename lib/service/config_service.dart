@@ -7,7 +7,9 @@ class Config {
   late List<ProfileConfig> _profiles;
 
   Config.fromJson(Map<String, dynamic> json) {
-    _profiles = (json['profiles'] as List).map((e) => ProfileConfig.fromJson(e)).toList();
+    _profiles = (json['profiles'] as List)
+        .map((e) => ProfileConfig.fromJson(e))
+        .toList();
   }
 }
 
@@ -15,13 +17,15 @@ class ProfileConfig {
   final String name;
   final String? imageURL;
   final String? assetID;
+  final int? pinCode;
 
-  ProfileConfig(this.name, this.imageURL, this.assetID);
+  ProfileConfig(this.name, this.imageURL, this.assetID, this.pinCode);
 
   ProfileConfig.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         imageURL = json['imageURL'],
-        assetID = json['assetID'];
+        assetID = json['assetID'],
+        pinCode = json['pinCode'];
 }
 
 class ConfigService {
@@ -36,14 +40,13 @@ class ConfigService {
   }
 
   Profile _mapProfileConfigToProfile(ProfileConfig profileConfig) {
-    if (profileConfig.assetID == null) {
-      return Profile(
-          name: profileConfig.name,
-          profileImage: Image.network(profileConfig.imageURL!));
-    }
+    Image image = profileConfig.assetID == null
+        ? Image.network(profileConfig.imageURL!)
+        : Image.asset(profileConfig.assetID!);
 
     return Profile(
         name: profileConfig.name,
-        profileImage: Image.asset(profileConfig.assetID!));
+        profilePin: profileConfig.pinCode,
+        profileImage: image);
   }
 }

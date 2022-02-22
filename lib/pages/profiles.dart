@@ -1,11 +1,14 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:netflix_gallery/bloc/profiles_bloc.dart';
+import 'package:netflix_gallery/domain/profile.dart';
 import 'package:netflix_gallery/helpers/constants.dart';
 import 'package:netflix_gallery/widgets/animated_profile_card.dart';
 import 'package:netflix_gallery/widgets/pin_dialog.dart';
-import 'package:pin_code_text_field/pin_code_text_field.dart';
 
 class Profiles extends StatelessWidget {
   const Profiles({Key? key}) : super(key: key);
@@ -98,8 +101,8 @@ class Profiles extends StatelessWidget {
   Widget _buildListView(BoxConstraints constraints) {
     return BlocConsumer<ProfilesBloc, ProfilesState>(
       listener: (context, state) {
-        if (state is ProfileSelectedState) {
-          _buildPinDialog(context);
+        if (state is PinSecuredProfileSelected) {
+          _buildPinDialog(context, state.profile);
         }
       },
       buildWhen: (prev, curr) => curr is ProfilesInitial,
@@ -119,7 +122,7 @@ class Profiles extends StatelessWidget {
                         name: state.profiles[index].name,
                         profileImage: state.profiles[index].profileImage,
                         onTap: () => BlocProvider.of<ProfilesBloc>(context)
-                            .add(ProfileSelected()),
+                            .add(ProfileSelected(state.profiles[index])),
                       ),
                       const SizedBox(
                         width: 20,
@@ -140,8 +143,8 @@ class Profiles extends StatelessWidget {
   Widget _buildGridView(BoxConstraints constraints) {
     return BlocConsumer<ProfilesBloc, ProfilesState>(
       listener: (context, state) {
-        if (state is ProfileSelectedState) {
-          _buildPinDialog(context);
+        if (state is PinSecuredProfileSelected) {
+          _buildPinDialog(context, state.profile);
         }
       },
       buildWhen: (previous, current) => current is ProfilesInitial,
@@ -165,7 +168,7 @@ class Profiles extends StatelessWidget {
                       name: state.profiles[index].name,
                       profileImage: state.profiles[index].profileImage,
                       onTap: () => BlocProvider.of<ProfilesBloc>(context)
-                          .add(ProfileSelected()),
+                          .add(ProfileSelected(state.profiles[index])),
                     );
                   }),
             )),
@@ -217,12 +220,19 @@ class Profiles extends StatelessWidget {
     );
   }
 
-  Future<void> _buildPinDialog(BuildContext context) async {
+  Future<void> _buildPinDialog(BuildContext ctx, Profile profile) async {
     return showDialog<void>(
-        context: context,
+        context: ctx,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return PinDialog();
+          return PinDialog(
+            targetPin: profile.profilePin!,
+            onSuccess: () {
+              Navigator.of(context, rootNavigator: true).pop();
+              BlocProvider.of<ProfilesBloc>(ctx)
+                  .add(ProfilePinEntered(profile));
+            },
+          );
         });
   }
 }

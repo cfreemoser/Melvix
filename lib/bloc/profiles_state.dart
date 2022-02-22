@@ -9,4 +9,10 @@ class ProfilesInitial extends ProfilesState {
   ProfilesInitial({required this.profiles});
 }
 
-class ProfileSelectedState extends ProfilesState {}
+class PinSecuredProfileSelected extends ProfilesState {
+  final Profile profile;
+
+  PinSecuredProfileSelected(this.profile);
+}
+
+class FakeProfileSelected extends ProfilesState {}
