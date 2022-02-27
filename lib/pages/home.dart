@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:netflix_gallery/cubits/app_bar/app_bar_cubit.dart';
 import 'package:netflix_gallery/domain/content.dart';
 import 'package:netflix_gallery/helpers/constants.dart';
 import 'package:netflix_gallery/navigation/home_args.dart';
@@ -18,17 +18,15 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
   late ScrollController _scrollController;
-  double _scrollOffset = 0.0;
 
   @override
   void initState() {
-    super.initState();
-    _scrollController = ScrollController();
-    _scrollController.addListener(() {
-      setState(() {
-        _scrollOffset = _scrollController.offset;
+    _scrollController = ScrollController()
+      ..addListener(() {
+        BlocProvider.of<AppBarCubit>(context)
+            .setOffset(_scrollController.offset);
       });
-    });
+    super.initState();
   }
 
   @override
@@ -49,8 +47,12 @@ class HomeState extends State<Home> {
               backgroundColor: Constants.netflix_background,
               appBar: PreferredSize(
                   preferredSize: Size(constrains.maxHeight, 50),
-                  child: NetflixAppBar(
-                    scrollOffset: _scrollOffset,
+                  child: BlocBuilder<AppBarCubit, double>(
+                    builder: (context, scrollOffset) {
+                      return NetflixAppBar(
+                        scrollOffset: scrollOffset,
+                      );
+                    },
                   )),
               body: CustomScrollView(
                 controller: _scrollController,
@@ -62,6 +64,7 @@ class HomeState extends State<Home> {
                     padding: const EdgeInsets.only(top: 20),
                     sliver: SliverToBoxAdapter(
                       child: Previews(
+                        key: const PageStorageKey('previews'),
                         title: "privews",
                         contentList: [
                           Content(),
@@ -77,19 +80,23 @@ class HomeState extends State<Home> {
                     ),
                   ),
                   SliverToBoxAdapter(
-                    child: ContentList(title: "My List", contentList: [
-                      Content(),
-                      Content(),
-                      Content(),
-                      Content(),
-                      Content(),
-                      Content(),
-                      Content(),
-                      Content()
-                    ]),
+                    child: ContentList(
+                        key: const PageStorageKey('myList'),
+                        title: "My List",
+                        contentList: [
+                          Content(),
+                          Content(),
+                          Content(),
+                          Content(),
+                          Content(),
+                          Content(),
+                          Content(),
+                          Content()
+                        ]),
                   ),
                   SliverToBoxAdapter(
                     child: ContentList(
+                        key: const PageStorageKey('highlights'),
                         title: "Highlights",
                         highlighted: true,
                         contentList: [
@@ -104,16 +111,19 @@ class HomeState extends State<Home> {
                         ]),
                   ),
                   SliverToBoxAdapter(
-                    child: ContentList(title: "Other", contentList: [
-                      Content(),
-                      Content(),
-                      Content(),
-                      Content(),
-                      Content(),
-                      Content(),
-                      Content(),
-                      Content()
-                    ]),
+                    child: ContentList(
+                        key: const PageStorageKey('other'),
+                        title: "Other",
+                        contentList: [
+                          Content(),
+                          Content(),
+                          Content(),
+                          Content(),
+                          Content(),
+                          Content(),
+                          Content(),
+                          Content()
+                        ]),
                   )
                 ],
               )));
