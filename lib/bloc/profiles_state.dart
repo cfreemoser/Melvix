@@ -16,3 +16,9 @@ class PinSecuredProfileSelected extends ProfilesState {
 }
 
 class FakeProfileSelected extends ProfilesState {}
+
+class PinCorrect extends ProfilesState {
+  final Profile profile;
+
+  PinCorrect(this.profile);
+}

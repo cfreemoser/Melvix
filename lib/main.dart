@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:netflix_gallery/bloc/home_bloc.dart';
 import 'package:netflix_gallery/bloc/profiles_bloc.dart';
+import 'package:netflix_gallery/pages/home.dart';
 import 'package:netflix_gallery/pages/profiles.dart';
 import 'package:netflix_gallery/service/config_service.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -33,8 +35,10 @@ class MyApp extends StatelessWidget {
       routes: {
         "/profiles": (context) => BlocProvider(
               create: (context) => ProfilesBloc(myConfigService),
-              child: Profiles(),
+              child: const Profiles(),
             ),
+        "/profiles/home": (context) =>
+            BlocProvider(create: (context) => HomeBloc(), child: Home()),
       },
       theme: ThemeData(
           // This is the theme of your application.

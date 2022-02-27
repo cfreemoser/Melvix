@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:netflix_gallery/bloc/profiles_bloc.dart';
 import 'package:netflix_gallery/domain/profile.dart';
 import 'package:netflix_gallery/helpers/constants.dart';
+import 'package:netflix_gallery/navigation/home_args.dart';
 import 'package:netflix_gallery/widgets/animated_profile_card.dart';
 import 'package:netflix_gallery/widgets/pin_dialog.dart';
 
@@ -15,6 +16,7 @@ class Profiles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Constants.netflix_background,
       body: LayoutBuilder(
@@ -104,8 +106,11 @@ class Profiles extends StatelessWidget {
         if (state is PinSecuredProfileSelected) {
           _buildPinDialog(context, state.profile);
         }
+        if (state is PinCorrect) {
+          Navigator.of(context).pushNamed("/profiles/home",
+              arguments: HomeArguments(state.profile));
+        }
       },
-      buildWhen: (prev, curr) => curr is ProfilesInitial,
       builder: (context, state) {
         if (state is ProfilesInitial) {
           return Center(
@@ -229,8 +234,9 @@ class Profiles extends StatelessWidget {
             targetPin: profile.profilePin!,
             onSuccess: () {
               Navigator.of(context, rootNavigator: true).pop();
-              BlocProvider.of<ProfilesBloc>(ctx)
-                  .add(ProfilePinEntered(profile));
+              BlocProvider.of<ProfilesBloc>(ctx).add(
+                ProfilePinEntered(profile),
+              );
             },
           );
         });

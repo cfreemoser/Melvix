@@ -1,10 +1,7 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:netflix_gallery/domain/profile.dart';
 import 'package:netflix_gallery/service/config_service.dart';
-
 part 'profiles_event.dart';
 part 'profiles_state.dart';
 
@@ -17,7 +14,8 @@ class ProfilesBloc extends Bloc<ProfilesEvent, ProfilesState> {
     on<ProfileSelected>(
         (event, emit) => emit(_mapProfileSelectedToState(event)));
 
-    on<ProfilePinEntered>((event, emit) => log("pin correct!"));
+    on<ProfilePinEntered>(
+        (event, emit) => emit(PinCorrect(event.selectedProfile)));
   }
 
   _mapProfileSelectedToState(ProfileSelected event) {
