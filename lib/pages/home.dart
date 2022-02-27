@@ -5,6 +5,7 @@ import 'package:netflix_gallery/domain/content.dart';
 import 'package:netflix_gallery/helpers/constants.dart';
 import 'package:netflix_gallery/navigation/home_args.dart';
 import 'package:netflix_gallery/widgets/content_header.dart';
+import 'package:netflix_gallery/widgets/content_list.dart';
 import 'package:netflix_gallery/widgets/netflix_app_bar.dart';
 import 'package:netflix_gallery/widgets/previews.dart';
 
@@ -75,6 +76,45 @@ class HomeState extends State<Home> {
                       ),
                     ),
                   ),
+                  SliverToBoxAdapter(
+                    child: ContentList(title: "My List", contentList: [
+                      Content(),
+                      Content(),
+                      Content(),
+                      Content(),
+                      Content(),
+                      Content(),
+                      Content(),
+                      Content()
+                    ]),
+                  ),
+                  SliverToBoxAdapter(
+                    child: ContentList(
+                        title: "Highlights",
+                        highlighted: true,
+                        contentList: [
+                          Content(),
+                          Content(),
+                          Content(),
+                          Content(),
+                          Content(),
+                          Content(),
+                          Content(),
+                          Content()
+                        ]),
+                  ),
+                  SliverToBoxAdapter(
+                    child: ContentList(title: "Other", contentList: [
+                      Content(),
+                      Content(),
+                      Content(),
+                      Content(),
+                      Content(),
+                      Content(),
+                      Content(),
+                      Content()
+                    ]),
+                  )
                 ],
               )));
     });
