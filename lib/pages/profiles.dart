@@ -16,7 +16,6 @@ class Profiles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Constants.netflix_background,
       body: LayoutBuilder(
@@ -150,6 +149,10 @@ class Profiles extends StatelessWidget {
       listener: (context, state) {
         if (state is PinSecuredProfileSelected) {
           _buildPinDialog(context, state.profile);
+        }
+        if (state is PinCorrect) {
+          Navigator.of(context).pushNamed("/profiles/home",
+              arguments: HomeArguments(state.profile));
         }
       },
       buildWhen: (previous, current) => current is ProfilesInitial,
