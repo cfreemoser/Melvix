@@ -110,6 +110,7 @@ class Profiles extends StatelessWidget {
               arguments: HomeArguments(state.profile));
         }
       },
+      buildWhen: (previous, current) => current is ProfilesInitial,
       builder: (context, state) {
         if (state is ProfilesInitial) {
           return Center(
