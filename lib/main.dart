@@ -1,41 +1,69 @@
-import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:netflix_gallery/bloc/auth_bloc.dart';
 import 'package:netflix_gallery/bloc/home_bloc.dart';
 import 'package:netflix_gallery/bloc/profiles_bloc.dart';
-import 'package:netflix_gallery/pages/home.dart';
+import 'package:netflix_gallery/pages/login.dart';
 import 'package:netflix_gallery/pages/nav_screen.dart';
 import 'package:netflix_gallery/pages/profiles.dart';
+import 'package:netflix_gallery/service/authentication_service.dart';
 import 'package:netflix_gallery/service/config_service.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:firebase_core/firebase_core.dart';
+import 'package:netflix_gallery/service/storage_service.dart';
+import 'package:video_player/video_player.dart';
+import 'firebase_options.dart';
 
 void main() async {
-  ConfigService myConfigService = ConfigService();
-  dynamic app = MyApp(myConfigService: myConfigService);
   // Right before you would be doing any loading
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
+  ConfigService myConfigService = ConfigService();
+  StorageService myStorageService = StorageService();
+  AuthenticationService myAuthenticationService = AuthenticationService();
   String configJson = await rootBundle.loadString("assets/config.json");
   myConfigService.loadConfigFromJson(configJson);
+
+  dynamic app = MyApp(
+    configService: myConfigService,
+    storageService: myStorageService,
+    authenticationService: myAuthenticationService,
+  );
+
   runApp(app);
 }
 
 class MyApp extends StatelessWidget {
-  final ConfigService myConfigService;
+  final ConfigService configService;
+  final StorageService storageService;
+  final AuthenticationService authenticationService;
 
-  const MyApp({Key? key, required this.myConfigService}) : super(key: key);
+  const MyApp(
+      {Key? key,
+      required this.configService,
+      required this.storageService,
+      required this.authenticationService})
+      : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      initialRoute: "/profiles",
+      initialRoute: "/login",
       routes: {
+        "/login": (context) => BlocProvider(
+            create: (context) =>
+                AuthBloc(authenticationService)..add(InitRequested()),
+            child: Login()),
         "/profiles": (context) => BlocProvider(
-              create: (context) => ProfilesBloc(myConfigService),
+              create: (context) => ProfilesBloc(configService),
               child: const Profiles(),
             ),
         "/profiles/home": (context) =>
@@ -51,15 +79,17 @@ class MyApp extends StatelessWidget {
           // or simply save your changes to "hot reload" in a Flutter IDE).
           // Notice that the counter didn't reset back to zero; the application
           // is not restarted.
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.red,
           fontFamily: "NetflixSans"),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  final StorageService myStorageService;
+  const MyHomePage(
+      {Key? key, required this.title, required this.myStorageService})
+      : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -99,46 +129,50 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+        appBar: AppBar(
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+          title: Text(widget.title),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        body: TestWidget(
+            myStorageService: widget
+                .myStorageService) // This trailing comma makes auto-formatting nicer for build methods.
+        );
+  }
+}
+
+class TestWidget extends StatefulWidget {
+  final StorageService myStorageService;
+  late VideoPlayerController _controller;
+
+  TestWidget({Key? key, required this.myStorageService}) : super(key: key);
+
+  @override
+  _TestWidgetState createState() {
+    var state = _TestWidgetState();
+    return state;
+  }
+}
+
+class _TestWidgetState extends State<TestWidget> {
+  String? test = null;
+  @override
+  Widget build(BuildContext context) {
+    if (test == null) {
+      return Container(
+        height: 100,
+        width: 100,
+      );
+    }
+
+    return Column(
+      children: [
+        Image.network(test!),
+        AspectRatio(
+          aspectRatio: widget._controller.value.aspectRatio,
+          child: VideoPlayer(widget._controller),
+        )
+      ],
     );
   }
 }
