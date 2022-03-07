@@ -29,7 +29,7 @@ class Login extends StatelessWidget {
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             title: Container(
-                width: 100,
+                width: 120,
                 margin: const EdgeInsets.only(left: 20),
                 child: SvgPicture.asset(
                   Constants.netflix_icon_full,
@@ -40,19 +40,15 @@ class Login extends StatelessWidget {
                       style: textStyle, textAlign: TextAlign.center)),
               const SizedBox(width: 20),
               Center(child: Text("Datenschutz", style: textStyle)),
+              const SizedBox(width: 20),
             ],
           ),
           body: Stack(
             children: [
               Positioned.fill(
-                  child: AdaptiveLayout(
-                mobile: Container(
-                  decoration: const BoxDecoration(color: Colors.black),
-                ),
-                desktop: Image.network(
-                  Constants.netflix_background_image,
-                  fit: BoxFit.fill,
-                ),
+                  child: Image.network(
+                Constants.netflix_background_image,
+                fit: BoxFit.cover,
               )),
               Container(
                 decoration: BoxDecoration(

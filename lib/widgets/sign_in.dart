@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:netflix_gallery/helpers/constants.dart';
 import 'package:netflix_gallery/widgets/adaptive_layout.dart';
 
 class SignIn extends StatefulWidget {
@@ -30,15 +31,16 @@ class _SignInState extends State<SignIn> {
         Container(
           padding: const EdgeInsets.all(16),
           child: TextField(
+            style: const TextStyle(color: Colors.white),
             controller: emailController,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               labelText: 'Email or Phone',
               filled: true,
-              fillColor: Colors.grey,
-              focusedBorder: OutlineInputBorder(
+              fillColor: Colors.grey.shade800,
+              focusedBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.white),
               ),
-              labelStyle: TextStyle(color: Colors.white),
+              labelStyle: const TextStyle(color: Colors.white),
             ),
           ),
         ),
@@ -51,16 +53,17 @@ class _SignInState extends State<SignIn> {
         Container(
           padding: const EdgeInsets.all(16),
           child: TextField(
+            style: const TextStyle(color: Colors.white),
             obscureText: true,
             controller: passwordController,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               labelText: 'Password',
               filled: true,
-              fillColor: Colors.grey,
-              focusedBorder: OutlineInputBorder(
+              fillColor: Colors.grey.shade800,
+              focusedBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.white),
               ),
-              labelStyle: TextStyle(color: Colors.white),
+              labelStyle: const TextStyle(color: Colors.white),
             ),
           ),
         ),
@@ -79,7 +82,8 @@ class _SignInState extends State<SignIn> {
                 }
               },
               style: TextButton.styleFrom(
-                  primary: Colors.white, backgroundColor: Colors.red),
+                  primary: Colors.white,
+                  backgroundColor: Constants.netflix_red),
               child: Text(
                 signUp ? "Sign up" : "Sign in",
               ),
@@ -94,7 +98,9 @@ class _SignInState extends State<SignIn> {
               children: [
                 AdaptiveLayout.isDesktop(context)
                     ? Text(
-                        signUp ? "Already an account?" : "Don't have an account?",
+                        signUp
+                            ? "Already an account?"
+                            : "Don't have an account?",
                         style: const TextStyle(color: Colors.grey),
                       )
                     : const SizedBox(),
