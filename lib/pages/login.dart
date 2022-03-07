@@ -27,6 +27,7 @@ class Login extends StatelessWidget {
       child: Scaffold(
           extendBodyBehindAppBar: true,
           appBar: AppBar(
+            elevation: 0,
             backgroundColor: Colors.transparent,
             title: Container(
                 width: 120,
@@ -47,7 +48,7 @@ class Login extends StatelessWidget {
             children: [
               Positioned.fill(
                   child: Image.asset(
-                Constants.content_cover_image,
+                Constants.netflix_background_image,
                 fit: BoxFit.cover,
               )),
               Container(
