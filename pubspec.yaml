@@ -68,12 +68,12 @@ flutter:
   
   assets:
     - assets/images/Netflix-logo.svg
+    - assets/images/Background-image.jpeg
     - assets/images/Netflix-avatar.png
     - assets/images/Netflix-avatar2.jpeg
     - assets/images/Netflix-N-logo.svg
     - assets/images/Content-cover.jpeg
     - assets/config.json
-    - assets/images/Background.jpeg
 
   # To add assets to your application, add an assets section, like this:
   # assets:
