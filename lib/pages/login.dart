@@ -46,7 +46,7 @@ class Login extends StatelessWidget {
           body: Stack(
             children: [
               Positioned.fill(
-                  child: Image.network(
+                  child: Image.asset(
                 Constants.content_cover_image,
                 fit: BoxFit.cover,
               )),
