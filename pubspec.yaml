@@ -68,7 +68,7 @@ flutter:
   
   assets:
     - assets/images/Netflix-logo.svg
-    - assets/images/Background-image.jpeg
+    - assets/images/Login-cover.jpeg
     - assets/images/Netflix-avatar.png
     - assets/images/Netflix-avatar2.jpeg
     - assets/images/Netflix-N-logo.svg
