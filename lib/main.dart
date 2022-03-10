@@ -9,6 +9,7 @@ import 'package:netflix_gallery/bloc/profiles_bloc.dart';
 import 'package:netflix_gallery/pages/login.dart';
 import 'package:netflix_gallery/pages/nav_screen.dart';
 import 'package:netflix_gallery/pages/profiles.dart';
+import 'package:netflix_gallery/pages/video.dart';
 import 'package:netflix_gallery/service/authentication_service.dart';
 import 'package:netflix_gallery/service/config_service.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -68,6 +69,7 @@ class MyApp extends StatelessWidget {
             ),
         "/profiles/home": (context) =>
             BlocProvider(create: (context) => HomeBloc(), child: NavScreen()),
+        "/profiles/home/play": (context) => Video(),
       },
       theme: ThemeData(
           // This is the theme of your application.

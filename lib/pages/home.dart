@@ -4,6 +4,7 @@ import 'package:netflix_gallery/cubits/app_bar/app_bar_cubit.dart';
 import 'package:netflix_gallery/domain/content.dart';
 import 'package:netflix_gallery/helpers/constants.dart';
 import 'package:netflix_gallery/navigation/home_args.dart';
+import 'package:netflix_gallery/navigation/video_args.dart';
 import 'package:netflix_gallery/widgets/content_header.dart';
 import 'package:netflix_gallery/widgets/content_list.dart';
 import 'package:netflix_gallery/widgets/netflix_app_bar.dart';
@@ -83,6 +84,9 @@ class HomeState extends State<Home> {
                     child: ContentList(
                         key: const PageStorageKey('myList'),
                         title: "My List",
+                        onContentSelected: (content) => Navigator.of(context)
+                            .pushNamed("/profiles/home/play",
+                                arguments: VideoArgs(content)),
                         contentList: [
                           Content(),
                           Content(),
@@ -99,6 +103,9 @@ class HomeState extends State<Home> {
                         key: const PageStorageKey('highlights'),
                         title: "Highlights",
                         highlighted: true,
+                        onContentSelected: (content) => Navigator.of(context)
+                            .pushNamed("/profiles/home/play",
+                                arguments: VideoArgs(content)),
                         contentList: [
                           Content(),
                           Content(),
@@ -114,6 +121,9 @@ class HomeState extends State<Home> {
                     child: ContentList(
                         key: const PageStorageKey('other'),
                         title: "Other",
+                        onContentSelected: (content) => Navigator.of(context)
+                            .pushNamed("/profiles/home/play",
+                                arguments: VideoArgs(content)),
                         contentList: [
                           Content(),
                           Content(),

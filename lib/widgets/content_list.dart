@@ -7,12 +7,13 @@ class ContentList extends StatelessWidget {
   final bool highlighted;
   final List<Content> contentList;
   final String title;
+  final Function(Content selectedContent) onContentSelected;
 
   const ContentList(
       {Key? key,
       this.highlighted = false,
       required this.contentList,
-      required this.title})
+      required this.title, required this.onContentSelected})
       : super(key: key);
 
   @override
@@ -40,7 +41,7 @@ class ContentList extends StatelessWidget {
             itemBuilder: (context, index) {
               final Content content = contentList[index];
               return GestureDetector(
-                onTap: () => log("clicked"),
+                onTap: () => onContentSelected(content),
                 child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 8),
                   height: highlighted ? 400 : 200,
