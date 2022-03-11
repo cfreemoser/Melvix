@@ -207,108 +207,113 @@ class _overlayControlState extends State<_overlayControl> {
       ],
     );
 
-    var _mobileOverlay = Stack(
-      children: [
-        Align(
-          alignment: Alignment.topCenter,
-          child: Container(
-            margin: const EdgeInsets.only(left: 16, right: 16, top: 54),
-            child: Row(
-              children: [
-                IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () => log("search"),
-                  icon: Icon(Icons.arrow_back),
-                  iconSize: 60,
-                  color: Colors.white,
+    var _mobileOverlay = GestureDetector(
+        onTap: () => setState(() {
+              _hideOverlay = true;
+            }),
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.topCenter,
+              child: Container(
+                margin: const EdgeInsets.only(left: 16, right: 16, top: 54),
+                child: Row(
+                  children: [
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: () => log("search"),
+                      icon: Icon(Icons.arrow_back),
+                      iconSize: 60,
+                      color: Colors.white,
+                    ),
+                    Expanded(
+                        child: Text(
+                      widget.content.title,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.white),
+                    )),
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: () => log("search"),
+                      icon: Icon(Icons.flag),
+                      iconSize: 60,
+                      color: Colors.white,
+                    )
+                  ],
                 ),
-                Expanded(
-                    child: Text(
-                  widget.content.title,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white),
-                )),
-                IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () => log("search"),
-                  icon: Icon(Icons.flag),
-                  iconSize: 60,
-                  color: Colors.white,
-                )
-              ],
+              ),
             ),
-          ),
-        ),
-        Align(
-          alignment: Alignment.center,
-          child: Container(
-            margin: const EdgeInsets.only(left: 64, right: 64),
-            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              IconButton(
-                padding: EdgeInsets.zero,
-                onPressed: () => log("search"),
-                icon: Icon(Icons.fast_rewind),
-                iconSize: 60,
-                color: Colors.white,
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                margin: const EdgeInsets.only(left: 64, right: 64),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: () => log("search"),
+                    icon: Icon(Icons.fast_rewind),
+                    iconSize: 60,
+                    color: Colors.white,
+                  ),
+                  Spacer(),
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: () => log("search"),
+                    icon: Icon(Icons.play_arrow),
+                    iconSize: 60,
+                    color: Colors.white,
+                  ),
+                  Spacer(),
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: () => log("search"),
+                    icon: Icon(Icons.fast_forward_rounded),
+                    iconSize: 60,
+                    color: Colors.white,
+                  ),
+                ]),
               ),
-              Spacer(),
-              IconButton(
-                padding: EdgeInsets.zero,
-                onPressed: () => log("search"),
-                icon: Icon(Icons.play_arrow),
-                iconSize: 60,
-                color: Colors.white,
-              ),
-              Spacer(),
-              IconButton(
-                padding: EdgeInsets.zero,
-                onPressed: () => log("search"),
-                icon: Icon(Icons.fast_forward_rounded),
-                iconSize: 60,
-                color: Colors.white,
-              ),
-            ]),
-          ),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            height: 100,
-            color: Colors.black,
-            child: Row(
-              children: [
-                VolumeButton(
-                  volume: volume,
-                  onVolumeChanged: (double value) {
-                    setState(() {
-                      volume = value;
-                      widget.controller.setVolume(value);
-                    });
-                  },
-                ),
-                Expanded(
-                    child: VideoProgressIndicator(widget.controller,
-                        allowScrubbing: true)),
-                IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () => log("search"),
-                  icon: Icon(Icons.av_timer),
-                  iconSize: 60,
-                  color: Colors.white,
-                ),
-                IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () => log("search"),
-                  icon: Icon(Icons.fullscreen),
-                  iconSize: 60,
-                  color: Colors.white,
-                ),
-              ],
             ),
-          ),
-        ),
-      ],
-    );
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                height: 100,
+                color: Colors.black,
+                child: Row(
+                  children: [
+                    VolumeButton(
+                      volume: volume,
+                      onVolumeChanged: (double value) {
+                        setState(() {
+                          volume = value;
+                          widget.controller.setVolume(value);
+                        });
+                      },
+                    ),
+                    Expanded(
+                        child: VideoProgressIndicator(widget.controller,
+                            allowScrubbing: true)),
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: () => log("search"),
+                      icon: Icon(Icons.av_timer),
+                      iconSize: 60,
+                      color: Colors.white,
+                    ),
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: () => log("search"),
+                      icon: Icon(Icons.fullscreen),
+                      iconSize: 60,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ));
 
     return MouseRegion(
       onHover: (event) => _showOverlay(),

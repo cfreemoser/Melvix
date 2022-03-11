@@ -100,6 +100,7 @@ class _verticalSliderState extends State<_verticalSlider> {
           child: MouseRegion(
             onExit: (event) => widget.onExit(),
             child: Slider(
+              onChangeEnd: widget.onExit(),
               onChanged: (value) => setState(() {
                 currentValue = value;
                 widget.onVolumeChanged(value);
