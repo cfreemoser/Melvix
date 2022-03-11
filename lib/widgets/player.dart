@@ -1,7 +1,11 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:netflix_gallery/domain/content.dart';
+import 'package:netflix_gallery/widgets/adaptive_layout.dart';
+import 'package:netflix_gallery/widgets/fullscreen_button.dart';
+import 'package:netflix_gallery/widgets/volume_button.dart';
 import 'package:video_player/video_player.dart';
 
 class Player extends StatefulWidget {
@@ -70,16 +74,23 @@ class _overlayControl extends StatefulWidget {
 
 class _overlayControlState extends State<_overlayControl> {
   bool _hideOverlay = false;
+  double volume = 0;
+  Timer? _timer;
 
   _showOverlay() {
     setState(() {
       _hideOverlay = false;
     });
-    Future.delayed(Duration(seconds: 5)).then((value) => {
-          setState(() {
-            _hideOverlay = true;
-          })
-        });
+
+    if (_timer != null && _timer!.isActive) {
+      _timer!.cancel();
+    }
+
+    _timer = Timer(const Duration(seconds: 3), () {
+      setState(() {
+        _hideOverlay = true;
+      });
+    });
   }
 
   @override
@@ -120,73 +131,73 @@ class _overlayControlState extends State<_overlayControl> {
               children: [
                 VideoProgressIndicator(widget.controller, allowScrubbing: true),
                 Spacer(),
-                Center(
-                  child: Row(
-                    children: [
-                      IconButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: () => log("search"),
-                        icon: Icon(Icons.play_arrow),
-                        iconSize: 60,
-                        color: Colors.white,
-                      ),
-                      const SizedBox(width: 16),
-                      IconButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: () => log("search"),
-                        icon: Icon(Icons.fast_rewind),
-                        iconSize: 60,
-                        color: Colors.white,
-                      ),
-                      const SizedBox(width: 16),
-                      IconButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: () => log("search"),
-                        icon: Icon(Icons.fast_forward_rounded),
-                        iconSize: 60,
-                        color: Colors.white,
-                      ),
-                      const SizedBox(width: 16),
-                      IconButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: () => log("search"),
-                        icon: Icon(Icons.volume_up),
-                        iconSize: 60,
-                        color: Colors.white,
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                          child: Center(
-                        child: Text(
-                          widget.content.title,
-                          style: const TextStyle(color: Colors.white),
+                Container(
+                  margin: EdgeInsets.only(bottom: 16),
+                  child: Center(
+                    child: Row(
+                      children: [
+                        IconButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: () => log("search"),
+                          icon: Icon(Icons.play_arrow),
+                          iconSize: 60,
+                          color: Colors.white,
                         ),
-                      )),
-                      const SizedBox(width: 16),
-                      IconButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: () => log("search"),
-                        icon: Icon(Icons.fullscreen),
-                        iconSize: 60,
-                        color: Colors.white,
-                      ),
-                      const SizedBox(width: 16),
-                      IconButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: () => log("search"),
-                        icon: Icon(Icons.av_timer),
-                        iconSize: 60,
-                        color: Colors.white,
-                      ),
-                      const SizedBox(width: 16),
-                      IconButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: () => log("search"),
-                        icon: Icon(Icons.fullscreen),
-                        iconSize: 60,
-                        color: Colors.white,
-                      ),
-                    ],
+                        const SizedBox(width: 16),
+                        IconButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: () => log("search"),
+                          icon: Icon(Icons.fast_rewind),
+                          iconSize: 60,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(width: 16),
+                        IconButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: () => log("search"),
+                          icon: Icon(Icons.fast_forward_rounded),
+                          iconSize: 60,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(width: 16),
+                        VolumeButton(
+                          volume: volume,
+                          onVolumeChanged: (double value) {
+                            setState(() {
+                              volume = value;
+                              widget.controller.setVolume(value);
+                              log(value.toString());
+                            });
+                          },
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                            child: Center(
+                          child: Text(
+                            widget.content.title,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        )),
+                        const SizedBox(width: 16),
+                        IconButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: () => {},
+                          icon: Icon(Icons.fullscreen),
+                          iconSize: 60,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(width: 16),
+                        IconButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: () => log("search"),
+                          icon: Icon(Icons.av_timer),
+                          iconSize: 60,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(width: 16),
+                        FullscreenButton(),
+                      ],
+                    ),
                   ),
                 )
               ],
@@ -266,12 +277,14 @@ class _overlayControlState extends State<_overlayControl> {
             color: Colors.black,
             child: Row(
               children: [
-                IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () => log("search"),
-                  icon: Icon(Icons.volume_up),
-                  iconSize: 60,
-                  color: Colors.white,
+                VolumeButton(
+                  volume: volume,
+                  onVolumeChanged: (double value) {
+                    setState(() {
+                      volume = value;
+                      widget.controller.setVolume(value);
+                    });
+                  },
                 ),
                 Expanded(
                     child: VideoProgressIndicator(widget.controller,
@@ -299,7 +312,9 @@ class _overlayControlState extends State<_overlayControl> {
 
     return MouseRegion(
       onHover: (event) => _showOverlay(),
-      child: _hideOverlay ? Container() : _mobileOverlay,
+      child: _hideOverlay
+          ? Container()
+          : AdaptiveLayout(mobile: _mobileOverlay, desktop: _desktopOverlay),
     );
   }
 }
