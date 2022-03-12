@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:netflix_gallery/domain/content.dart';
 import 'package:netflix_gallery/widgets/adaptive_layout.dart';
 import 'package:netflix_gallery/widgets/fullscreen_button.dart';
+import 'package:netflix_gallery/widgets/playbackspeed_button.dart';
 import 'package:netflix_gallery/widgets/volume_button.dart';
 import 'package:video_player/video_player.dart';
 
@@ -196,12 +197,8 @@ class _overlayControlState extends State<_overlayControl> {
                           color: Colors.white,
                         ),
                         const SizedBox(width: 16),
-                        IconButton(
-                          padding: EdgeInsets.zero,
-                          onPressed: () => log("search"),
-                          icon: Icon(Icons.av_timer),
-                          iconSize: 60,
-                          color: Colors.white,
+                        PlayBackSpeedButton(
+                          videoPlayerController: widget.controller,
                         ),
                         const SizedBox(width: 16),
                         FullscreenButton(),
