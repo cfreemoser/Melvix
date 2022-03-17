@@ -1,16 +1,12 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/widgets.dart';
 import 'package:netflix_gallery/domain/profile.dart';
+import 'package:yaml/yaml.dart';
 
 class Config {
   late List<ProfileConfig> _profiles;
-
-  Config.fromJson(Map<String, dynamic> json) {
-    _profiles = (json['profiles'] as List)
-        .map((e) => ProfileConfig.fromJson(e))
-        .toList();
-  }
 }
 
 class ProfileConfig {
@@ -31,10 +27,22 @@ class ProfileConfig {
 class ConfigService {
   late Config _config;
 
-  void loadConfigFromJson(String jsonConfig) async {
-    _config = Config.fromJson(json.decode(jsonConfig));
+  void loadConfigFromYaml(String jsonConfig) {
+    final dynamic yamlMap = loadYaml(jsonConfig);
+    YamlList profileConfig = yamlMap['Profiles'];
+    var tmp = profileConfig
+        .map((element) => ProfileConfig(
+              element['name'],
+              element['assetURL'],
+              element['assetID'],
+              element['pinCode'],
+            ))
+        .toList();
+    var conf = Config();
+    conf._profiles = tmp;
+    _config = conf;
   }
-
+  
   List<Profile> getProfilesFromConfig() {
     return _config._profiles.map(_mapProfileConfigToProfile).toList();
   }

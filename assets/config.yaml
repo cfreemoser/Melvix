@@ -1,0 +1,17 @@
+Profiles:
+  - name: "Gääm"
+    assetID: "assets/images/Netflix-avatar.png"
+  - name: "Dominic"
+    assetID: "assets/images/Netflix-avatar2.jpeg"
+  - name: "Leon"
+    assetID: "assets/images/Netflix-avatar.png"
+  - name: "Hunt"
+    assetID: "assets/images/Netflix-avatar2.jpeg"
+    pinCode: 5431
+
+Featured:
+  - name: "Calito"
+    video: "calito/calito.mov"
+    headerImage: "calito/IMG_3322.JPG"
+    description: "tba"
+    title: "tba"
