@@ -285,14 +285,14 @@ class _overlayControlState extends State<_overlayControl> {
                 IconButton(
                   padding: EdgeInsets.zero,
                   onPressed: () => log("search"),
-                  icon: Icon(Icons.av_timer),
+                  icon: const Icon(Icons.av_timer),
                   iconSize: 60,
                   color: Colors.white,
                 ),
                 IconButton(
                   padding: EdgeInsets.zero,
                   onPressed: () => log("search"),
-                  icon: Icon(Icons.fullscreen),
+                  icon: const Icon(Icons.fullscreen),
                   iconSize: 60,
                   color: Colors.white,
                 ),
