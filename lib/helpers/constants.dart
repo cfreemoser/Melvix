@@ -10,7 +10,7 @@ class Constants {
   static const String profiles_forgot_text = "Je pin vergeten?";
 
   // icons
-  static const String netflix_icon_full = "assets/images/Netflix-logo.svg";
+  static const String netflix_icon_full = "assets/images/Melvix-logo.svg";
   static const String netflix_icon_small = "assets/images/Netflix-N-logo.svg";
 
   // images

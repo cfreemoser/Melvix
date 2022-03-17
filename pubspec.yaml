@@ -69,6 +69,7 @@ flutter:
   
   assets:
     - assets/images/Netflix-logo.svg
+    - assets/images/Melvix-logo.svg
     - assets/images/Login-cover.jpeg
     - assets/images/Netflix-avatar.png
     - assets/images/Netflix-avatar2.jpeg

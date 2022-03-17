@@ -28,7 +28,7 @@ void main() async {
   ConfigService myConfigService = ConfigService();
   StorageService myStorageService = StorageService();
   AuthenticationService myAuthenticationService = AuthenticationService();
-  String configYaml = await rootBundle.loadString("assets/content.yaml");
+  String configYaml = await rootBundle.loadString("assets/config.yaml");
   myConfigService.loadConfigFromYaml(configYaml);
 
   dynamic app = MyApp(
