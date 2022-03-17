@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:netflix_gallery/domain/content.dart';
 import 'package:netflix_gallery/widgets/adaptive_layout.dart';
 import 'package:netflix_gallery/widgets/fullscreen_button.dart';
+import 'package:netflix_gallery/widgets/play_button.dart';
 import 'package:netflix_gallery/widgets/playbackspeed_button.dart';
 import 'package:netflix_gallery/widgets/volume_button.dart';
 import 'package:video_player/video_player.dart';
@@ -115,16 +116,16 @@ class _overlayControlState extends State<_overlayControl> {
               children: [
                 IconButton(
                   padding: EdgeInsets.zero,
-                  onPressed: () => log("search"),
-                  icon: Icon(Icons.arrow_back),
+                  onPressed: () => _navigateBack(),
+                  icon: const Icon(Icons.arrow_back),
                   iconSize: 60,
                   color: Colors.white,
                 ),
-                Spacer(),
+                const Spacer(),
                 IconButton(
                   padding: EdgeInsets.zero,
                   onPressed: () => log("search"),
-                  icon: Icon(Icons.flag),
+                  icon: const Icon(Icons.flag),
                   iconSize: 60,
                   color: Colors.white,
                 )
@@ -140,32 +141,28 @@ class _overlayControlState extends State<_overlayControl> {
             child: Column(
               children: [
                 VideoProgressIndicator(widget.controller, allowScrubbing: true),
-                Spacer(),
+                const Spacer(),
                 Container(
-                  margin: EdgeInsets.only(bottom: 16),
+                  margin: const EdgeInsets.only(bottom: 16),
                   child: Center(
                     child: Row(
                       children: [
+                        PlayButton(
+                            isPlaying: widget.controller.value.isPlaying,
+                            onTap: _playButtonClicked),
+                        const SizedBox(width: 16),
                         IconButton(
                           padding: EdgeInsets.zero,
-                          onPressed: () => log("search"),
-                          icon: Icon(Icons.play_arrow),
+                          onPressed: () => _seekToClicked(false),
+                          icon: const Icon(Icons.replay_10),
                           iconSize: 60,
                           color: Colors.white,
                         ),
                         const SizedBox(width: 16),
                         IconButton(
                           padding: EdgeInsets.zero,
-                          onPressed: () => log("search"),
-                          icon: Icon(Icons.fast_rewind),
-                          iconSize: 60,
-                          color: Colors.white,
-                        ),
-                        const SizedBox(width: 16),
-                        IconButton(
-                          padding: EdgeInsets.zero,
-                          onPressed: () => log("search"),
-                          icon: Icon(Icons.fast_forward_rounded),
+                          onPressed: () => _seekToClicked(true),
+                          icon: const Icon(Icons.forward_10),
                           iconSize: 60,
                           color: Colors.white,
                         ),
@@ -192,7 +189,7 @@ class _overlayControlState extends State<_overlayControl> {
                         IconButton(
                           padding: EdgeInsets.zero,
                           onPressed: () => {},
-                          icon: Icon(Icons.fullscreen),
+                          icon: const Icon(Icons.fullscreen),
                           iconSize: 60,
                           color: Colors.white,
                         ),
@@ -221,13 +218,9 @@ class _overlayControlState extends State<_overlayControl> {
             margin: const EdgeInsets.only(left: 16, right: 16, top: 54),
             child: Row(
               children: [
-                IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () => log("search"),
-                  icon: Icon(Icons.arrow_back),
-                  iconSize: 60,
-                  color: Colors.white,
-                ),
+                PlayButton(
+                    isPlaying: widget.controller.value.isPlaying,
+                    onTap: _playButtonClicked),
                 Expanded(
                     child: Text(
                   widget.content.title,
@@ -237,7 +230,7 @@ class _overlayControlState extends State<_overlayControl> {
                 IconButton(
                   padding: EdgeInsets.zero,
                   onPressed: () => log("search"),
-                  icon: Icon(Icons.flag),
+                  icon: const Icon(Icons.flag),
                   iconSize: 60,
                   color: Colors.white,
                 )
@@ -252,24 +245,18 @@ class _overlayControlState extends State<_overlayControl> {
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               IconButton(
                 padding: EdgeInsets.zero,
-                onPressed: () => log("search"),
-                icon: Icon(Icons.fast_rewind),
+                onPressed: () => _seekToClicked(false),
+                icon: const Icon(Icons.replay_10),
                 iconSize: 60,
                 color: Colors.white,
               ),
-              Spacer(),
+              const Spacer(),
+              PlayButton(onTap: _playButtonClicked),
+              const Spacer(),
               IconButton(
                 padding: EdgeInsets.zero,
-                onPressed: () => log("search"),
-                icon: Icon(Icons.play_arrow),
-                iconSize: 60,
-                color: Colors.white,
-              ),
-              Spacer(),
-              IconButton(
-                padding: EdgeInsets.zero,
-                onPressed: () => log("search"),
-                icon: Icon(Icons.fast_forward_rounded),
+                onPressed: () => _seekToClicked(true),
+                icon: const Icon(Icons.fast_forward_rounded),
                 iconSize: 60,
                 color: Colors.white,
               ),
@@ -325,5 +312,27 @@ class _overlayControlState extends State<_overlayControl> {
             : AdaptiveLayout(mobile: _mobileOverlay, desktop: _desktopOverlay),
       ),
     );
+  }
+
+  _playButtonClicked() {
+    setState(() {
+      if (widget.controller.value.isPlaying) {
+        widget.controller.pause();
+      } else {
+        widget.controller.play();
+      }
+    });
+  }
+
+  _seekToClicked(bool forward) {
+    setState(() {
+      var current = widget.controller.value.position;
+      var target = current.inSeconds + (forward ? 10 : -10);
+      widget.controller.seekTo(Duration(seconds: target));
+    });
+  }
+
+  _navigateBack() {
+    Navigator.pop(context);
   }
 }

@@ -42,6 +42,7 @@ class _VolumeButtonState extends State<VolumeButton> {
     }
     _timer = Timer(const Duration(seconds: 1), () {
       _overlayEntry?.remove();
+      _overlayEntry = null;
     });
   }
 
