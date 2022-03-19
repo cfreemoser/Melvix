@@ -1,12 +1,11 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/widgets.dart';
+import 'package:netflix_gallery/domain/content_ref.dart';
 import 'package:netflix_gallery/domain/profile.dart';
 import 'package:yaml/yaml.dart';
 
 class Config {
   late List<ProfileConfig> _profiles;
+  late List<ContentRef> _featuredContent;
 }
 
 class ProfileConfig {
@@ -28,9 +27,11 @@ class ConfigService {
   late Config _config;
 
   void loadConfigFromYaml(String jsonConfig) {
+    var conf = Config();
+
     final dynamic yamlMap = loadYaml(jsonConfig);
     YamlList profileConfig = yamlMap['Profiles'];
-    var tmp = profileConfig
+    conf._profiles = profileConfig
         .map((element) => ProfileConfig(
               element['name'],
               element['assetURL'],
@@ -38,13 +39,25 @@ class ConfigService {
               element['pinCode'],
             ))
         .toList();
-    var conf = Config();
-    conf._profiles = tmp;
+
+    YamlList featuredContentConfig = yamlMap['Highlights'];
+    conf._featuredContent = featuredContentConfig
+        .map((element) => ContentRef(
+              element['headerImage'],
+              element['video'],
+              element['title'],
+            ))
+        .toList();
+
     _config = conf;
   }
-  
+
   List<Profile> getProfilesFromConfig() {
     return _config._profiles.map(_mapProfileConfigToProfile).toList();
+  }
+
+  List<ContentRef> getFeaturedContentFromConfig() {
+    return _config._featuredContent;
   }
 
   Profile _mapProfileConfigToProfile(ProfileConfig profileConfig) {

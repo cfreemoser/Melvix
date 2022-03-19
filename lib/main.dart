@@ -67,8 +67,9 @@ class MyApp extends StatelessWidget {
               create: (context) => ProfilesBloc(configService),
               child: const Profiles(),
             ),
-        "/profiles/home": (context) =>
-            BlocProvider(create: (context) => HomeBloc(), child: NavScreen()),
+        "/profiles/home": (context) => BlocProvider(
+            create: (context) => HomeBloc(configService, storageService),
+            child: NavScreen()),
         "/profiles/home/play": (context) => Video(),
       },
       theme: ThemeData(

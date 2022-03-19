@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:netflix_gallery/bloc/auth_bloc.dart';
 import 'package:netflix_gallery/helpers/constants.dart';
-import 'package:netflix_gallery/widgets/adaptive_layout.dart';
 import 'package:netflix_gallery/widgets/sign_in.dart';
 
 class Login extends StatelessWidget {

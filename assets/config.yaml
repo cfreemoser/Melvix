@@ -9,9 +9,9 @@ Profiles:
     assetID: "assets/images/Netflix-avatar2.jpeg"
     pinCode: 5431
 
-Featured:
+Highlights:
   - name: "Calito"
-    video: "calito/calito.mov"
+    video: "calito/calito.mp4"
     headerImage: "calito/IMG_3322.JPG"
     description: "tba"
     title: "tba"

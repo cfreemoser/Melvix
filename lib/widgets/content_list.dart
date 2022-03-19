@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:netflix_gallery/domain/content.dart';
 
@@ -13,7 +11,8 @@ class ContentList extends StatelessWidget {
       {Key? key,
       this.highlighted = false,
       required this.contentList,
-      required this.title, required this.onContentSelected})
+      required this.title,
+      required this.onContentSelected})
       : super(key: key);
 
   @override
@@ -48,7 +47,7 @@ class ContentList extends StatelessWidget {
                   width: highlighted ? 200 : 130,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage(content.headerImageURL),
+                      image: NetworkImage(content.headerImageURL),
                       fit: BoxFit.cover,
                     ),
                   ),
