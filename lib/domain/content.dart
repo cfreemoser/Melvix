@@ -5,8 +5,12 @@ class Content {
   final String videoURL;
   final String title;
 
+  @override
+  List<Object> get props => [headerImageURL, videoURL, title];
+
   Content(
       {this.headerImageURL = Constants.content_cover_image,
-      this.videoURL = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
+      this.videoURL =
+          "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
       this.title = "TITLE"});
 }

@@ -47,6 +47,13 @@ class _VolumeButtonState extends State<VolumeButton> {
   }
 
   @override
+  void deactivate() {
+    super.deactivate();
+
+    hideSlider();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => setState(() {

@@ -76,6 +76,13 @@ class _PlayBackSpeedButtonState extends State<PlayBackSpeedButton> {
   }
 
   @override
+  void deactivate() {
+    super.deactivate();
+
+    hideSlider();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MouseRegion(
       onExit: (_) => hideSlider(),

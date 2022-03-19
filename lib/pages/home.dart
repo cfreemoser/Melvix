@@ -39,7 +39,6 @@ class HomeViewState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as HomeArguments;
     BlocProvider.of<HomeBloc>(context).add(HomeRequestContent());
 
     return LayoutBuilder(builder: (context, constrains) {

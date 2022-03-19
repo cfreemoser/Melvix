@@ -32,7 +32,7 @@ class _PlayerState extends State<Player> {
           setState(() {});
         });
       })
-      ..setVolume(0)
+      ..setVolume(30)
       ..play();
     super.initState();
   }
@@ -76,7 +76,7 @@ class _overlayControl extends StatefulWidget {
 
 class _overlayControlState extends State<_overlayControl> {
   bool _hideOverlay = false;
-  double volume = 0;
+  double volume = 0.3;
   Timer? _timer;
 
   _showOverlay() {
@@ -147,9 +147,15 @@ class _overlayControlState extends State<_overlayControl> {
                   child: Center(
                     child: Row(
                       children: [
-                        PlayButton(
-                            isPlaying: widget.controller.value.isPlaying,
-                            onTap: _playButtonClicked),
+                        IconButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: _playButtonClicked,
+                          icon: widget.controller.value.isPlaying
+                              ? const Icon(Icons.pause)
+                              : const Icon(Icons.play_arrow),
+                          iconSize: 60,
+                          color: Colors.white,
+                        ),
                         const SizedBox(width: 16),
                         IconButton(
                           padding: EdgeInsets.zero,
@@ -186,14 +192,6 @@ class _overlayControlState extends State<_overlayControl> {
                           ),
                         )),
                         const SizedBox(width: 16),
-                        IconButton(
-                          padding: EdgeInsets.zero,
-                          onPressed: () => {},
-                          icon: const Icon(Icons.fullscreen),
-                          iconSize: 60,
-                          color: Colors.white,
-                        ),
-                        const SizedBox(width: 16),
                         PlayBackSpeedButton(
                           videoPlayerController: widget.controller,
                         ),
@@ -218,9 +216,13 @@ class _overlayControlState extends State<_overlayControl> {
             margin: const EdgeInsets.only(left: 16, right: 16, top: 54),
             child: Row(
               children: [
-                PlayButton(
-                    isPlaying: widget.controller.value.isPlaying,
-                    onTap: _playButtonClicked),
+                IconButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: () => _navigateBack(),
+                  icon: const Icon(Icons.arrow_back),
+                  iconSize: 60,
+                  color: Colors.white,
+                ),
                 Expanded(
                     child: Text(
                   widget.content.title,
@@ -251,12 +253,20 @@ class _overlayControlState extends State<_overlayControl> {
                 color: Colors.white,
               ),
               const Spacer(),
-              PlayButton(onTap: _playButtonClicked),
+              IconButton(
+                padding: EdgeInsets.zero,
+                onPressed: _playButtonClicked,
+                icon: widget.controller.value.isPlaying
+                    ? const Icon(Icons.pause)
+                    : const Icon(Icons.play_arrow),
+                iconSize: 60,
+                color: Colors.white,
+              ),
               const Spacer(),
               IconButton(
                 padding: EdgeInsets.zero,
                 onPressed: () => _seekToClicked(true),
-                icon: const Icon(Icons.fast_forward_rounded),
+                icon: const Icon(Icons.forward_10),
                 iconSize: 60,
                 color: Colors.white,
               ),
@@ -282,13 +292,6 @@ class _overlayControlState extends State<_overlayControl> {
                 Expanded(
                     child: VideoProgressIndicator(widget.controller,
                         allowScrubbing: true)),
-                IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () => log("search"),
-                  icon: const Icon(Icons.av_timer),
-                  iconSize: 60,
-                  color: Colors.white,
-                ),
                 IconButton(
                   padding: EdgeInsets.zero,
                   onPressed: () => log("search"),
