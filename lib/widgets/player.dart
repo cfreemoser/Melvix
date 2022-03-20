@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:netflix_gallery/domain/content.dart';
 import 'package:netflix_gallery/widgets/adaptive_layout.dart';
 import 'package:netflix_gallery/widgets/fullscreen_button.dart';
-import 'package:netflix_gallery/widgets/play_button.dart';
 import 'package:netflix_gallery/widgets/playbackspeed_button.dart';
 import 'package:netflix_gallery/widgets/volume_button.dart';
 import 'package:video_player/video_player.dart';

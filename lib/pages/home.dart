@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:netflix_gallery/bloc/home_bloc.dart';
@@ -46,9 +48,9 @@ class HomeViewState extends State<Home> {
           length: 3,
           child: Scaffold(
               extendBodyBehindAppBar: true,
-              backgroundColor: Constants.netflix_background,
+              backgroundColor: Colors.black,
               appBar: PreferredSize(
-                  preferredSize: Size(constrains.maxHeight, 50),
+                  preferredSize: Size(constrains.maxWidth, 50),
                   child: BlocBuilder<AppBarCubit, double>(
                     builder: (context, scrollOffset) {
                       return NetflixAppBar(
@@ -60,7 +62,14 @@ class HomeViewState extends State<Home> {
                 controller: _scrollController,
                 slivers: [
                   SliverToBoxAdapter(
-                    child: ContentHeader(featuredContent: Content()),
+                    child: Stack(
+                      children: [
+                        ContentHeader(
+                            featuredContent: Content(),
+                            hight: constrains.maxHeight,
+                            width: constrains.maxWidth),
+                      ],
+                    ),
                   ),
                   SliverPadding(
                     padding: const EdgeInsets.only(top: 20),
