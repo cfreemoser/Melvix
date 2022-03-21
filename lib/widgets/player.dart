@@ -276,7 +276,7 @@ class _overlayControlState extends State<_overlayControl> {
           alignment: Alignment.bottomCenter,
           child: Container(
             height: 100,
-            color: Colors.black,
+            color: Colors.transparent,
             child: Row(
               children: [
                 VolumeButton(
