@@ -122,13 +122,16 @@ class Profiles extends StatelessWidget {
                   return Row(
                     children: [
                       AnimatedProfileCard(
-                        width: 200,
-                        fontSize: 20,
-                        name: state.profiles[index].name,
-                        profileImage: state.profiles[index].profileImage,
-                        onTap: () => BlocProvider.of<ProfilesBloc>(context)
-                            .add(ProfileSelected(state.profiles[index])),
-                      ),
+                          width: 200,
+                          fontSize: 20,
+                          name: state.profiles[index].name,
+                          profileImage: state.profiles[index].profileImage,
+                          onTap: () => Navigator.of(context).pushNamed(
+                              "/profiles/home",
+                              arguments: HomeArguments(state.profiles[index]))
+                          // BlocProvider.of<ProfilesBloc>(context)
+                          //   .add(ProfileSelected(state.profiles[index])),
+                          ),
                       const SizedBox(
                         width: 20,
                       ),
