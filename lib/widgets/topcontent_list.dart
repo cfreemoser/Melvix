@@ -54,7 +54,7 @@ class TopContentList extends StatelessWidget {
                     Positioned(
                       left: 95,
                       child: ContentCard(
-                          onContentSelected: onContentSelected,
+                          onContentSelected: (content) => onContentSelected(content),
                           content: content),
                     ),
                   ],
@@ -90,7 +90,7 @@ class _ContentCardState extends State<ContentCard> {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
-        onTap: widget.onContentSelected(widget.content),
+        onTap: () => widget.onContentSelected(widget.content),
         child: Container(
           height: 220,
           width: 140,

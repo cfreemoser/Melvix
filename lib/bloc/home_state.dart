@@ -10,3 +10,9 @@ class HighlightsLoaded extends HomeState {
 
   HighlightsLoaded(this.featuredContent);
 }
+
+class TopLoaded extends HomeState {
+  final List<Content> topContent;
+
+  TopLoaded(this.topContent);
+}

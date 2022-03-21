@@ -41,7 +41,8 @@ class HomeViewState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<HomeBloc>(context).add(HomeRequestContent());
+    //  BlocProvider.of<HomeBloc>(context).add(HighlightsRequested());
+    BlocProvider.of<HomeBloc>(context).add(TopRequested());
 
     return LayoutBuilder(builder: (context, constrains) {
       return DefaultTabController(
@@ -58,93 +59,102 @@ class HomeViewState extends State<Home> {
                       );
                     },
                   )),
-              body: CustomScrollView(
-                controller: _scrollController,
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: Stack(
-                      children: [
-                        ContentHeader(
-                            featuredContent: Content(),
-                            hight: constrains.maxHeight,
-                            width: constrains.maxWidth),
-                      ],
-                    ),
-                  ),
-                  SliverPadding(
-                    padding: const EdgeInsets.only(top: 20),
-                    sliver: SliverToBoxAdapter(
-                      child: Previews(
-                        key: const PageStorageKey('previews'),
-                        title: "privews",
-                        contentList: [
-                          Content(),
-                          Content(),
-                          Content(),
-                          Content(),
-                          Content(),
-                          Content(),
-                          Content(),
-                          Content()
-                        ],
+              body: BlocBuilder<HomeBloc, HomeState>(
+                builder: (context, state) {
+                  return CustomScrollView(
+                    controller: _scrollController,
+                    slivers: [
+                      state is TopLoaded
+                          ? SliverToBoxAdapter(
+                              child: Stack(
+                                children: [
+                                  ContentHeader(
+                                      topContent: state.topContent,
+                                      hight: constrains.maxHeight,
+                                      width: constrains.maxWidth,
+                                      onContentSelected: (content) =>
+                                          Navigator.pushNamed(
+                                              context, "/profiles/home/play",
+                                              arguments: VideoArgs(content))),
+                                ],
+                              ),
+                            )
+                          : const SliverToBoxAdapter(
+                              child: CircularProgressIndicator(),
+                            ),
+                      SliverPadding(
+                        padding: const EdgeInsets.only(top: 20),
+                        sliver: SliverToBoxAdapter(
+                          child: Previews(
+                            key: const PageStorageKey('previews'),
+                            title: "privews",
+                            contentList: [
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content()
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: ContentList(
-                        key: const PageStorageKey('myList'),
-                        title: "My List",
-                        onContentSelected: (content) => Navigator.of(context)
-                            .pushNamed("/profiles/home/play",
-                                arguments: VideoArgs(content)),
-                        contentList: [
-                          Content(),
-                          Content(),
-                          Content(),
-                          Content(),
-                          Content(),
-                          Content(),
-                          Content(),
-                          Content()
-                        ]),
-                  ),
-                  BlocBuilder<HomeBloc, HomeState>(
-                    builder: (context, state) {
-                      if (state is HighlightsLoaded) {
-                        return SliverToBoxAdapter(
-                          child: ContentList(
-                              key: const PageStorageKey('highlights'),
-                              title: "Highlights",
-                              highlighted: true,
-                              onContentSelected: (content) =>
-                                  onContentSelected(content),
-                              contentList: state.featuredContent),
-                        );
-                      }
-                      return const SliverToBoxAdapter(
-                        child: CircularProgressIndicator(),
-                      );
-                    },
-                  ),
-                  SliverToBoxAdapter(
-                    child: ContentList(
-                        key: const PageStorageKey('other'),
-                        title: "Other",
-                        onContentSelected: (content) => Navigator.of(context)
-                            .pushNamed("/profiles/home/play",
-                                arguments: VideoArgs(content)),
-                        contentList: [
-                          Content(),
-                          Content(),
-                          Content(),
-                          Content(),
-                          Content(),
-                          Content(),
-                          Content(),
-                          Content()
-                        ]),
-                  )
-                ],
+                      SliverToBoxAdapter(
+                        child: ContentList(
+                            key: const PageStorageKey('myList'),
+                            title: "My List",
+                            onContentSelected: (content) =>
+                                Navigator.of(context).pushNamed(
+                                    "/profiles/home/play",
+                                    arguments: VideoArgs(content)),
+                            contentList: [
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content()
+                            ]),
+                      ),
+                      state is HighlightsLoaded
+                          ? SliverToBoxAdapter(
+                              child: ContentList(
+                                  key: const PageStorageKey('highlights'),
+                                  title: "Highlights",
+                                  highlighted: true,
+                                  onContentSelected: (content) =>
+                                      onContentSelected(content),
+                                  contentList: state.featuredContent),
+                            )
+                          : const SliverToBoxAdapter(
+                              child: CircularProgressIndicator(),
+                            ),
+                      SliverToBoxAdapter(
+                        child: ContentList(
+                            key: const PageStorageKey('other'),
+                            title: "Other",
+                            onContentSelected: (content) =>
+                                Navigator.of(context).pushNamed(
+                                    "/profiles/home/play",
+                                    arguments: VideoArgs(content)),
+                            contentList: [
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content()
+                            ]),
+                      )
+                    ],
+                  );
+                },
               )));
     });
   }

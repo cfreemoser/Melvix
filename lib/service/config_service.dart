@@ -6,6 +6,7 @@ import 'package:yaml/yaml.dart';
 class Config {
   late List<ProfileConfig> _profiles;
   late List<ContentRef> _featuredContent;
+  late List<ContentRef> _top;
 }
 
 class ProfileConfig {
@@ -40,14 +41,8 @@ class ConfigService {
             ))
         .toList();
 
-    YamlList featuredContentConfig = yamlMap['Highlights'];
-    conf._featuredContent = featuredContentConfig
-        .map((element) => ContentRef(
-              element['headerImage'],
-              element['video'],
-              element['title'],
-            ))
-        .toList();
+    conf._featuredContent = loadListFromConfig(yamlMap, "Highlights");
+    conf._top = loadListFromConfig(yamlMap, "Top");
 
     _config = conf;
   }
@@ -60,6 +55,10 @@ class ConfigService {
     return _config._featuredContent;
   }
 
+   List<ContentRef> getTopContentFromConfig() {
+    return _config._top;
+  }
+
   Profile _mapProfileConfigToProfile(ProfileConfig profileConfig) {
     Image image = profileConfig.assetID == null
         ? Image.network(profileConfig.imageURL!)
@@ -69,5 +68,16 @@ class ConfigService {
         name: profileConfig.name,
         profilePin: profileConfig.pinCode,
         profileImage: image);
+  }
+
+  List<ContentRef> loadListFromConfig(dynamic yamlMap, String configKey) {
+    YamlList featuredContentConfig = yamlMap[configKey];
+    return featuredContentConfig
+        .map((element) => ContentRef(
+              element['headerImage'],
+              element['video'],
+              element['title'],
+            ))
+        .toList();
   }
 }

@@ -14,17 +14,28 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   HomeBloc(this.configService, this.storageService) : super(HomeInitial()) {
     on<HomeEvent>((event, emit) {});
-    on<HomeRequestContent>((event, emit) async {
-      emit(await loadContent());
+    on<HighlightsRequested>((event, emit) async {
+      emit(await loadHighlights());
+    });
+    on<TopRequested>((event, emit) async {
+      emit(await loadTopContent());
     });
   }
 
-  Future<HighlightsLoaded> loadContent() async {
+  Future<HighlightsLoaded> loadHighlights() async {
     var contentRefs = configService.getFeaturedContentFromConfig();
     var resolvedContent = contentRefs.map(mapContentRefToContent);
     var featuredContent = await Future.wait(resolvedContent).then(
         (value) => value.where((element) => element != null).map((e) => e!));
     return HighlightsLoaded(featuredContent.toList());
+  }
+
+  Future<TopLoaded> loadTopContent() async {
+    var contentRefs = configService.getTopContentFromConfig();
+    var resolvedContent = contentRefs.map(mapContentRefToContent);
+    var featuredContent = await Future.wait(resolvedContent).then(
+        (value) => value.where((element) => element != null).map((e) => e!));
+    return TopLoaded(featuredContent.toList());
   }
 
   Future<Content?> mapContentRefToContent(ContentRef ref) async {
