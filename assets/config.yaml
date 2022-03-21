@@ -1,13 +1,16 @@
 Profiles:
   - name: "Gääm"
     assetID: "assets/images/Netflix-avatar.png"
+    pinCode: 1234
   - name: "Dominic"
     assetID: "assets/images/Netflix-avatar2.jpeg"
+    pinCode: 1234
   - name: "Leon"
     assetID: "assets/images/Netflix-avatar.png"
+    pinCode: 1234
   - name: "Hunt"
     assetID: "assets/images/Netflix-avatar2.jpeg"
-    pinCode: 5431
+    pinCode: 1234
 
 Highlights:
   - name: "Calito"
