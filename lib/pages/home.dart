@@ -42,8 +42,12 @@ class HomeViewState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<HomeBloc>(context).add(HighlightsRequested());
-    BlocProvider.of<HomeBloc>(context).add(TopRequested());
+    if (header == null) {
+      BlocProvider.of<HomeBloc>(context).add(TopRequested());
+    }
+    if (highlights == null) {
+      BlocProvider.of<HomeBloc>(context).add(HighlightsRequested());
+    }
 
     return LayoutBuilder(builder: (context, constrains) {
       return DefaultTabController(

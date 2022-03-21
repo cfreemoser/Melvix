@@ -291,13 +291,7 @@ class _overlayControlState extends State<_overlayControl> {
                 Expanded(
                     child: VideoProgressIndicator(widget.controller,
                         allowScrubbing: true)),
-                IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () => log("search"),
-                  icon: const Icon(Icons.fullscreen),
-                  iconSize: 60,
-                  color: Colors.white,
-                ),
+                FullscreenButton(),
               ],
             ),
           ),
