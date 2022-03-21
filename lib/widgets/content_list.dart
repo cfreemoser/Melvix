@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:netflix_gallery/domain/content.dart';
-
+import 'package:netflix_gallery/widgets/netflix_app_bar.dart';
+import 'package:shimmer/shimmer.dart';
 class ContentList extends StatelessWidget {
   final bool highlighted;
   final List<Content> contentList;

@@ -6,7 +6,10 @@ import 'package:netflix_gallery/domain/content.dart';
 import 'package:netflix_gallery/widgets/adaptive_layout.dart';
 import 'package:netflix_gallery/widgets/topcontent_list.dart';
 import 'package:netflix_gallery/widgets/vertical_icon_button.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:video_player/video_player.dart';
+
+import 'loading_top_content_list.dart';
 
 class ContentHeader extends StatelessWidget {
   final List<Content> topContent;
@@ -349,3 +352,5 @@ class _PlayButton extends StatelessWidget {
         ));
   }
 }
+
+

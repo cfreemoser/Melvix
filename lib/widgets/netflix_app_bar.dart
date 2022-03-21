@@ -5,6 +5,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:netflix_gallery/helpers/constants.dart';
 import 'package:netflix_gallery/widgets/adaptive_layout.dart';
+import 'package:shimmer/shimmer.dart';
 
 class NetflixAppBar extends StatelessWidget {
   final double scrollOffset;
@@ -158,5 +159,27 @@ class _AppBarButton extends StatelessWidget {
       child: Text(text, style: textStyle),
       onTap: () => onTap,
     );
+  }
+}
+
+class LoadingCard extends StatelessWidget {
+  final bool highlighted;
+
+  const LoadingCard({Key? key, required this.highlighted}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        margin: const EdgeInsets.symmetric(horizontal: 8),
+        child: Shimmer.fromColors(
+            baseColor: const Color.fromARGB(255, 55, 53, 53),
+            highlightColor: const Color.fromARGB(255, 109, 108, 108),
+            child: SizedBox(
+              height: highlighted ? 400 : 200,
+              width: highlighted ? 200 : 130,
+              child: Container(
+                color: Colors.white,
+              ),
+            )));
   }
 }
