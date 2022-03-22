@@ -1,12 +1,14 @@
 import 'package:flutter/widgets.dart';
 import 'package:netflix_gallery/domain/content_ref.dart';
 import 'package:netflix_gallery/domain/profile.dart';
+import 'package:netflix_gallery/domain/quick_content_ref.dart';
 import 'package:yaml/yaml.dart';
 
 class Config {
   late List<ProfileConfig> _profiles;
   late List<ContentRef> _featuredContent;
   late List<ContentRef> _top;
+  late QuickContentRef _quickContentRef;
 }
 
 class ProfileConfig {
@@ -44,6 +46,9 @@ class ConfigService {
     conf._featuredContent = loadListFromConfig(yamlMap, "Highlights");
     conf._top = loadListFromConfig(yamlMap, "Top");
 
+    String quickContentRef = yamlMap['QuickContentPath'];
+    conf._quickContentRef = QuickContentRef(storagePath: quickContentRef);
+
     _config = conf;
   }
 
@@ -55,8 +60,12 @@ class ConfigService {
     return _config._featuredContent;
   }
 
-   List<ContentRef> getTopContentFromConfig() {
+  List<ContentRef> getTopContentFromConfig() {
     return _config._top;
+  }
+
+   QuickContentRef getQuickContentRef() {
+    return _config._quickContentRef;
   }
 
   Profile _mapProfileConfigToProfile(ProfileConfig profileConfig) {

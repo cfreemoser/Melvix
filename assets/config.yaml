@@ -30,3 +30,5 @@ Top:
     headerImage: "berlin/berlincover.png"
     description: "tba"
     title: "tba"
+
+QuickContentPath: "quick_content/"

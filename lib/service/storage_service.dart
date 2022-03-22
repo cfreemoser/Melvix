@@ -12,4 +12,15 @@ class StorageService {
       return null;
     }
   }
+
+  // TODO support video and folders
+  Future<List<String?>?> getDownloadAllDownloadPathsFromFolderRef(
+      String folderRef) async {
+    try {
+      var listResult = await _storage.ref(folderRef).list();
+      return Future.wait(listResult.items.map((e) => e.getDownloadURL()));
+    } catch (e) {
+      return null;
+    }
+  }
 }

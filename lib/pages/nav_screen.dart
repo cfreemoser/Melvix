@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:netflix_gallery/cubits/app_bar/app_bar_cubit.dart';
 import 'package:netflix_gallery/pages/home.dart';
+import 'package:netflix_gallery/pages/quick_content_screen.dart';
 import 'package:netflix_gallery/widgets/adaptive_layout.dart';
 
 class NavScreen extends StatefulWidget {
@@ -10,22 +11,18 @@ class NavScreen extends StatefulWidget {
 }
 
 class _NaveScreenState extends State<NavScreen> {
-  final List<Widget> _screens = const [
-    Home(
+  final List<Widget> _screens = [
+    const Home(
       key: PageStorageKey('homeScreen'),
     ),
-    Scaffold(),
-    Scaffold(),
-    Scaffold(),
-    Scaffold()
+    QuickContentScreen(),
+    const Scaffold()
   ];
 
   final Map<String, IconData> _icons = const {
     'home': Icons.home,
+    'Schnelle Lacher': Icons.photo_album,
     'search': Icons.search,
-    'Coming Soon': Icons.queue_play_next,
-    'Downloads': Icons.file_download,
-    'More': Icons.menu
   };
 
   int _selectedIndex = 0;

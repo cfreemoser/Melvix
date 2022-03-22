@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:netflix_gallery/bloc/auth_bloc.dart';
 import 'package:netflix_gallery/bloc/home_bloc.dart';
 import 'package:netflix_gallery/bloc/profiles_bloc.dart';
+import 'package:netflix_gallery/bloc/quick_content_bloc.dart';
 import 'package:netflix_gallery/pages/login.dart';
 import 'package:netflix_gallery/pages/nav_screen.dart';
 import 'package:netflix_gallery/pages/profiles.dart';
@@ -67,10 +68,16 @@ class MyApp extends StatelessWidget {
               create: (context) => ProfilesBloc(configService),
               child: const Profiles(),
             ),
-        "/profiles/home": (context) => BlocProvider(
-            create: (context) => HomeBloc(configService, storageService),
-            child: NavScreen()),
-        "/profiles/home/play": (context) => Video(),
+        "/profiles/home": (context) => MultiBlocProvider(providers: [
+              BlocProvider(
+                create: (context) => HomeBloc(configService, storageService),
+              ),
+              BlocProvider(
+                create: (context) =>
+                    QuickContentBloc(configService, storageService),
+              ),
+            ], child: NavScreen()),
+        "/profiles/home/play": (context) => const Video(),
       },
       theme: ThemeData(
           // This is the theme of your application.
