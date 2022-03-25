@@ -1,16 +1,14 @@
 Profiles:
-  - name: "Gääm"
-    assetID: "assets/images/Netflix-avatar.png"
-    pinCode: 1234
-  - name: "Dominic"
-    assetID: "assets/images/Netflix-avatar2.jpeg"
-    pinCode: 1234
-  - name: "Leon"
-    assetID: "assets/images/Netflix-avatar.png"
-    pinCode: 1234
-  - name: "Hunt"
-    assetID: "assets/images/Netflix-avatar2.jpeg"
-    pinCode: 1234
+  - name: "Ronnie Tiny Johan"
+    assetID: "assets/images/Profile1.png"
+  - name: "Douwe & Cornelia"
+    assetID: "assets/images/Profile2.png"
+  - name: "Roland"
+    assetID: "assets/images/Profile3.png"
+  - name: "Liset"
+    assetID: "assets/images/Profile4.png"
+  - name: "Jeroen"
+    assetID: "assets/images/Profile5.png"
 
 Highlights:
   - name: "Calito"

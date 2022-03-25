@@ -167,7 +167,7 @@ class Profiles extends StatelessWidget {
             child: Center(
                 child: SizedBox(
               width: constraints.maxWidth * 0.6,
-              height: 300,
+              height: 350,
               child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       childAspectRatio: 2.6 / 2.4, crossAxisCount: 2),
