@@ -11,12 +11,20 @@ class QuickContentScreen extends StatelessWidget {
         .add(const QuickContentRequested());
 
     return Scaffold(
-      body: BlocBuilder<QuickContentBloc, QuickContentState>(
-        builder: (context, state) {
-          if (state is QuickContentLoaded) {
-            return QuickContentCarousel(quickContents: state.quickContents);
-          }
-          return const LoadingQuickContent();
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return BlocBuilder<QuickContentBloc, QuickContentState>(
+            builder: (context, state) {
+              if (state is QuickContentLoaded) {
+                return QuickContentCarousel(
+                  quickContents: state.quickContents,
+                  width: constraints.maxWidth,
+                  height: constraints.maxHeight,
+                );
+              }
+              return const LoadingQuickContent();
+            },
+          );
         },
       ),
     );

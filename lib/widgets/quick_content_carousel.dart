@@ -4,13 +4,20 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:netflix_gallery/domain/quick_content.dart';
+import 'package:netflix_gallery/widgets/netflix_app_bar.dart';
 import 'package:netflix_gallery/widgets/vertical_icon_button.dart';
 import 'package:video_player/video_player.dart';
 
 class QuickContentCarousel extends StatefulWidget {
   final List<QuickContent> quickContents;
+  final double height;
+  final double width;
 
-  const QuickContentCarousel({Key? key, required this.quickContents})
+  const QuickContentCarousel(
+      {Key? key,
+      required this.quickContents,
+      required this.height,
+      required this.width})
       : super(key: key);
 
   @override
@@ -49,13 +56,18 @@ class _QuickContentCarouselState extends State<QuickContentCarousel> {
           itemBuilder: (BuildContext context, int itemIndex) {
             var currentCurrent = itemIndex % widget.quickContents.length;
             var content = widget.quickContents[currentCurrent];
-            return InteractiveViewer(
-              child: FittedBox(
-                  fit: BoxFit.cover,
-                  child: content.type == QuickContentType.video
-                      ? _videoCard(content: content)
-                      : Image.network(content.contentUrl)),
-            );
+            return SizedBox(
+                width: widget.width,
+                height: widget.height,
+                child: content.type == QuickContentType.video
+                    ? _videoCard(
+                        content: content,
+                        hight: widget.height,
+                        width: widget.width)
+                    : Image.network(
+                        content.contentUrl,
+                        fit: BoxFit.cover,
+                      ));
           },
         ),
         Positioned(
@@ -132,8 +144,15 @@ class _overlay extends StatelessWidget {
 
 class _videoCard extends StatefulWidget {
   final QuickContent content;
+  final double hight;
+  final double width;
 
-  const _videoCard({Key? key, required this.content}) : super(key: key);
+  const _videoCard(
+      {Key? key,
+      required this.content,
+      required this.hight,
+      required this.width})
+      : super(key: key);
 
   @override
   State<_videoCard> createState() => _videoCardState();
@@ -159,7 +178,20 @@ class _videoCardState extends State<_videoCard> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        height: 50, width: 50, child: VideoPlayer(_videoPlayerController));
+    return Stack(
+      children: <Widget>[
+        SizedBox.expand(
+          child: FittedBox(
+            fit: BoxFit.fitWidth,
+            child: SizedBox(
+              width: _videoPlayerController.value.size.width,
+              height: _videoPlayerController.value.size.height,
+              child: VideoPlayer(_videoPlayerController),
+            ),
+          ),
+        ),
+        //FURTHER IMPLEMENTATION
+      ],
+    );
   }
 }
