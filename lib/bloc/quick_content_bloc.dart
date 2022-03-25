@@ -25,10 +25,7 @@ class QuickContentBloc extends Bloc<QuickContentEvent, QuickContentState> {
     if (quickContents == null) {
       return const QuickContentError();
     }
-    var result = quickContents
-        .where((e) => e != null)
-        .map((e) => QuickContent(contentUrl: e!))
-        .toList();
+    var result = quickContents.where((e) => e != null).map((e) => e!).toList();
     return QuickContentLoaded(result);
   }
 }

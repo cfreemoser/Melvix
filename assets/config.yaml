@@ -16,6 +16,11 @@ Highlights:
     headerImage: "calito/IMG_3322.JPG"
     description: "tba"
     title: "tba"
+  - name: "Silvester"
+    video: "silvester/Melvix_silvester.mp4"
+    headerImage: "silvester/2022_header.png"
+    description: "tba"
+    title: "Silvester"
 
 Top:
   - name: "Calito"
@@ -27,6 +32,6 @@ Top:
     video: "berlin/Melvix_berlin.mp4"
     headerImage: "berlin/berlincover.png"
     description: "tba"
-    title: "tba"
+    title: "Berlin"
 
 QuickContentPath: "quick_content/"
