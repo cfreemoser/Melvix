@@ -33,5 +33,10 @@ Top:
     headerImage: "berlin/berlincover.png"
     description: "tba"
     title: "Berlin"
-
+  - name: "Silvester"
+    video: "silvester/Melvix_silvester.mp4"
+    headerImage: "silvester/2022_header.png"
+    description: "tba"
+    title: "Silvester"
+    
 QuickContentPath: "quick_content/"
