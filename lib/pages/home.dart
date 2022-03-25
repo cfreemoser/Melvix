@@ -4,6 +4,7 @@ import 'package:netflix_gallery/bloc/home_bloc.dart';
 import 'package:netflix_gallery/cubits/app_bar/app_bar_cubit.dart';
 import 'package:netflix_gallery/domain/content.dart';
 import 'package:netflix_gallery/navigation/video_args.dart';
+import 'package:netflix_gallery/widgets/adaptive_layout.dart';
 import 'package:netflix_gallery/widgets/content_header.dart';
 import 'package:netflix_gallery/widgets/content_list.dart';
 import 'package:netflix_gallery/widgets/loading_content_header.dart';
@@ -61,6 +62,35 @@ class HomeViewState extends State<Home> {
                     builder: (context, scrollOffset) {
                       return NetflixAppBar(
                         scrollOffset: scrollOffset,
+                        allTap: () => setState(() {
+                          _scrollController.animateTo(
+                              AdaptiveLayout.isMobile(context) ? 1500 : 1500,
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeInOut);
+                        }),
+                        highlightsTap: () => setState(() {
+                          _scrollController.animateTo(
+                              AdaptiveLayout.isMobile(context) ? 1100 : 1500,
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeInOut);
+                        }),
+                        friendsTap: () => setState(() {
+                          _scrollController.animateTo(
+                              AdaptiveLayout.isMobile(context) ? 750 : 1000,
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeInOut);
+                        }),
+                        topTenTap: () => setState(() {
+                          _scrollController.animateTo(0,
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeInOut);
+                        }),
+                        myListTap: () => setState(() {
+                          _scrollController.animateTo(
+                              AdaptiveLayout.isMobile(context) ? 950 : 1200,
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeInOut);
+                        }),
                       );
                     },
                   )),

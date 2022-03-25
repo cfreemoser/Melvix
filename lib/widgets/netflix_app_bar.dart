@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:netflix_gallery/helpers/constants.dart';
 import 'package:netflix_gallery/widgets/adaptive_layout.dart';
@@ -9,8 +8,21 @@ import 'package:shimmer/shimmer.dart';
 
 class NetflixAppBar extends StatelessWidget {
   final double scrollOffset;
+  final Function myListTap;
+  final Function topTenTap;
+  final Function friendsTap;
+  final Function highlightsTap;
+  final Function allTap;
 
-  const NetflixAppBar({Key? key, this.scrollOffset = 0.0}) : super(key: key);
+  const NetflixAppBar(
+      {Key? key,
+      this.scrollOffset = 0.0,
+      required this.myListTap,
+      required this.topTenTap,
+      required this.friendsTap,
+      required this.highlightsTap,
+      required this.allTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,14 +31,38 @@ class NetflixAppBar extends StatelessWidget {
       color:
           Colors.black.withOpacity((scrollOffset / 350).clamp(0, 1).toDouble()),
       child: AdaptiveLayout(
-        mobile: _NetflixAppBarMobile(),
-        desktop: _NetflixAppBarDesktop(),
+        mobile: _NetflixAppBarMobile(
+          highlightsTap: highlightsTap,
+          friendsTap: friendsTap,
+          topTenTap: topTenTap,
+          myListTap: myListTap,
+        ),
+        desktop: _NetflixAppBarDesktop(
+          highlightsTap: highlightsTap,
+          topTenTap: topTenTap,
+          myListTap: myListTap,
+          friendsTap: friendsTap,
+          allTap: allTap,
+        ),
       ),
     );
   }
 }
 
 class _NetflixAppBarMobile extends StatelessWidget {
+  final Function myListTap;
+  final Function topTenTap;
+  final Function friendsTap;
+  final Function highlightsTap;
+
+  const _NetflixAppBarMobile(
+      {Key? key,
+      required this.myListTap,
+      required this.topTenTap,
+      required this.friendsTap,
+      required this.highlightsTap})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -39,16 +75,16 @@ class _NetflixAppBarMobile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _AppBarButton(
-                  text: "TV shows",
-                  onTap: () => log("shows"),
+                  text: "TOP 10",
+                  onTap: () => topTenTap(),
                 ),
                 _AppBarButton(
-                  text: "Movies",
-                  onTap: () => log("movies"),
+                  text: "Friends",
+                  onTap: () => friendsTap(),
                 ),
                 _AppBarButton(
                   text: "MyList",
-                  onTap: () => log("movies"),
+                  onTap: () => myListTap(),
                 ),
               ],
             ),
@@ -60,6 +96,21 @@ class _NetflixAppBarMobile extends StatelessWidget {
 }
 
 class _NetflixAppBarDesktop extends StatelessWidget {
+  final Function myListTap;
+  final Function topTenTap;
+  final Function friendsTap;
+  final Function highlightsTap;
+  final Function allTap;
+
+  const _NetflixAppBarDesktop(
+      {Key? key,
+      required this.myListTap,
+      required this.topTenTap,
+      required this.friendsTap,
+      required this.highlightsTap,
+      required this.allTap})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -72,24 +123,24 @@ class _NetflixAppBarDesktop extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _AppBarButton(
-                  text: "Home",
-                  onTap: () => log("shows"),
+                  text: "TOP 10",
+                  onTap: () => topTenTap(),
                 ),
                 _AppBarButton(
-                  text: "Movies",
-                  onTap: () => log("movies"),
-                ),
-                _AppBarButton(
-                  text: "MyList",
-                  onTap: () => log("movies"),
+                  text: "Friends",
+                  onTap: () => friendsTap(),
                 ),
                 _AppBarButton(
                   text: "MyList",
-                  onTap: () => log("movies"),
+                  onTap: () => myListTap(),
                 ),
                 _AppBarButton(
-                  text: "MyList",
-                  onTap: () => log("movies"),
+                  text: "Highlights",
+                  onTap: () => highlightsTap(),
+                ),
+                _AppBarButton(
+                  text: "All",
+                  onTap: () => allTap(),
                 ),
               ],
             ),
@@ -157,7 +208,7 @@ class _AppBarButton extends StatelessWidget {
 
     return GestureDetector(
       child: Text(text, style: textStyle),
-      onTap: () => onTap,
+      onTap: () => onTap(),
     );
   }
 }

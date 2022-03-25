@@ -5,7 +5,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:netflix_gallery/domain/quick_content.dart';
 import 'package:netflix_gallery/widgets/vertical_icon_button.dart';
-import 'package:vibration/vibration.dart';
 
 class QuickContentCarousel extends StatefulWidget {
   final List<QuickContent> quickContents;
@@ -39,12 +38,11 @@ class _QuickContentCarouselState extends State<QuickContentCarousel> {
           itemBuilder: (BuildContext context, int itemIndex) {
             var currentCurrent = itemIndex % widget.quickContents.length;
             var content = widget.quickContents[currentCurrent];
-            return FittedBox(
-                fit: BoxFit.cover, child: Image.network(content.contentUrl));
-          },
-          onPageChanged: (index) {
-            Vibration.hasVibrator().then(
-                (value) => value ? Vibration.vibrate(duration: 50) : null);
+            //TODO use interactiveViewer to automatically scroll
+            return InteractiveViewer(
+              child: FittedBox(
+                  fit: BoxFit.cover, child: Image.network(content.contentUrl)),
+            );
           },
         ),
         Positioned(
