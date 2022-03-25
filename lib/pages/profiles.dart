@@ -179,8 +179,9 @@ class Profiles extends StatelessWidget {
                       fontSize: 10,
                       name: state.profiles[index].name,
                       profileImage: state.profiles[index].profileImage,
-                      onTap: () => BlocProvider.of<ProfilesBloc>(context)
-                          .add(ProfileSelected(state.profiles[index])),
+                      onTap: () => Navigator.of(context).pushNamed(
+                          "/profiles/home",
+                          arguments: HomeArguments(state.profiles[index])),
                     );
                   }),
             )),
