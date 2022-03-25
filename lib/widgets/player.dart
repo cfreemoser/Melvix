@@ -74,7 +74,7 @@ class _overlayControl extends StatefulWidget {
 }
 
 class _overlayControlState extends State<_overlayControl> {
-  bool _hideOverlay = false;
+  bool _hideOverlay = true;
   double volume = 0.3;
   Timer? _timer;
 
