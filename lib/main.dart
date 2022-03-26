@@ -35,6 +35,7 @@ void main() async {
   await FirebaseAppCheck.instance.activate(
     webRecaptchaSiteKey: '6LekSxQfAAAAAPcke75fM4myrV-EpvT_anEZMokK',
   );
+  await FirebaseAppCheck.instance.setTokenAutoRefreshEnabled(true);
 
   dynamic app = MyApp(
     configService: myConfigService,
