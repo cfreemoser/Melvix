@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,6 +32,9 @@ void main() async {
   AuthenticationService myAuthenticationService = AuthenticationService();
   String configYaml = await rootBundle.loadString("assets/config.yaml");
   myConfigService.loadConfigFromYaml(configYaml);
+  await FirebaseAppCheck.instance.activate(
+    webRecaptchaSiteKey: '6LekSxQfAAAAAPcke75fM4myrV-EpvT_anEZMokK',
+  );
 
   dynamic app = MyApp(
     configService: myConfigService,
