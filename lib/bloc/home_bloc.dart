@@ -38,10 +38,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       var topContent = content
           .where((element) => element.categories.contains('top'))
           .toList();
-      emit(TopLoaded(topContent));
       var featuredContent = content
           .where((element) => element.categories.contains('featured'))
           .toList();
+      topContent.shuffle();
+      featuredContent.shuffle();
+      content.shuffle();
       emit(ContentLoaded(topContent, featuredContent, content));
     }
   }

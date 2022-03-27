@@ -164,25 +164,20 @@ class HomeViewState extends State<Home> {
                                   key: PageStorageKey('highlights'),
                                   title: "test",
                                   highlighted: true)),
-                      SliverToBoxAdapter(
-                        child: ContentList(
-                            key: const PageStorageKey('other'),
-                            title: "Other",
-                            onContentSelected: (content) =>
-                                Navigator.of(context).pushNamed(
-                                    "/profiles/home/play",
-                                    arguments: VideoArgs(content)),
-                            contentList: [
-                              Content(),
-                              Content(),
-                              Content(),
-                              Content(),
-                              Content(),
-                              Content(),
-                              Content(),
-                              Content()
-                            ]),
-                      )
+                      state is ContentLoaded
+                          ? SliverToBoxAdapter(
+                              child: ContentList(
+                                  key: const PageStorageKey('all'),
+                                  title: "Library",
+                                  highlighted: false,
+                                  onContentSelected: (content) =>
+                                      onContentSelected(content),
+                                  contentList: state.allContent))
+                          : const SliverToBoxAdapter(
+                              child: LoadingContentList(
+                                  key: PageStorageKey('all'),
+                                  title: "Library",
+                                  highlighted: true)),
                     ],
                   );
                 },

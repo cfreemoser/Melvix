@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:netflix_gallery/domain/content.dart';
 import 'package:netflix_gallery/widgets/netflix_app_bar.dart';
 import 'package:shimmer/shimmer.dart';
+
 class ContentList extends StatelessWidget {
   final bool highlighted;
   final List<Content> contentList;
@@ -45,7 +46,7 @@ class ContentList extends StatelessWidget {
                 child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 8),
                   height: highlighted ? 400 : 200,
-                  width: highlighted ? 200 : 130,
+                  width: highlighted ? 260 : 130,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image: NetworkImage(content.headerImageURL),
