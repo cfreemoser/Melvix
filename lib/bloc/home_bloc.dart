@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:netflix_gallery/domain/content.dart';
 import 'package:netflix_gallery/domain/content_ref.dart';
 import 'package:netflix_gallery/service/config_service.dart';
+import 'package:netflix_gallery/service/firestore_service.dart';
 import 'package:netflix_gallery/service/storage_service.dart';
 
 part 'home_event.dart';
@@ -11,31 +14,36 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final ConfigService configService;
   final StorageService storageService;
+  final FirestoreService firestoreService;
 
-  HomeBloc(this.configService, this.storageService) : super(HomeInitial()) {
+  HomeBloc(this.configService, this.storageService, this.firestoreService)
+      : super(HomeInitial()) {
     on<HomeEvent>((event, emit) {});
-    on<HighlightsRequested>((event, emit) async {
-      emit(await loadHighlights());
-    });
-    on<TopRequested>((event, emit) async {
-      emit(await loadTopContent());
+    on<ContentRequested>((event, emit) => loadContent(emit));
+
+    firestoreService.subscribeToContent().listen((event) {
+      add(ContentRequested());
     });
   }
 
-  Future<HighlightsLoaded> loadHighlights() async {
-    var contentRefs = configService.getFeaturedContentFromConfig();
-    var resolvedContent = contentRefs.map(mapContentRefToContent);
-    var featuredContent = await Future.wait(resolvedContent).then(
-        (value) => value.where((element) => element != null).map((e) => e!));
-    return HighlightsLoaded(featuredContent.toList());
-  }
-
-  Future<TopLoaded> loadTopContent() async {
-    var contentRefs = configService.getTopContentFromConfig();
-    var resolvedContent = contentRefs.map(mapContentRefToContent);
-    var featuredContent = await Future.wait(resolvedContent).then(
-        (value) => value.where((element) => element != null).map((e) => e!));
-    return TopLoaded(featuredContent.toList());
+  Future loadContent(Emitter<HomeState> emit) async {
+    var contentRefs = await firestoreService.getAllContent();
+    var awaitableContent = contentRefs?.map(mapContentRefToContent);
+    if (awaitableContent != null) {
+      var maybeContent = await Future.wait(awaitableContent);
+      var content = maybeContent
+          .where((element) => element != null)
+          .map((e) => e!)
+          .toList();
+      var topContent = content
+          .where((element) => element.categories.contains('top'))
+          .toList();
+      emit(TopLoaded(topContent));
+      var featuredContent = content
+          .where((element) => element.categories.contains('featured'))
+          .toList();
+      emit(ContentLoaded(topContent, featuredContent, content));
+    }
   }
 
   Future<Content?> mapContentRefToContent(ContentRef ref) async {
@@ -47,6 +55,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (videoURL == null || imageURL == null) {
       return null;
     }
-    return Content(headerImageURL: imageURL, videoURL: videoURL, title: title);
+    return Content(
+        headerImageURL: imageURL,
+        videoURL: videoURL,
+        title: title,
+        categories: ref.categories);
   }
 }

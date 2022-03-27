@@ -2,6 +2,11 @@ class ContentRef {
   final String headerImagePath;
   final String videoURLPath;
   final String title;
+  final List<String> categories;
 
-  ContentRef(this.headerImagePath, this.videoURLPath, this.title);
+  ContentRef(
+      {required this.headerImagePath,
+      required this.videoURLPath,
+      required this.title,
+      this.categories = const []});
 }

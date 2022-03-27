@@ -16,3 +16,11 @@ class TopLoaded extends HomeState {
 
   TopLoaded(this.topContent);
 }
+
+class ContentLoaded extends HomeState {
+  final List<Content> topContent;
+  final List<Content> featuredContent;
+  final List<Content> allContent;
+
+  ContentLoaded(this.topContent, this.featuredContent, this.allContent);
+}

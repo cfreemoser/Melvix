@@ -30,7 +30,7 @@ class _SignInState extends State<SignIn> {
       children: [
         Container(
           padding: const EdgeInsets.all(16),
-          child: TextField(
+          child: TextFormField(
             style: const TextStyle(color: Colors.white),
             controller: emailController,
             decoration: InputDecoration(
@@ -52,7 +52,7 @@ class _SignInState extends State<SignIn> {
               ),
         Container(
           padding: const EdgeInsets.all(16),
-          child: TextField(
+          child: TextFormField(
             style: const TextStyle(color: Colors.white),
             obscureText: true,
             controller: passwordController,

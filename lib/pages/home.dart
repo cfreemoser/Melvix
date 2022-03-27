@@ -21,8 +21,6 @@ class Home extends StatefulWidget {
 
 class HomeViewState extends State<Home> {
   late ScrollController _scrollController;
-  Widget? header;
-  Widget? highlights;
 
   @override
   void initState() {
@@ -43,13 +41,6 @@ class HomeViewState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    if (header == null) {
-      BlocProvider.of<HomeBloc>(context).add(TopRequested());
-    }
-    if (highlights == null) {
-      BlocProvider.of<HomeBloc>(context).add(HighlightsRequested());
-    }
-
     return LayoutBuilder(builder: (context, constrains) {
       return DefaultTabController(
           length: 3,
@@ -94,115 +85,107 @@ class HomeViewState extends State<Home> {
                       );
                     },
                   )),
-              body: BlocListener<HomeBloc, HomeState>(
-                listener: (context, state) {
-                  if (state is HighlightsLoaded) {
-                    setState(() {
-                      highlights = SliverToBoxAdapter(
-                          child: ContentList(
-                              key: const PageStorageKey('highlights'),
-                              title: "Highlights",
-                              highlighted: true,
-                              onContentSelected: (content) =>
-                                  onContentSelected(content),
-                              contentList: state.featuredContent));
-                    });
-                  }
-
-                  if (state is TopLoaded) {
-                    setState(() {
-                      header = SliverToBoxAdapter(
-                        child: Stack(
-                          children: [
-                            ContentHeader(
-                                topContent: state.topContent,
+              body: BlocBuilder<HomeBloc, HomeState>(
+                builder: (context, state) {
+                  return CustomScrollView(
+                    controller: _scrollController,
+                    slivers: [
+                      state is ContentLoaded
+                          ? SliverToBoxAdapter(
+                              child: Stack(
+                                children: [
+                                  ContentHeader(
+                                      topContent:
+                                          (state as ContentLoaded).topContent,
+                                      hight: constrains.maxHeight,
+                                      width: constrains.maxWidth,
+                                      onContentSelected: (content) =>
+                                          Navigator.pushNamed(
+                                              context, "/profiles/home/play",
+                                              arguments: VideoArgs(content))),
+                                ],
+                              ),
+                            )
+                          : SliverToBoxAdapter(
+                              child: LoadingContentHeader(
                                 hight: constrains.maxHeight,
                                 width: constrains.maxWidth,
-                                onContentSelected: (content) =>
-                                    Navigator.pushNamed(
-                                        context, "/profiles/home/play",
-                                        arguments: VideoArgs(content))),
-                          ],
-                        ),
-                      );
-                    });
-                  }
-                },
-                child: CustomScrollView(
-                  controller: _scrollController,
-                  slivers: [
-                    header == null
-                        ? SliverToBoxAdapter(
-                            child: LoadingContentHeader(
-                              hight: constrains.maxHeight,
-                              width: constrains.maxWidth,
+                              ),
                             ),
-                          )
-                        : header!,
-                    SliverPadding(
-                      padding: const EdgeInsets.only(top: 20),
-                      sliver: SliverToBoxAdapter(
-                        child: Previews(
-                          key: const PageStorageKey('previews'),
-                          title: "privews",
-                          contentList: [
-                            Content(),
-                            Content(),
-                            Content(),
-                            Content(),
-                            Content(),
-                            Content(),
-                            Content(),
-                            Content()
-                          ],
+                      SliverPadding(
+                        padding: const EdgeInsets.only(top: 20),
+                        sliver: SliverToBoxAdapter(
+                          child: Previews(
+                            key: const PageStorageKey('previews'),
+                            title: "privews",
+                            contentList: [
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content()
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: ContentList(
-                          key: const PageStorageKey('myList'),
-                          title: "My List",
-                          onContentSelected: (content) => Navigator.of(context)
-                              .pushNamed("/profiles/home/play",
-                                  arguments: VideoArgs(content)),
-                          contentList: [
-                            Content(),
-                            Content(),
-                            Content(),
-                            Content(),
-                            Content(),
-                            Content(),
-                            Content(),
-                            Content()
-                          ]),
-                    ),
-                    highlights == null
-                        ? const SliverToBoxAdapter(
-                            child: LoadingContentList(
-                                key: PageStorageKey('highlights'),
-                                title: "test",
-                                highlighted: true))
-                        : highlights!,
-                    SliverToBoxAdapter(
-                      child: ContentList(
-                          key: const PageStorageKey('other'),
-                          title: "Other",
-                          onContentSelected: (content) => Navigator.of(context)
-                              .pushNamed("/profiles/home/play",
-                                  arguments: VideoArgs(content)),
-                          contentList: [
-                            Content(),
-                            Content(),
-                            Content(),
-                            Content(),
-                            Content(),
-                            Content(),
-                            Content(),
-                            Content()
-                          ]),
-                    )
-                  ],
-                ),
+                      SliverToBoxAdapter(
+                        child: ContentList(
+                            key: const PageStorageKey('myList'),
+                            title: "My List",
+                            onContentSelected: (content) =>
+                                Navigator.of(context).pushNamed(
+                                    "/profiles/home/play",
+                                    arguments: VideoArgs(content)),
+                            contentList: [
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content()
+                            ]),
+                      ),
+                      state is ContentLoaded
+                          ? SliverToBoxAdapter(
+                              child: ContentList(
+                                  key: const PageStorageKey('highlights'),
+                                  title: "Highlights",
+                                  highlighted: true,
+                                  onContentSelected: (content) =>
+                                      onContentSelected(content),
+                                  contentList: state.featuredContent))
+                          : const SliverToBoxAdapter(
+                              child: LoadingContentList(
+                                  key: PageStorageKey('highlights'),
+                                  title: "test",
+                                  highlighted: true)),
+                      SliverToBoxAdapter(
+                        child: ContentList(
+                            key: const PageStorageKey('other'),
+                            title: "Other",
+                            onContentSelected: (content) =>
+                                Navigator.of(context).pushNamed(
+                                    "/profiles/home/play",
+                                    arguments: VideoArgs(content)),
+                            contentList: [
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content(),
+                              Content()
+                            ]),
+                      )
+                    ],
+                  );
+                },
               )));
     });
   }

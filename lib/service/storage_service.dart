@@ -16,7 +16,6 @@ class StorageService {
     }
   }
 
-  // TODO support video and folders
   Future<List<QuickContent?>?> getDownloadAllDownloadPathsFromFolderRef(
       String folderRef) async {
     try {

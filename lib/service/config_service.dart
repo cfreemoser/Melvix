@@ -83,9 +83,9 @@ class ConfigService {
     YamlList featuredContentConfig = yamlMap[configKey];
     return featuredContentConfig
         .map((element) => ContentRef(
-              element['headerImage'],
-              element['video'],
-              element['title'],
+              headerImagePath: element['headerImage'],
+              videoURLPath: element['video'],
+              title: element['title'],
             ))
         .toList();
   }
