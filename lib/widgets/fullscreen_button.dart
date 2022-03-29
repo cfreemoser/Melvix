@@ -5,6 +5,8 @@ import 'dart:html';
 import 'package:flutter/material.dart';
 
 class FullscreenButton extends StatefulWidget {
+  const FullscreenButton({Key? key}) : super(key: key);
+
   @override
   State<FullscreenButton> createState() => _FullscreenButtonState();
 }
@@ -21,7 +23,6 @@ class _FullscreenButtonState extends State<FullscreenButton> {
           if (isFullscreen) {
             document.exitFullscreen();
           } else {
-            document.documentElement?.requestFullscreen();
             document.documentElement?.requestFullscreen();
           }
           isFullscreen = !isFullscreen;
