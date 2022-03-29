@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -6,10 +5,7 @@ import 'package:netflix_gallery/domain/content.dart';
 import 'package:netflix_gallery/widgets/adaptive_layout.dart';
 import 'package:netflix_gallery/widgets/topcontent_list.dart';
 import 'package:netflix_gallery/widgets/vertical_icon_button.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:video_player/video_player.dart';
-
-import 'loading_top_content_list.dart';
 
 class ContentHeader extends StatelessWidget {
   final List<Content> topContent;
@@ -59,7 +55,7 @@ class _ContentHeaderMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Content featuredContent = topContent[Random().nextInt(topContent.length)];
+    Content featuredContent = topContent.first;
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -352,5 +348,3 @@ class _PlayButton extends StatelessWidget {
         ));
   }
 }
-
-
