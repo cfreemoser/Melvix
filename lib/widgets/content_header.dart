@@ -59,12 +59,17 @@ class _ContentHeaderMobile extends StatelessWidget {
     return Stack(
       alignment: Alignment.center,
       children: [
-        Container(
-          height: hight,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: NetworkImage(featuredContent.headerImageURL),
-              fit: BoxFit.fitHeight,
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: -1.0,
+          child: Container(
+            height: hight,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(featuredContent.headerImageURL),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
@@ -152,8 +157,7 @@ class _ContentHeaderDesktopState extends State<_ContentHeaderDesktop> {
 
   @override
   void initState() {
-    featuredContent =
-        widget.topContent[Random().nextInt(widget.topContent.length)];
+    featuredContent = widget.topContent.first;
     _videoController = VideoPlayerController.network(
       featuredContent.videoURL,
     )
