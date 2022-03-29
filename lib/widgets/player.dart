@@ -195,7 +195,7 @@ class _overlayControlState extends State<_overlayControl> {
                           videoPlayerController: widget.controller,
                         ),
                         const SizedBox(width: 16),
-                        FullscreenButton(),
+                        const FullscreenButton(),
                       ],
                     ),
                   ),
@@ -291,7 +291,7 @@ class _overlayControlState extends State<_overlayControl> {
                 Expanded(
                     child: VideoProgressIndicator(widget.controller,
                         allowScrubbing: true)),
-                FullscreenButton(),
+                const FullscreenButton(),
               ],
             ),
           ),
