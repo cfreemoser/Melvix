@@ -7,6 +7,7 @@ import 'package:netflix_gallery/domain/quick_content.dart';
 import 'package:netflix_gallery/widgets/netflix_app_bar.dart';
 import 'package:netflix_gallery/widgets/vertical_icon_button.dart';
 import 'package:netflix_gallery/widgets/volume_button.dart';
+import 'package:preload_page_view/preload_page_view.dart';
 import 'package:video_player/video_player.dart';
 
 class QuickContentCarousel extends StatefulWidget {
@@ -26,14 +27,19 @@ class QuickContentCarousel extends StatefulWidget {
 }
 
 class _QuickContentCarouselState extends State<QuickContentCarousel> {
-  late PageController _pageController;
+  late PreloadPageController _pageController;
+  late VideoPlayerController _videoPlayerController;
   final Random _random = Random();
   bool showPicture = false;
   bool showPictureEnabled = true;
+  bool isOnPageTurning = false;
+  int current = 0;
 
   @override
   void initState() {
-    _pageController = PageController(viewportFraction: 0.95, initialPage: 1);
+    _pageController =
+        PreloadPageController(viewportFraction: 1, initialPage: 1);
+    _pageController.addListener(scrollListener);
     _pageController.addListener(() {
       setState(() {
         showPictureEnabled = widget
@@ -43,17 +49,33 @@ class _QuickContentCarouselState extends State<QuickContentCarousel> {
             QuickContentType.photo;
       });
     });
-
     super.initState();
+  }
+
+  void scrollListener() {
+    if (isOnPageTurning &&
+        _pageController.page == _pageController.page!.roundToDouble()) {
+      setState(() {
+        current = _pageController.page!.toInt();
+        isOnPageTurning = false;
+      });
+    } else if (!isOnPageTurning && current.toDouble() != _pageController.page) {
+      if ((current.toDouble() - _pageController.page!).abs() > 0.1) {
+        setState(() {
+          isOnPageTurning = true;
+        });
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        PageView.builder(
+        PreloadPageView.builder(
           scrollDirection: Axis.vertical,
           controller: _pageController,
+          preloadPagesCount: 3,
           itemBuilder: (BuildContext context, int itemIndex) {
             var currentCurrent = itemIndex % widget.quickContents.length;
             var content = widget.quickContents[currentCurrent];
@@ -64,7 +86,10 @@ class _QuickContentCarouselState extends State<QuickContentCarousel> {
                     ? _videoCard(
                         content: content,
                         hight: widget.height,
-                        width: widget.width)
+                        width: widget.width,
+                        pageIndex: itemIndex,
+                        currentPageIndex: current,
+                      )
                     : Image.network(
                         content.contentUrl,
                         fit: BoxFit.cover,
@@ -161,12 +186,16 @@ class _videoCard extends StatefulWidget {
   final QuickContent content;
   final double hight;
   final double width;
+  final int pageIndex;
+  final int currentPageIndex;
 
   const _videoCard(
       {Key? key,
       required this.content,
       required this.hight,
-      required this.width})
+      required this.width,
+      required this.pageIndex,
+      required this.currentPageIndex})
       : super(key: key);
 
   @override
@@ -187,13 +216,19 @@ class _videoCardState extends State<_videoCard> {
         });
       })
       ..play()
-      ..setVolume(0.3)
       ..setLooping(true);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (widget.pageIndex == widget.currentPageIndex &&
+        _videoPlayerController.value.isInitialized) {
+      _videoPlayerController.setVolume(0.3);
+    } else {
+      _videoPlayerController.setVolume(0);
+    }
+
     return Stack(
       children: <Widget>[
         SizedBox.expand(
