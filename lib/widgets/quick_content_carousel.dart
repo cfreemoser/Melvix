@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:netflix_gallery/domain/quick_content.dart';
 import 'package:netflix_gallery/widgets/netflix_app_bar.dart';
 import 'package:netflix_gallery/widgets/vertical_icon_button.dart';
+import 'package:netflix_gallery/widgets/volume_button.dart';
 import 'package:video_player/video_player.dart';
 
 class QuickContentCarousel extends StatefulWidget {
@@ -94,17 +95,31 @@ class _QuickContentCarouselState extends State<QuickContentCarousel> {
                   }),
                 ),
                 const SizedBox(height: 20),
-                VerticalIconButton(
-                  icon: Icons.picture_in_picture,
-                  size: 30,
-                  title: 'Fullscreen',
-                  enabled: showPictureEnabled,
-                  onTap: () => setState(() {
-                    showPicture = true;
-                  }),
-                ),
+                showPictureEnabled
+                    ? VerticalIconButton(
+                        icon: Icons.picture_in_picture,
+                        size: 30,
+                        title: 'Fullscreen',
+                        enabled: showPictureEnabled,
+                        onTap: () => setState(() {
+                          showPicture = true;
+                        }),
+                      )
+                    : Container(),
               ],
             )),
+        showPictureEnabled == false
+            ? Positioned(
+                left: 10,
+                bottom: 20,
+                child: Column(
+                  children: [
+                    VolumeButton(
+                      onVolumeChanged: (value) {},
+                    ),
+                  ],
+                ))
+            : Container(),
         Positioned.fill(
             child: showPicture
                 ? _overlay(
@@ -172,6 +187,7 @@ class _videoCardState extends State<_videoCard> {
         });
       })
       ..play()
+      ..setVolume(0.3)
       ..setLooping(true);
     super.initState();
   }
