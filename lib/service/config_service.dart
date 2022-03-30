@@ -64,7 +64,7 @@ class ConfigService {
     return _config._top;
   }
 
-   QuickContentRef getQuickContentRef() {
+  QuickContentRef getQuickContentRef() {
     return _config._quickContentRef;
   }
 
@@ -86,6 +86,7 @@ class ConfigService {
               headerImagePath: element['headerImage'],
               videoURLPath: element['video'],
               title: element['title'],
+              titleSvgPath: null,
             ))
         .toList();
   }

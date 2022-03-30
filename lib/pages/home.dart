@@ -112,25 +112,17 @@ class HomeViewState extends State<Home> {
                                 width: constrains.maxWidth,
                               ),
                             ),
-                      SliverPadding(
-                        padding: const EdgeInsets.only(top: 20),
-                        sliver: SliverToBoxAdapter(
-                          child: Previews(
-                            key: const PageStorageKey('previews'),
-                            title: "privews",
-                            contentList: [
-                              Content(),
-                              Content(),
-                              Content(),
-                              Content(),
-                              Content(),
-                              Content(),
-                              Content(),
-                              Content()
-                            ],
-                          ),
-                        ),
-                      ),
+                      state is ContentLoaded
+                          ? SliverToBoxAdapter(
+                              child: Previews(
+                                  key: const PageStorageKey('friends'),
+                                  title: "Friends & Family",
+                                  contentList: state.friendsContent))
+                          : const SliverToBoxAdapter(
+                              child: LoadingContentList(
+                                  key: PageStorageKey('highlights'),
+                                  title: "test",
+                                  highlighted: true)),
                       SliverToBoxAdapter(
                         child: ContentList(
                             key: const PageStorageKey('myList'),

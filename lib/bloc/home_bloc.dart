@@ -35,16 +35,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           .where((element) => element != null)
           .map((e) => e!)
           .toList();
+
+      content.shuffle();
+
       var topContent = content
           .where((element) => element.categories.contains('top'))
           .toList();
       var featuredContent = content
           .where((element) => element.categories.contains('featured'))
           .toList();
-      topContent.shuffle();
-      featuredContent.shuffle();
-      content.shuffle();
-      emit(ContentLoaded(topContent, featuredContent, content));
+      var friendsContent = content
+          .where((element) => element.categories.contains('friends'))
+          .toList();
+      emit(ContentLoaded(topContent, featuredContent, friendsContent, content));
     }
   }
 
@@ -53,6 +56,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         await storageService.getDownloadPathFromRef(ref.videoURLPath);
     var imageURL =
         await storageService.getDownloadPathFromRef(ref.headerImagePath);
+    var titleSvgURL = ref.titleSvgPath != null
+        ? await storageService.getDownloadPathFromRef(ref.titleSvgPath!)
+        : null;
     var title = ref.title;
     if (videoURL == null || imageURL == null) {
       return null;
@@ -61,6 +67,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         headerImageURL: imageURL,
         videoURL: videoURL,
         title: title,
+        titleSvgURL: titleSvgURL,
         categories: ref.categories);
   }
 }

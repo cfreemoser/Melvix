@@ -25,6 +25,7 @@ class StorageService {
       return null;
     }
   }
+  
 
   Future<QuickContent?> mapFromRef(firebase_storage.Reference reference) async {
     try {
