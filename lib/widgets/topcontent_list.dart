@@ -95,19 +95,16 @@ class _ContentCardState extends State<ContentCard> {
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
         onTap: () => widget.onContentSelected(widget.content),
-        child: Container(
+        child: SizedBox(
           height: 220,
           width: 140,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: NetworkImage(widget.content.headerImageURL),
-              fit: BoxFit.cover,
-            ),
+          child: FadeInImage.assetNetwork(
+            placeholder: Constants.melvix_cover,
+            image: widget.content.headerImageURL,
+            fit: BoxFit.cover,
           ),
         ),
       ),
     );
   }
 }
-
-

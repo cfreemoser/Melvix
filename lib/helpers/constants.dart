@@ -17,6 +17,7 @@ class Constants {
   static const String content_cover_image = "assets/images/Content-cover.jpeg";
   static const String netflix_background_image =
       "assets/images/Login-cover.jpeg";
+  static const String melvix_cover = "assets/images/Melvix-cover.png";
 
   // colors
   static Color netflix_red = Color.fromRGBO(229, 9, 20, 1);
