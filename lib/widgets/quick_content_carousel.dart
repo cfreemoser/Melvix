@@ -133,18 +133,6 @@ class _QuickContentCarouselState extends State<QuickContentCarousel> {
                     : Container(),
               ],
             )),
-        showPictureEnabled == false
-            ? Positioned(
-                left: 10,
-                bottom: 20,
-                child: Column(
-                  children: [
-                    VolumeButton(
-                      onVolumeChanged: (value) {},
-                    ),
-                  ],
-                ))
-            : Container(),
         Positioned.fill(
             child: showPicture
                 ? _overlay(
@@ -204,6 +192,7 @@ class _videoCard extends StatefulWidget {
 
 class _videoCardState extends State<_videoCard> {
   late VideoPlayerController _videoPlayerController;
+  double volume = 0.3;
 
   @override
   void initState() {
@@ -217,6 +206,7 @@ class _videoCardState extends State<_videoCard> {
       })
       ..play()
       ..setLooping(true);
+
     super.initState();
   }
 
@@ -224,16 +214,18 @@ class _videoCardState extends State<_videoCard> {
   Widget build(BuildContext context) {
     if (widget.pageIndex == widget.currentPageIndex &&
         _videoPlayerController.value.isInitialized) {
-      _videoPlayerController.setVolume(0.3);
+      volume = 0.3;
+      _videoPlayerController.setVolume(volume);
     } else {
-      _videoPlayerController.setVolume(0);
+      volume = 0;
+      _videoPlayerController.setVolume(volume);
     }
 
     return Stack(
       children: <Widget>[
         SizedBox.expand(
           child: FittedBox(
-            fit: BoxFit.fitWidth,
+            fit: BoxFit.cover,
             child: SizedBox(
               width: _videoPlayerController.value.size.width,
               height: _videoPlayerController.value.size.height,
@@ -241,7 +233,6 @@ class _videoCardState extends State<_videoCard> {
             ),
           ),
         ),
-        //FURTHER IMPLEMENTATION
       ],
     );
   }
