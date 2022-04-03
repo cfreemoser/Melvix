@@ -85,6 +85,7 @@ class _PlayBackSpeedButtonState extends State<PlayBackSpeedButton> {
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
+      cursor: SystemMouseCursors.click,
       onExit: (_) => hideSlider(),
       child: GestureDetector(
         onTap: () => setState(() {

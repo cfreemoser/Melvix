@@ -106,6 +106,7 @@ class _verticalSliderState extends State<_verticalSlider> {
         child: Material(
           color: Colors.grey,
           child: MouseRegion(
+            cursor: SystemMouseCursors.click,
             onExit: (event) => widget.onExit(),
             child: Slider(
               onChangeEnd: widget.onExit(),

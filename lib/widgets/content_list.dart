@@ -43,16 +43,19 @@ class ContentList extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             itemBuilder: (context, index) {
               final Content content = contentList[index];
-              return GestureDetector(
-                onTap: () => onContentSelected(content),
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 8),
-                  height: highlighted ? 400 : 200,
-                  width: highlighted ? 260 : 130,
-                  child: FadeInImage.assetNetwork(
-                    placeholder: Constants.melvix_cover,
-                    image: content.headerImageURL,
-                    fit: BoxFit.cover,
+              return MouseRegion(
+                cursor: SystemMouseCursors.click,
+                child: GestureDetector(
+                  onTap: () => onContentSelected(content),
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                    height: highlighted ? 400 : 200,
+                    width: highlighted ? 260 : 130,
+                    child: FadeInImage.assetNetwork(
+                      placeholder: Constants.melvix_cover,
+                      image: content.headerImageURL,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               );

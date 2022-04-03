@@ -34,6 +34,7 @@ class AnimatedProfileCardState extends State<AnimatedProfileCard> {
         onTapUp: (_) => onEntered(false),
         child: SizedBox(
           child: MouseRegion(
+            cursor: SystemMouseCursors.click,
             onEnter: (_) => onEntered(true),
             onExit: (_) => onEntered(false),
             child: Column(

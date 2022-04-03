@@ -302,6 +302,7 @@ class _overlayControlState extends State<_overlayControl> {
     return GestureDetector(
       onTap: () => _showOverlay(),
       child: MouseRegion(
+        cursor: SystemMouseCursors.click,
         onHover: (event) => _showOverlay(),
         child: _hideOverlay
             ? Container()
