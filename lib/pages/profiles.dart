@@ -24,7 +24,6 @@ class Profiles extends StatelessWidget {
           if (smallScreen) {
             return Stack(
               children: [
-                _buildBackground(constraints.maxHeight, constraints.maxWidth),
                 SizedBox(
                   width: constraints.maxWidth,
                   height: constraints.maxHeight,
@@ -42,7 +41,19 @@ class Profiles extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Expanded(child: _buildGridView(constraints))
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Center(
+                                child: SizedBox(
+                                    width: 250,
+                                    child: _buildGridView(constraints)),
+                              ),
+                            ],
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -162,29 +173,22 @@ class Profiles extends StatelessWidget {
       buildWhen: (previous, current) => current is ProfilesInitial,
       builder: (context, state) {
         if (state is ProfilesInitial) {
-          return SizedBox(
-            width: constraints.maxWidth,
-            child: Center(
-                child: SizedBox(
-              width: constraints.maxWidth * 0.6,
-              height: 350,
-              child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: 2.6 / 2.4, crossAxisCount: 2),
-                  scrollDirection: Axis.vertical,
-                  itemCount: state.profiles.length,
-                  itemBuilder: (context, index) {
-                    return AnimatedProfileCard(
-                      width: 80,
-                      fontSize: 10,
-                      name: state.profiles[index].name,
-                      profileImage: state.profiles[index].profileImage,
-                      onTap: () => Navigator.of(context).pushNamed(
-                          "/profiles/home",
-                          arguments: HomeArguments(state.profiles[index])),
-                    );
-                  }),
-            )),
+          return GridView.builder(
+            shrinkWrap: true,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2),
+            scrollDirection: Axis.vertical,
+            itemCount: state.profiles.length,
+            itemBuilder: (context, index) {
+              return AnimatedProfileCard(
+                width: 80,
+                fontSize: 10,
+                name: state.profiles[index].name,
+                profileImage: state.profiles[index].profileImage,
+                onTap: () => Navigator.of(context).pushNamed("/profiles/home",
+                    arguments: HomeArguments(state.profiles[index])),
+              );
+            },
           );
         }
         return const Text(
