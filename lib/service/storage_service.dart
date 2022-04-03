@@ -1,6 +1,6 @@
-import 'dart:developer';
 
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:netflix_gallery/domain/quick_content.dart';
 
 class StorageService {
@@ -10,8 +10,15 @@ class StorageService {
 
   Future<String?> getDownloadPathFromRef(String ref) async {
     try {
-      return _storage.ref(ref).getDownloadURL();
-    } catch (e) {
+      return await _storage.ref(ref).getDownloadURL();
+    } 
+    on FirebaseException catch (error) {
+        if (error.code == "quota-exceeded") {
+          throw StorageQuotaExceeded();
+        }
+      }
+    catch (e) {
+
       return null;
     }
   }
@@ -25,7 +32,6 @@ class StorageService {
       return null;
     }
   }
-  
 
   Future<QuickContent?> mapFromRef(firebase_storage.Reference reference) async {
     try {
@@ -45,3 +51,7 @@ class StorageService {
     }
   }
 }
+
+class StorageQuotaExceeded implements Exception { 
+   // can contain constructors, variables and methods 
+} 

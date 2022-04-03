@@ -66,7 +66,8 @@ class Previews extends StatelessWidget {
                                 if (snapshot.hasError) {
                                   return _circleContainer(Colors.orange);
                                 }
-                                var color = snapshot.data?.dominantColor?.color;
+                                var color =
+                                    snapshot.data?.darkVibrantColor?.color;
                                 if (color != null) {
                                   return _circleContainer(color);
                                 }

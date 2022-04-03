@@ -19,6 +19,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc(this.configService, this.storageService, this.firestoreService)
       : super(HomeInitial()) {
     on<HomeEvent>((event, emit) {});
+    on<ErrorPageRequested>((event, emit) {
+      emit(ErrorState());
+    });
     on<ContentRequested>((event, emit) => loadContent(emit));
 
     firestoreService.subscribeToContent().listen((event) {
@@ -52,22 +55,27 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   Future<Content?> mapContentRefToContent(ContentRef ref) async {
-    var videoURL =
-        await storageService.getDownloadPathFromRef(ref.videoURLPath);
-    var imageURL =
-        await storageService.getDownloadPathFromRef(ref.headerImagePath);
-    var titleSvgURL = ref.titleSvgPath != null
-        ? await storageService.getDownloadPathFromRef(ref.titleSvgPath!)
-        : null;
-    var title = ref.title;
-    if (videoURL == null || imageURL == null) {
+    try {
+      var videoURL =
+          await storageService.getDownloadPathFromRef(ref.videoURLPath);
+      var imageURL =
+          await storageService.getDownloadPathFromRef(ref.headerImagePath);
+      var titleSvgURL = ref.titleSvgPath != null
+          ? await storageService.getDownloadPathFromRef(ref.titleSvgPath!)
+          : null;
+      var title = ref.title;
+      if (videoURL == null || imageURL == null) {
+        return null;
+      }
+      return Content(
+          headerImageURL: imageURL,
+          videoURL: videoURL,
+          title: title,
+          titleSvgURL: titleSvgURL,
+          categories: ref.categories);
+    } on StorageQuotaExceeded {
+      add(ErrorPageRequested());
       return null;
     }
-    return Content(
-        headerImageURL: imageURL,
-        videoURL: videoURL,
-        title: title,
-        titleSvgURL: titleSvgURL,
-        categories: ref.categories);
   }
 }

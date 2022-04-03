@@ -17,6 +17,9 @@ class TopLoaded extends HomeState {
   TopLoaded(this.topContent);
 }
 
+class ErrorState extends HomeState {
+}
+
 class ContentLoaded extends HomeState {
   final List<Content> topContent;
   final List<Content> featuredContent;

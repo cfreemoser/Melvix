@@ -85,7 +85,12 @@ class HomeViewState extends State<Home> {
                       );
                     },
                   )),
-              body: BlocBuilder<HomeBloc, HomeState>(
+              body: BlocConsumer<HomeBloc, HomeState>(
+                listener: (context, state) {
+                  if (state is ErrorState) {
+                    Navigator.pushNamed(context, "/error");
+                  }
+                },
                 builder: (context, state) {
                   return CustomScrollView(
                     controller: _scrollController,

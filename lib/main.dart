@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:netflix_gallery/bloc/auth_bloc.dart';
+import 'package:netflix_gallery/bloc/error_bloc.dart';
 import 'package:netflix_gallery/bloc/home_bloc.dart';
 import 'package:netflix_gallery/bloc/profiles_bloc.dart';
 import 'package:netflix_gallery/bloc/quick_content_bloc.dart';
+import 'package:netflix_gallery/pages/error_screen.dart';
 import 'package:netflix_gallery/pages/login.dart';
 import 'package:netflix_gallery/pages/nav_screen.dart';
 import 'package:netflix_gallery/pages/profiles.dart';
@@ -67,6 +69,8 @@ class MyApp extends StatelessWidget {
       title: 'Melvix',
       initialRoute: "/login",
       routes: {
+        "/error": (context) => BlocProvider(
+            create: (context) => ErrorBloc(), child: ErrorScreen()),
         "/login": (context) => BlocProvider(
             create: (context) =>
                 AuthBloc(authenticationService)..add(InitRequested()),
