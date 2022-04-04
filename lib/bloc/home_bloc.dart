@@ -12,12 +12,10 @@ part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  final ConfigService configService;
   final StorageService storageService;
   final FirestoreService firestoreService;
 
-  HomeBloc(this.configService, this.storageService, this.firestoreService)
-      : super(HomeInitial()) {
+  HomeBloc(this.storageService, this.firestoreService) : super(HomeInitial()) {
     on<HomeEvent>((event, emit) {});
     on<ErrorPageRequested>((event, emit) {
       emit(ErrorState());

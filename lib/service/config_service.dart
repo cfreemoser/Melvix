@@ -6,8 +6,6 @@ import 'package:yaml/yaml.dart';
 
 class Config {
   late List<ProfileConfig> _profiles;
-  late List<ContentRef> _featuredContent;
-  late List<ContentRef> _top;
   late QuickContentRef _quickContentRef;
 }
 
@@ -43,9 +41,6 @@ class ConfigService {
             ))
         .toList();
 
-    conf._featuredContent = loadListFromConfig(yamlMap, "Highlights");
-    conf._top = loadListFromConfig(yamlMap, "Top");
-
     String quickContentRef = yamlMap['QuickContentPath'];
     conf._quickContentRef = QuickContentRef(storagePath: quickContentRef);
 
@@ -55,15 +50,7 @@ class ConfigService {
   List<Profile> getProfilesFromConfig() {
     return _config._profiles.map(_mapProfileConfigToProfile).toList();
   }
-
-  List<ContentRef> getFeaturedContentFromConfig() {
-    return _config._featuredContent;
-  }
-
-  List<ContentRef> getTopContentFromConfig() {
-    return _config._top;
-  }
-
+  
   QuickContentRef getQuickContentRef() {
     return _config._quickContentRef;
   }

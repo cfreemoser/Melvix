@@ -82,7 +82,7 @@ class MyApp extends StatelessWidget {
         "/profiles/home": (context) => MultiBlocProvider(providers: [
               BlocProvider(
                 create: (context) =>
-                    HomeBloc(configService, storageService, firestoreService),
+                    HomeBloc(storageService, firestoreService),
               ),
               BlocProvider(
                 create: (context) =>
