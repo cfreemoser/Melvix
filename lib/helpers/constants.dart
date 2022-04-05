@@ -11,7 +11,7 @@ class Constants {
 
   // icons
   static const String netflix_icon_full = "assets/images/Melvix-logo.svg";
-  static const String netflix_icon_small = "assets/images/Netflix-N-logo.svg";
+  static const String netflix_icon_small = "assets/images/Melvix-M-logo.svg";
 
   // images
   static const String content_cover_image = "assets/images/Content-cover.jpeg";

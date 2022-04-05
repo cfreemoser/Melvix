@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:netflix_gallery/domain/quick_content.dart';
 import 'package:netflix_gallery/widgets/netflix_app_bar.dart';
 import 'package:netflix_gallery/widgets/vertical_icon_button.dart';
-import 'package:netflix_gallery/widgets/volume_button.dart';
 import 'package:preload_page_view/preload_page_view.dart';
 import 'package:video_player/video_player.dart';
 
@@ -50,6 +49,13 @@ class _QuickContentCarouselState extends State<QuickContentCarousel> {
       });
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _videoPlayerController.dispose();
+    _pageController.dispose();
+    super.dispose();
   }
 
   void scrollListener() {
