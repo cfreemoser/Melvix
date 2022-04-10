@@ -17,15 +17,16 @@ class TopLoaded extends HomeState {
   TopLoaded(this.topContent);
 }
 
-class ErrorState extends HomeState {
-}
+class ErrorState extends HomeState {}
 
 class ContentLoaded extends HomeState {
   final List<Content> topContent;
   final List<Content> featuredContent;
   final List<Content> friendsContent;
+  final List<Content> stefanContent;
 
   final List<Content> allContent;
 
-  ContentLoaded(this.topContent, this.featuredContent, this.friendsContent, this.allContent);
+  ContentLoaded(this.topContent, this.featuredContent, this.friendsContent,
+      this.stefanContent, this.allContent);
 }

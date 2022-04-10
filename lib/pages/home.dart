@@ -163,6 +163,26 @@ class HomeViewState extends State<Home> {
                                   highlighted: true)),
                       state is ContentLoaded
                           ? SliverToBoxAdapter(
+                              child: AdaptiveLayout(
+                              desktop: Container(),
+                              mobile: ContentList(
+                                  key: const PageStorageKey('stefan'),
+                                  title: "Films van Stefan",
+                                  highlighted: false,
+                                  onContentSelected: (content) =>
+                                      onContentSelected(content),
+                                  contentList: state.stefanContent),
+                            ))
+                          : SliverToBoxAdapter(
+                              child: AdaptiveLayout(
+                              desktop: Container(),
+                              mobile: const LoadingContentList(
+                                  key: PageStorageKey('stefan'),
+                                  title: "test",
+                                  highlighted: false),
+                            )),
+                      state is ContentLoaded
+                          ? SliverToBoxAdapter(
                               child: ContentList(
                                   key: const PageStorageKey('all'),
                                   title: "Library",

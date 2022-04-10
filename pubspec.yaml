@@ -79,12 +79,10 @@ flutter:
   uses-material-design: true
   
   assets:
-    - assets/images/Netflix-logo.svg
     - assets/images/Melvix-logo.svg
     - assets/images/Login-cover.jpeg
     - assets/images/Netflix-avatar.png
     - assets/images/Netflix-avatar2.jpeg
-    - assets/images/Netflix-N-logo.svg
     - assets/images/Melvix-M-logo.svg
     - assets/images/Content-cover.jpeg
     - assets/config.yaml
@@ -95,6 +93,7 @@ flutter:
     - assets/images/Profile5.png
     - assets/images/Melvix-cover.png
     - assets/images/Error.png
+    - assets/images/reaction.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

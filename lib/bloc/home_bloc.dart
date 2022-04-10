@@ -48,7 +48,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       var friendsContent = content
           .where((element) => element.categories.contains('friends'))
           .toList();
-      emit(ContentLoaded(topContent, featuredContent, friendsContent, content));
+      var stefanContent = content
+          .where((element) => element.categories.contains('stefan_original'))
+          .toList();
+      emit(ContentLoaded(
+          topContent, featuredContent, friendsContent, stefanContent, content));
     }
   }
 

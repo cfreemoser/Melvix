@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:netflix_gallery/domain/content.dart';
 import 'package:netflix_gallery/widgets/netflix_app_bar.dart';
 import 'package:shimmer/shimmer.dart';
@@ -51,10 +52,29 @@ class ContentList extends StatelessWidget {
                     margin: const EdgeInsets.symmetric(horizontal: 8),
                     height: highlighted ? 400 : 200,
                     width: highlighted ? 260 : 130,
-                    child: FadeInImage.assetNetwork(
-                      placeholder: Constants.melvix_cover,
-                      image: content.headerImageURL,
-                      fit: BoxFit.cover,
+                    child: Stack(
+                      children: [
+                        Positioned.fill(
+                            child: FadeInImage.assetNetwork(
+                          placeholder: Constants.melvix_cover,
+                          image: content.headerImageURL,
+                          fit: BoxFit.cover,
+                        )),
+                        content.titleSvgURL != null
+                            ? Positioned(
+                                bottom: 0,
+                                left: 0,
+                                right: 0,
+                                child: Container(
+                                  margin: EdgeInsets.only(left: 8, right: 8),
+                                  child: SvgPicture.network(
+                                    content.titleSvgURL!,
+                                    fit: BoxFit.fitWidth,
+                                  ),
+                                ),
+                              )
+                            : Container()
+                      ],
                     ),
                   ),
                 ),

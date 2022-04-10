@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:netflix_gallery/domain/content_ref.dart';
 
@@ -43,6 +45,7 @@ class FirestoreService {
         );
       }
     } catch (e) {
+      log(e.toString());
       return null;
     }
   }

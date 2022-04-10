@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:netflix_gallery/domain/quick_content.dart';
+import 'package:netflix_gallery/widgets/animated_reaction.dart';
 import 'package:netflix_gallery/widgets/netflix_app_bar.dart';
 import 'package:netflix_gallery/widgets/vertical_icon_button.dart';
 import 'package:preload_page_view/preload_page_view.dart';
@@ -32,6 +33,7 @@ class _QuickContentCarouselState extends State<QuickContentCarousel> {
   bool showPicture = false;
   bool showPictureEnabled = true;
   bool isOnPageTurning = false;
+  bool animateReaction = false;
   int current = 0;
 
   @override
@@ -102,6 +104,14 @@ class _QuickContentCarouselState extends State<QuickContentCarousel> {
                       ));
           },
         ),
+        Positioned.fill(
+            child: AnimatedReaction(
+          duration: 5000,
+          isAnimating: animateReaction,
+          onEnd: () => setState(() {
+            animateReaction = !animateReaction;
+          }),
+        )),
         Positioned(
             right: 10,
             bottom: 20,
@@ -111,7 +121,10 @@ class _QuickContentCarouselState extends State<QuickContentCarousel> {
                   icon: Icons.face,
                   size: 30,
                   title: 'LOL',
-                  onTap: () => dev.log("s"),
+                  onTap: () => setState(() {
+                    dev.log("start animation");
+                    animateReaction = true;
+                  }),
                 ),
                 const SizedBox(height: 20),
                 VerticalIconButton(

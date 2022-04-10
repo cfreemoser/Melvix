@@ -73,7 +73,7 @@ class Profiles extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        margin: const EdgeInsets.only(top: 36, left: 16),
+                        margin: const EdgeInsets.only(top: 56, left: 16),
                         child: Row(
                           children: [
                             _buildNetflixLogo(smallScreen),
