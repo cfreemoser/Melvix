@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:netflix_gallery/bloc/home_bloc.dart';
 import 'package:netflix_gallery/cubits/app_bar/app_bar_cubit.dart';
 import 'package:netflix_gallery/domain/content.dart';
+import 'package:netflix_gallery/helpers/constants.dart';
 import 'package:netflix_gallery/navigation/video_args.dart';
 import 'package:netflix_gallery/widgets/adaptive_layout.dart';
 import 'package:netflix_gallery/widgets/content_header.dart';
@@ -88,7 +89,7 @@ class HomeViewState extends State<Home> {
               body: BlocConsumer<HomeBloc, HomeState>(
                 listener: (context, state) {
                   if (state is ErrorState) {
-                    Navigator.pushNamed(context, "/error");
+                    Navigator.pushReplacementNamed(context, "/error");
                   }
                 },
                 builder: (context, state) {
@@ -105,9 +106,7 @@ class HomeViewState extends State<Home> {
                                       hight: constrains.maxHeight,
                                       width: constrains.maxWidth,
                                       onContentSelected: (content) =>
-                                          Navigator.pushNamed(
-                                              context, "/profiles/home/play",
-                                              arguments: VideoArgs(content))),
+                                          onContentSelected(content)),
                                 ],
                               ),
                             )
@@ -121,37 +120,20 @@ class HomeViewState extends State<Home> {
                           ? SliverToBoxAdapter(
                               child: Previews(
                                   key: const PageStorageKey('friends'),
-                                  title: "Friends & Family",
+                                  title: Constants.friends_headline,
+                                  onTap: (content) =>
+                                      onContentSelected(content),
                                   contentList: state.friendsContent))
                           : const SliverToBoxAdapter(
                               child: LoadingContentList(
                                   key: PageStorageKey('highlights'),
-                                  title: "test",
+                                  title: Constants.friends_headline,
                                   highlighted: true)),
-                      SliverToBoxAdapter(
-                        child: ContentList(
-                            key: const PageStorageKey('myList'),
-                            title: "My List",
-                            onContentSelected: (content) =>
-                                Navigator.of(context).pushNamed(
-                                    "/profiles/home/play",
-                                    arguments: VideoArgs(content)),
-                            contentList: [
-                              Content(),
-                              Content(),
-                              Content(),
-                              Content(),
-                              Content(),
-                              Content(),
-                              Content(),
-                              Content()
-                            ]),
-                      ),
                       state is ContentLoaded
                           ? SliverToBoxAdapter(
                               child: ContentList(
                                   key: const PageStorageKey('highlights'),
-                                  title: "Highlights",
+                                  title: Constants.highlights_headline,
                                   highlighted: true,
                                   onContentSelected: (content) =>
                                       onContentSelected(content),
@@ -159,7 +141,7 @@ class HomeViewState extends State<Home> {
                           : const SliverToBoxAdapter(
                               child: LoadingContentList(
                                   key: PageStorageKey('highlights'),
-                                  title: "test",
+                                  title: Constants.highlights_headline,
                                   highlighted: true)),
                       state is ContentLoaded
                           ? SliverToBoxAdapter(
@@ -167,7 +149,7 @@ class HomeViewState extends State<Home> {
                               desktop: Container(),
                               mobile: ContentList(
                                   key: const PageStorageKey('stefan'),
-                                  title: "Films van Stefan",
+                                  title: Constants.stefan_headline,
                                   highlighted: false,
                                   onContentSelected: (content) =>
                                       onContentSelected(content),
@@ -178,14 +160,14 @@ class HomeViewState extends State<Home> {
                               desktop: Container(),
                               mobile: const LoadingContentList(
                                   key: PageStorageKey('stefan'),
-                                  title: "test",
+                                  title: Constants.stefan_headline,
                                   highlighted: false),
                             )),
                       state is ContentLoaded
                           ? SliverToBoxAdapter(
                               child: ContentList(
                                   key: const PageStorageKey('all'),
-                                  title: "Library",
+                                  title: Constants.library_headline,
                                   highlighted: false,
                                   onContentSelected: (content) =>
                                       onContentSelected(content),
@@ -193,7 +175,7 @@ class HomeViewState extends State<Home> {
                           : const SliverToBoxAdapter(
                               child: LoadingContentList(
                                   key: PageStorageKey('all'),
-                                  title: "Library",
+                                  title: Constants.library_headline,
                                   highlighted: true)),
                     ],
                   );

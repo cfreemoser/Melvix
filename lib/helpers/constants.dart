@@ -22,4 +22,10 @@ class Constants {
   // colors
   static Color netflix_red = Color.fromRGBO(229, 9, 20, 1);
   static Color netflix_grey = Color.fromRGBO(89, 89, 89, 1);
+
+  // home page
+  static const String friends_headline = "Je vrienden";
+  static const String highlights_headline = "Jouw hoogtepunten";
+  static const String stefan_headline = "Films van Stefan";
+  static const String library_headline = "Bibliotheek";
 }

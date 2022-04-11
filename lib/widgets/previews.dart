@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:netflix_gallery/domain/content.dart';
@@ -8,9 +6,14 @@ import 'package:palette_generator/palette_generator.dart';
 class Previews extends StatelessWidget {
   final String title;
   final List<Content> contentList;
+  final Function(Content) onTap;
   PaletteGenerator? paletteGenerator;
 
-  Previews({Key? key, required this.title, required this.contentList})
+  Previews(
+      {Key? key,
+      required this.title,
+      required this.contentList,
+      required this.onTap})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -39,7 +42,7 @@ class Previews extends StatelessWidget {
               return MouseRegion(
                 cursor: SystemMouseCursors.click,
                 child: GestureDetector(
-                  onTap: () => log("message"),
+                  onTap: () => onTap(content),
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
