@@ -228,19 +228,22 @@ class _ContentHeaderDesktopState extends State<_ContentHeaderDesktop> {
                   ),
                 ),
                 const SizedBox(height: 15),
-                Text(
-                  featuredContent.description,
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      shadows: [
-                        Shadow(
-                          color: Colors.black,
-                          blurRadius: 6,
-                          offset: Offset(2, 4),
-                        ),
-                      ]),
+                SizedBox(
+                  width: 400,
+                  child: Text(
+                    featuredContent.description,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                        shadows: [
+                          Shadow(
+                            color: Colors.black,
+                            blurRadius: 6,
+                            offset: Offset(2, 4),
+                          ),
+                        ]),
+                  ),
                 ),
                 const SizedBox(height: 25),
                 SizedBox(
