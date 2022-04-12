@@ -229,7 +229,7 @@ class _ContentHeaderDesktopState extends State<_ContentHeaderDesktop> {
                 ),
                 const SizedBox(height: 15),
                 SizedBox(
-                  width: 400,
+                  width: 600,
                   child: Text(
                     featuredContent.description,
                     style: const TextStyle(
