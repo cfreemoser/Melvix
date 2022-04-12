@@ -65,15 +65,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       var titleSvgURL = ref.titleSvgPath != null
           ? await storageService.getDownloadPathFromRef(ref.titleSvgPath!)
           : null;
-      var title = ref.title;
       if (videoURL == null || imageURL == null) {
         return null;
       }
       return Content(
           headerImageURL: imageURL,
           videoURL: videoURL,
-          title: title,
+          title: ref.title,
           titleSvgURL: titleSvgURL,
+          description: ref.description,
           categories: ref.categories);
     } on StorageQuotaExceeded {
       add(ErrorPageRequested());

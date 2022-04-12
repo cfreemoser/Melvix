@@ -31,6 +31,7 @@ class FirestoreService {
         return ContentRef(
           headerImagePath: snapshot['headerImagePath'],
           videoURLPath: snapshot['videoPath'],
+          description: snapshot['description'],
           title: snapshot['title'],
           titleSvgPath: snapshot['titleSvgPath'],
           categories: categories,
@@ -39,6 +40,7 @@ class FirestoreService {
         return ContentRef(
           headerImagePath: snapshot['headerImagePath'],
           videoURLPath: snapshot['videoPath'],
+          description: snapshot['description'],
           title: snapshot['title'],
           titleSvgPath: null,
           categories: categories,

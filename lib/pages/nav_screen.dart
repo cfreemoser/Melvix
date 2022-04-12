@@ -1,9 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:netflix_gallery/bloc/netflixbar_bloc.dart';
 import 'package:netflix_gallery/cubits/app_bar/app_bar_cubit.dart';
 import 'package:netflix_gallery/pages/home.dart';
 import 'package:netflix_gallery/pages/quick_content_screen.dart';
 import 'package:netflix_gallery/widgets/adaptive_layout.dart';
+
+import '../widgets/netflix_app_bar.dart';
 
 class NavScreen extends StatefulWidget {
   @override
@@ -31,9 +36,61 @@ class _NaveScreenState extends State<NavScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: BlocProvider<AppBarCubit>(
-        create: (_) => AppBarCubit(),
-        child: _screens[_selectedIndex],
+      body: BlocProvider<NetflixbarBloc>(
+        create: (_) => NetflixbarBloc(),
+        child: LayoutBuilder(
+          builder: (context, constraints) => Scaffold(
+              extendBodyBehindAppBar: true,
+              backgroundColor: Colors.black,
+              appBar: _selectedIndex == 0 || AdaptiveLayout.isDesktop(context)
+                  ? PreferredSize(
+                      preferredSize: Size(constraints.maxWidth, 50),
+                      child: BlocConsumer<NetflixbarBloc, NetflixbarState>(
+                        listener: (context, state) {
+                          if (state is NetflxbarEnsureHomePage) {
+                            setState(() {
+                              _selectedIndex = 0;
+                            });
+                          }
+                          if (state is NetflixbarOffsetChanged) {
+                            setState(() {
+                              _selectedIndex = state.section ==
+                                      SelectedSection.quickLaughters
+                                  ? 1
+                                  : 0;
+                            });
+                          }
+                        },
+                        builder: (context, state) {
+                          return NetflixAppBar(
+                            scrollOffset: state is NetflixbarOffsetChanged
+                                ? state.offset
+                                : 0,
+                            selectedIndex: state is NetflixbarOffsetChanged
+                                ? state.section.index
+                                : 0,
+                            allTap: () =>
+                                BlocProvider.of<NetflixbarBloc>(context)
+                                    .add(NetflixbarAllRequested()),
+                            highlightsTap: () =>
+                                BlocProvider.of<NetflixbarBloc>(context)
+                                    .add(NetflixbarHighlightsRequested()),
+                            friendsTap: () =>
+                                BlocProvider.of<NetflixbarBloc>(context)
+                                    .add(NetflixbarFriendsRequested()),
+                            topTenTap: () =>
+                                BlocProvider.of<NetflixbarBloc>(context)
+                                    .add(NetflixbarTopRequested()),
+                            quickLaughterTap: () => setState(() {
+                              BlocProvider.of<NetflixbarBloc>(context)
+                                  .add(NetflixbarQuickLaughtersRequested());
+                            }),
+                          );
+                        },
+                      ))
+                  : null,
+              body: _screens[_selectedIndex]),
+        ),
       ),
       bottomNavigationBar: !AdaptiveLayout.isDesktop(context)
           ? BottomNavigationBar(

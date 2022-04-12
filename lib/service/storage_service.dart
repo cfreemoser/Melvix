@@ -11,7 +11,6 @@ class StorageService {
 
   Future<String?> getDownloadPathFromRef(String ref) async {
     try {
-      log(ref);
       return await _storage.ref(ref).getDownloadURL();
     } on FirebaseException catch (error) {
       if (error.code == "quota-exceeded") {

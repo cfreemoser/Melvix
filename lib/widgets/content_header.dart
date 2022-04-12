@@ -220,7 +220,7 @@ class _ContentHeaderDesktopState extends State<_ContentHeaderDesktop> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  width: 250,
+                  width: 400,
                   child: Text(
                     featuredContent.title,
                     textAlign: TextAlign.start,
@@ -229,7 +229,7 @@ class _ContentHeaderDesktopState extends State<_ContentHeaderDesktop> {
                 ),
                 const SizedBox(height: 15),
                 Text(
-                  featuredContent.title,
+                  featuredContent.description,
                   style: const TextStyle(
                       color: Colors.white,
                       fontSize: 18,

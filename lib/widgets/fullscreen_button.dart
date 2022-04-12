@@ -1,5 +1,5 @@
 import 'dart:developer';
-// import 'dart:html';
+import 'dart:html';
 
 import 'package:flutter/material.dart';
 
@@ -20,9 +20,9 @@ class _FullscreenButtonState extends State<FullscreenButton> {
       onPressed: () => {
         setState(() {
           if (isFullscreen) {
-            //  document.exitFullscreen();
+            document.exitFullscreen();
           } else {
-            // document.documentElement?.requestFullscreen();
+            document.documentElement?.requestFullscreen();
           }
           isFullscreen = !isFullscreen;
         })

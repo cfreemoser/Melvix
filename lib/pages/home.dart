@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:netflix_gallery/bloc/home_bloc.dart';
+import 'package:netflix_gallery/bloc/netflixbar_bloc.dart';
 import 'package:netflix_gallery/cubits/app_bar/app_bar_cubit.dart';
 import 'package:netflix_gallery/domain/content.dart';
 import 'package:netflix_gallery/helpers/constants.dart';
@@ -27,8 +28,8 @@ class HomeViewState extends State<Home> {
   void initState() {
     _scrollController = ScrollController()
       ..addListener(() {
-        BlocProvider.of<AppBarCubit>(context)
-            .setOffset(_scrollController.offset);
+        BlocProvider.of<NetflixbarBloc>(context).add(
+            NetflixbarScrollOffsetChanged(offset: _scrollController.offset));
       });
 
     super.initState();
@@ -43,144 +44,114 @@ class HomeViewState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constrains) {
-      return DefaultTabController(
-          length: 3,
-          child: Scaffold(
-              extendBodyBehindAppBar: true,
-              backgroundColor: Colors.black,
-              appBar: PreferredSize(
-                  preferredSize: Size(constrains.maxWidth, 50),
-                  child: BlocBuilder<AppBarCubit, double>(
-                    builder: (context, scrollOffset) {
-                      return NetflixAppBar(
-                        scrollOffset: scrollOffset,
-                        allTap: () => setState(() {
-                          _scrollController.animateTo(
-                              AdaptiveLayout.isMobile(context) ? 1500 : 1500,
-                              duration: const Duration(milliseconds: 500),
-                              curve: Curves.easeInOut);
-                        }),
-                        highlightsTap: () => setState(() {
-                          _scrollController.animateTo(
-                              AdaptiveLayout.isMobile(context) ? 1100 : 1500,
-                              duration: const Duration(milliseconds: 500),
-                              curve: Curves.easeInOut);
-                        }),
-                        friendsTap: () => setState(() {
-                          _scrollController.animateTo(
-                              AdaptiveLayout.isMobile(context) ? 750 : 1000,
-                              duration: const Duration(milliseconds: 500),
-                              curve: Curves.easeInOut);
-                        }),
-                        topTenTap: () => setState(() {
-                          _scrollController.animateTo(0,
-                              duration: const Duration(milliseconds: 500),
-                              curve: Curves.easeInOut);
-                        }),
-                        myListTap: () => setState(() {
-                          _scrollController.animateTo(
-                              AdaptiveLayout.isMobile(context) ? 950 : 1200,
-                              duration: const Duration(milliseconds: 500),
-                              curve: Curves.easeInOut);
-                        }),
-                      );
-                    },
-                  )),
-              body: BlocConsumer<HomeBloc, HomeState>(
-                listener: (context, state) {
-                  if (state is ErrorState) {
-                    Navigator.pushReplacementNamed(context, "/error");
-                  }
-                },
-                builder: (context, state) {
-                  return CustomScrollView(
-                    controller: _scrollController,
-                    slivers: [
-                      state is ContentLoaded
-                          ? SliverToBoxAdapter(
-                              child: Stack(
-                                children: [
-                                  ContentHeader(
-                                      topContent:
-                                          (state as ContentLoaded).topContent,
-                                      hight: constrains.maxHeight,
-                                      width: constrains.maxWidth,
-                                      onContentSelected: (content) =>
-                                          onContentSelected(content)),
-                                ],
-                              ),
-                            )
-                          : SliverToBoxAdapter(
-                              child: LoadingContentHeader(
-                                hight: constrains.maxHeight,
-                                width: constrains.maxWidth,
-                              ),
+      BlocProvider.of<NetflixbarBloc>(context).add(NetflixbarConstrainsChanged(
+          mobile: AdaptiveLayout.isMobile(context),
+          maxHeight: constrains.maxHeight));
+      return BlocListener<NetflixbarBloc, NetflixbarState>(
+        listener: (context, state) {
+          if (state is NetflixbarOffsetRequested) {
+            _scrollController.animateTo(state.offset,
+                duration: Duration(milliseconds: 500),
+                curve: Curves.decelerate);
+          }
+        },
+        child: DefaultTabController(
+            length: 3,
+            child: BlocConsumer<HomeBloc, HomeState>(
+              listener: (context, state) {
+                if (state is ErrorState) {
+                  Navigator.pushReplacementNamed(context, "/error");
+                }
+              },
+              builder: (context, state) {
+                return CustomScrollView(
+                  controller: _scrollController,
+                  slivers: [
+                    state is ContentLoaded
+                        ? SliverToBoxAdapter(
+                            child: Stack(
+                              children: [
+                                ContentHeader(
+                                    topContent:
+                                        (state as ContentLoaded).topContent,
+                                    hight: constrains.maxHeight,
+                                    width: constrains.maxWidth,
+                                    onContentSelected: (content) =>
+                                        onContentSelected(content)),
+                              ],
                             ),
-                      state is ContentLoaded
-                          ? SliverToBoxAdapter(
-                              child: Previews(
-                                  key: const PageStorageKey('friends'),
-                                  title: Constants.friends_headline,
-                                  onTap: (content) =>
-                                      onContentSelected(content),
-                                  contentList: state.friendsContent))
-                          : const SliverToBoxAdapter(
-                              child: LoadingContentList(
-                                  key: PageStorageKey('highlights'),
-                                  title: Constants.friends_headline,
-                                  highlighted: true)),
-                      state is ContentLoaded
-                          ? SliverToBoxAdapter(
-                              child: ContentList(
-                                  key: const PageStorageKey('highlights'),
-                                  title: Constants.highlights_headline,
-                                  highlighted: true,
-                                  onContentSelected: (content) =>
-                                      onContentSelected(content),
-                                  contentList: state.featuredContent))
-                          : const SliverToBoxAdapter(
-                              child: LoadingContentList(
-                                  key: PageStorageKey('highlights'),
-                                  title: Constants.highlights_headline,
-                                  highlighted: true)),
-                      state is ContentLoaded
-                          ? SliverToBoxAdapter(
-                              child: AdaptiveLayout(
-                              desktop: Container(),
-                              mobile: ContentList(
-                                  key: const PageStorageKey('stefan'),
-                                  title: Constants.stefan_headline,
-                                  highlighted: false,
-                                  onContentSelected: (content) =>
-                                      onContentSelected(content),
-                                  contentList: state.stefanContent),
-                            ))
-                          : SliverToBoxAdapter(
-                              child: AdaptiveLayout(
-                              desktop: Container(),
-                              mobile: const LoadingContentList(
-                                  key: PageStorageKey('stefan'),
-                                  title: Constants.stefan_headline,
-                                  highlighted: false),
-                            )),
-                      state is ContentLoaded
-                          ? SliverToBoxAdapter(
-                              child: ContentList(
-                                  key: const PageStorageKey('all'),
-                                  title: Constants.library_headline,
-                                  highlighted: false,
-                                  onContentSelected: (content) =>
-                                      onContentSelected(content),
-                                  contentList: state.allContent))
-                          : const SliverToBoxAdapter(
-                              child: LoadingContentList(
-                                  key: PageStorageKey('all'),
-                                  title: Constants.library_headline,
-                                  highlighted: true)),
-                    ],
-                  );
-                },
-              )));
+                          )
+                        : SliverToBoxAdapter(
+                            child: LoadingContentHeader(
+                              hight: constrains.maxHeight,
+                              width: constrains.maxWidth,
+                            ),
+                          ),
+                    state is ContentLoaded
+                        ? SliverToBoxAdapter(
+                            child: Previews(
+                                key: const PageStorageKey('friends'),
+                                title: Constants.friends_headline,
+                                onTap: (content) => onContentSelected(content),
+                                contentList: state.friendsContent))
+                        : const SliverToBoxAdapter(
+                            child: LoadingContentList(
+                                key: PageStorageKey('highlights'),
+                                title: Constants.friends_headline,
+                                highlighted: true)),
+                    state is ContentLoaded
+                        ? SliverToBoxAdapter(
+                            child: ContentList(
+                                key: const PageStorageKey('highlights'),
+                                title: Constants.highlights_headline,
+                                highlighted: true,
+                                onContentSelected: (content) =>
+                                    onContentSelected(content),
+                                contentList: state.featuredContent))
+                        : const SliverToBoxAdapter(
+                            child: LoadingContentList(
+                                key: PageStorageKey('highlights'),
+                                title: Constants.highlights_headline,
+                                highlighted: true)),
+                    state is ContentLoaded
+                        ? SliverToBoxAdapter(
+                            child: AdaptiveLayout(
+                            desktop: Container(),
+                            mobile: ContentList(
+                                key: const PageStorageKey('stefan'),
+                                title: Constants.stefan_headline,
+                                highlighted: false,
+                                onContentSelected: (content) =>
+                                    onContentSelected(content),
+                                contentList: state.stefanContent),
+                          ))
+                        : SliverToBoxAdapter(
+                            child: AdaptiveLayout(
+                            desktop: Container(),
+                            mobile: const LoadingContentList(
+                                key: PageStorageKey('stefan'),
+                                title: Constants.stefan_headline,
+                                highlighted: false),
+                          )),
+                    state is ContentLoaded
+                        ? SliverToBoxAdapter(
+                            child: ContentList(
+                                key: const PageStorageKey('all'),
+                                title: Constants.library_headline,
+                                highlighted: false,
+                                onContentSelected: (content) =>
+                                    onContentSelected(content),
+                                contentList: state.allContent))
+                        : const SliverToBoxAdapter(
+                            child: LoadingContentList(
+                                key: PageStorageKey('all'),
+                                title: Constants.library_headline,
+                                highlighted: true)),
+                  ],
+                );
+              },
+            )),
+      );
     });
   }
 

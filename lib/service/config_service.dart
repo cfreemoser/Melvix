@@ -65,16 +65,4 @@ class ConfigService {
         profilePin: profileConfig.pinCode,
         profileImage: image);
   }
-
-  List<ContentRef> loadListFromConfig(dynamic yamlMap, String configKey) {
-    YamlList featuredContentConfig = yamlMap[configKey];
-    return featuredContentConfig
-        .map((element) => ContentRef(
-              headerImagePath: element['headerImage'],
-              videoURLPath: element['video'],
-              title: element['title'],
-              titleSvgPath: null,
-            ))
-        .toList();
-  }
 }

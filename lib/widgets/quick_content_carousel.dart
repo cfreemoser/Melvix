@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:netflix_gallery/domain/quick_content.dart';
+import 'package:netflix_gallery/widgets/adaptive_layout.dart';
 import 'package:netflix_gallery/widgets/animated_reaction.dart';
 import 'package:netflix_gallery/widgets/netflix_app_bar.dart';
 import 'package:netflix_gallery/widgets/vertical_icon_button.dart';
@@ -34,7 +35,7 @@ class _QuickContentCarouselState extends State<QuickContentCarousel> {
   bool showPictureEnabled = true;
   bool isOnPageTurning = false;
   bool animateReaction = false;
-  int current = 0;
+  int current = 1;
 
   @override
   void initState() {
@@ -70,39 +71,26 @@ class _QuickContentCarouselState extends State<QuickContentCarousel> {
     } else if (!isOnPageTurning && current.toDouble() != _pageController.page) {
       if ((current.toDouble() - _pageController.page!).abs() > 0.1) {
         setState(() {
+          current = _pageController.page!.toInt();
           isOnPageTurning = true;
         });
       }
+    } else {
+      setState(() {
+        current = _pageController.page!.toInt();
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    var stack = Stack(
       children: [
         PreloadPageView.builder(
           scrollDirection: Axis.vertical,
           controller: _pageController,
           preloadPagesCount: 3,
-          itemBuilder: (BuildContext context, int itemIndex) {
-            var currentCurrent = itemIndex % widget.quickContents.length;
-            var content = widget.quickContents[currentCurrent];
-            return SizedBox(
-                width: widget.width,
-                height: widget.height,
-                child: content.type == QuickContentType.video
-                    ? _videoCard(
-                        content: content,
-                        hight: widget.height,
-                        width: widget.width,
-                        pageIndex: itemIndex,
-                        currentPageIndex: current,
-                      )
-                    : Image.network(
-                        content.contentUrl,
-                        fit: BoxFit.cover,
-                      ));
-          },
+          itemBuilder: buildContent,
         ),
         Positioned.fill(
             child: AnimatedReaction(
@@ -165,6 +153,50 @@ class _QuickContentCarouselState extends State<QuickContentCarousel> {
                 : Container()),
       ],
     );
+
+    return AdaptiveLayout(
+        mobile: stack,
+        desktop: Stack(
+          children: [
+            Positioned.fill(
+                child: buildContent(context, current, videoMuted: true)),
+            Positioned.fill(
+              child: Container(
+                color: Colors.black.withOpacity(0.85),
+              ),
+            ),
+            Center(
+                child: SizedBox(
+                    height: 900,
+                    width: 490,
+                    child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 500),
+                        child: stack)))
+          ],
+        ));
+  }
+
+  Widget buildContent(BuildContext context, int itemIndex,
+      {bool videoMuted = false}) {
+    var currentCurrent = itemIndex % widget.quickContents.length;
+    var content = widget.quickContents[currentCurrent];
+    return SizedBox(
+        key: ValueKey(itemIndex),
+        width: widget.width,
+        height: widget.height,
+        child: content.type == QuickContentType.video
+            ? _videoCard(
+                isMusted: videoMuted,
+                content: content,
+                hight: widget.height,
+                width: widget.width,
+                pageIndex: itemIndex,
+                currentPageIndex: current,
+              )
+            : Image.network(
+                content.contentUrl,
+                fit: BoxFit.cover,
+              ));
   }
 }
 
@@ -195,6 +227,7 @@ class _videoCard extends StatefulWidget {
   final double width;
   final int pageIndex;
   final int currentPageIndex;
+  final bool isMusted;
 
   const _videoCard(
       {Key? key,
@@ -202,7 +235,8 @@ class _videoCard extends StatefulWidget {
       required this.hight,
       required this.width,
       required this.pageIndex,
-      required this.currentPageIndex})
+      required this.currentPageIndex,
+      required this.isMusted})
       : super(key: key);
 
   @override
@@ -211,7 +245,6 @@ class _videoCard extends StatefulWidget {
 
 class _videoCardState extends State<_videoCard> {
   late VideoPlayerController _videoPlayerController;
-  double volume = 0.3;
 
   @override
   void initState() {
@@ -233,11 +266,9 @@ class _videoCardState extends State<_videoCard> {
   Widget build(BuildContext context) {
     if (widget.pageIndex == widget.currentPageIndex &&
         _videoPlayerController.value.isInitialized) {
-      volume = 0.3;
-      _videoPlayerController.setVolume(volume);
+      _videoPlayerController.setVolume(widget.isMusted ? 0 : 0.3);
     } else {
-      volume = 0;
-      _videoPlayerController.setVolume(volume);
+      _videoPlayerController.setVolume(0);
     }
 
     return Stack(
