@@ -167,8 +167,8 @@ class _QuickContentCarouselState extends State<QuickContentCarousel> {
             ),
             Center(
                 child: SizedBox(
-                    height: 900,
-                    width: 490,
+                    height: 800,
+                    width: 390,
                     child: AnimatedSwitcher(
                         duration: const Duration(milliseconds: 500),
                         child: stack)))
