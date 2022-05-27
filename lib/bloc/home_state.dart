@@ -5,18 +5,6 @@ abstract class HomeState {}
 
 class HomeInitial extends HomeState {}
 
-class HighlightsLoaded extends HomeState {
-  final List<Content> featuredContent;
-
-  HighlightsLoaded(this.featuredContent);
-}
-
-class TopLoaded extends HomeState {
-  final List<Content> topContent;
-
-  TopLoaded(this.topContent);
-}
-
 class ErrorState extends HomeState {}
 
 class ContentLoaded extends HomeState {
@@ -29,4 +17,34 @@ class ContentLoaded extends HomeState {
 
   ContentLoaded(this.topContent, this.featuredContent, this.friendsContent,
       this.stefanContent, this.allContent);
+}
+
+class TopContentUpdated extends HomeState {
+  final List<Content> topContent;
+
+  TopContentUpdated(this.topContent);
+}
+
+class FeaturedContentUpdated extends HomeState {
+  final List<Content> featuredContent;
+
+  FeaturedContentUpdated(this.featuredContent);
+}
+
+class FriendsContentUpdated extends HomeState {
+  final List<Content> friendsContent;
+
+  FriendsContentUpdated(this.friendsContent);
+}
+
+class StefanContentUpdated extends HomeState {
+  final List<Content> stefanContent;
+
+  StefanContentUpdated(this.stefanContent);
+}
+
+class AllContentUpdated extends HomeState {
+  final List<Content> allContent;
+
+  AllContentUpdated(this.allContent);
 }

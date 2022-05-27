@@ -14,6 +14,11 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final StorageService storageService;
   final FirestoreService firestoreService;
+  final List<Content> topContent = [];
+  final List<Content> featuredContent = [];
+  final List<Content> friendsContent = [];
+  final List<Content> stefanContent = [];
+  final List<Content> allContent = [];
 
   HomeBloc(this.storageService, this.firestoreService) : super(HomeInitial()) {
     on<HomeEvent>((event, emit) {});
@@ -29,30 +34,32 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   Future loadContent(Emitter<HomeState> emit) async {
     var contentRefs = await firestoreService.getAllContent();
+    contentRefs?.shuffle();
     var awaitableContent = contentRefs?.map(mapContentRefToContent);
     if (awaitableContent != null) {
-      var maybeContent = await Future.wait(awaitableContent);
-      var content = maybeContent
-          .where((element) => element != null)
-          .map((e) => e!)
-          .toList();
-
-      content.shuffle();
-
-      var topContent = content
-          .where((element) => element.categories.contains('top'))
-          .toList();
-      var featuredContent = content
-          .where((element) => element.categories.contains('featured'))
-          .toList();
-      var friendsContent = content
-          .where((element) => element.categories.contains('friends'))
-          .toList();
-      var stefanContent = content
-          .where((element) => element.categories.contains('stefan_original'))
-          .toList();
-      emit(ContentLoaded(
-          topContent, featuredContent, friendsContent, stefanContent, content));
+      for (var element in awaitableContent) {
+        var content = await element;
+        if (content != null) {
+          allContent.add(content);
+          emit(AllContentUpdated(allContent));
+          if (content.categories.contains('top')) {
+            topContent.add(content);
+            emit(TopContentUpdated(topContent));
+          }
+          if (content.categories.contains('featured')) {
+            featuredContent.add(content);
+            emit(FeaturedContentUpdated(featuredContent));
+          }
+          if (content.categories.contains('friends')) {
+            friendsContent.add(content);
+            emit(FriendsContentUpdated(friendsContent));
+          }
+          if (content.categories.contains('stefan_original')) {
+            stefanContent.add(content);
+            emit(StefanContentUpdated(stefanContent));
+          }
+        }
+      }
     }
   }
 

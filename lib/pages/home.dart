@@ -51,106 +51,159 @@ class HomeViewState extends State<Home> {
         listener: (context, state) {
           if (state is NetflixbarOffsetRequested) {
             _scrollController.animateTo(state.offset,
-                duration: Duration(milliseconds: 500),
+                duration: const Duration(milliseconds: 500),
                 curve: Curves.decelerate);
           }
         },
         child: DefaultTabController(
             length: 3,
-            child: BlocConsumer<HomeBloc, HomeState>(
-              listener: (context, state) {
-                if (state is ErrorState) {
-                  Navigator.pushReplacementNamed(context, "/error");
-                }
-              },
-              builder: (context, state) {
-                return CustomScrollView(
+            child: BlocListener<HomeBloc, HomeState>(
+                listener: (context, state) {
+                  if (state is ErrorState) {
+                    Navigator.pushReplacementNamed(context, "/error");
+                  }
+                },
+                child: CustomScrollView(
                   controller: _scrollController,
                   slivers: [
-                    state is ContentLoaded
-                        ? SliverToBoxAdapter(
+                    BlocBuilder<HomeBloc, HomeState>(
+                      buildWhen: (previous, current) =>
+                          current is HomeInitial ||
+                          current is TopContentUpdated,
+                      builder: (context, state) {
+                        if (state is TopContentUpdated) {
+                          return SliverToBoxAdapter(
                             child: Stack(
                               children: [
                                 ContentHeader(
-                                    topContent:
-                                        (state as ContentLoaded).topContent,
+                                    topContent: (state).topContent,
                                     hight: constrains.maxHeight,
                                     width: constrains.maxWidth,
                                     onContentSelected: (content) =>
                                         onContentSelected(content)),
                               ],
                             ),
-                          )
-                        : SliverToBoxAdapter(
+                          );
+                        }
+                        return SliverToBoxAdapter(
                             child: LoadingContentHeader(
-                              hight: constrains.maxHeight,
-                              width: constrains.maxWidth,
+                          hight: constrains.maxHeight,
+                          width: constrains.maxWidth,
+                        ));
+                      },
+                    ),
+                    BlocBuilder<HomeBloc, HomeState>(
+                      buildWhen: (previous, current) =>
+                          current is HomeInitial ||
+                          current is FriendsContentUpdated,
+                      builder: (context, state) {
+                        if (state is FriendsContentUpdated) {
+                          return SliverToBoxAdapter(
+                            child: Stack(
+                              children: [
+                                Previews(
+                                    key: const PageStorageKey('friends'),
+                                    title: Constants.friends_headline,
+                                    onTap: (content) =>
+                                        onContentSelected(content),
+                                    contentList: state.friendsContent),
+                              ],
                             ),
-                          ),
-                    state is ContentLoaded
-                        ? SliverToBoxAdapter(
-                            child: Previews(
-                                key: const PageStorageKey('friends'),
-                                title: Constants.friends_headline,
-                                onTap: (content) => onContentSelected(content),
-                                contentList: state.friendsContent))
-                        : const SliverToBoxAdapter(
+                          );
+                        }
+                        return SliverToBoxAdapter(
+                            child: LoadingContentHeader(
+                          hight: constrains.maxHeight,
+                          width: constrains.maxWidth,
+                        ));
+                      },
+                    ),
+                    BlocBuilder<HomeBloc, HomeState>(
+                      buildWhen: (previous, current) =>
+                          current is HomeInitial ||
+                          current is FeaturedContentUpdated,
+                      builder: (context, state) {
+                        if (state is FeaturedContentUpdated) {
+                          return SliverToBoxAdapter(
+                            child: Stack(
+                              children: [
+                                ContentList(
+                                    key: const PageStorageKey('highlights'),
+                                    title: Constants.highlights_headline,
+                                    highlighted: true,
+                                    onContentSelected: (content) =>
+                                        onContentSelected(content),
+                                    contentList: state.featuredContent)
+                              ],
+                            ),
+                          );
+                        }
+                        return const SliverToBoxAdapter(
                             child: LoadingContentList(
-                                key: PageStorageKey('highlights'),
-                                title: Constants.friends_headline,
-                                highlighted: true)),
-                    state is ContentLoaded
-                        ? SliverToBoxAdapter(
-                            child: ContentList(
-                                key: const PageStorageKey('highlights'),
-                                title: Constants.highlights_headline,
-                                highlighted: true,
-                                onContentSelected: (content) =>
-                                    onContentSelected(content),
-                                contentList: state.featuredContent))
-                        : const SliverToBoxAdapter(
+                          title: Constants.highlights_headline,
+                          highlighted: true,
+                        ));
+                      },
+                    ),
+                    SliverToBoxAdapter(
+                        child: AdaptiveLayout(
+                      desktop: Container(),
+                      mobile: BlocBuilder<HomeBloc, HomeState>(
+                        buildWhen: (previous, current) =>
+                            current is HomeInitial ||
+                            current is StefanContentUpdated,
+                        builder: (context, state) {
+                          if (state is StefanContentUpdated) {
+                            return Stack(
+                              children: [
+                                SliverToBoxAdapter(
+                                  child: ContentList(
+                                      key: const PageStorageKey('stefan'),
+                                      title: Constants.stefan_headline,
+                                      highlighted: false,
+                                      onContentSelected: (content) =>
+                                          onContentSelected(content),
+                                      contentList: state.stefanContent),
+                                ),
+                              ],
+                            );
+                          }
+                          return const LoadingContentList(
+                            title: Constants.stefan_headline,
+                            highlighted: false,
+                          );
+                        },
+                      ),
+                    )),
+                    BlocBuilder<HomeBloc, HomeState>(
+                      buildWhen: (previous, current) =>
+                          current is HomeInitial ||
+                          current is AllContentUpdated,
+                      builder: (context, state) {
+                        if (state is AllContentUpdated) {
+                          return SliverToBoxAdapter(
+                            child: Stack(
+                              children: [
+                                ContentList(
+                                    key: const PageStorageKey('all'),
+                                    title: Constants.library_headline,
+                                    highlighted: false,
+                                    onContentSelected: (content) =>
+                                        onContentSelected(content),
+                                    contentList: state.allContent)
+                              ],
+                            ),
+                          );
+                        }
+                        return const SliverToBoxAdapter(
                             child: LoadingContentList(
-                                key: PageStorageKey('highlights'),
-                                title: Constants.highlights_headline,
-                                highlighted: true)),
-                    state is ContentLoaded
-                        ? SliverToBoxAdapter(
-                            child: AdaptiveLayout(
-                            desktop: Container(),
-                            mobile: ContentList(
-                                key: const PageStorageKey('stefan'),
-                                title: Constants.stefan_headline,
-                                highlighted: false,
-                                onContentSelected: (content) =>
-                                    onContentSelected(content),
-                                contentList: state.stefanContent),
-                          ))
-                        : SliverToBoxAdapter(
-                            child: AdaptiveLayout(
-                            desktop: Container(),
-                            mobile: const LoadingContentList(
-                                key: PageStorageKey('stefan'),
-                                title: Constants.stefan_headline,
-                                highlighted: false),
-                          )),
-                    state is ContentLoaded
-                        ? SliverToBoxAdapter(
-                            child: ContentList(
-                                key: const PageStorageKey('all'),
-                                title: Constants.library_headline,
-                                highlighted: false,
-                                onContentSelected: (content) =>
-                                    onContentSelected(content),
-                                contentList: state.allContent))
-                        : const SliverToBoxAdapter(
-                            child: LoadingContentList(
-                                key: PageStorageKey('all'),
-                                title: Constants.library_headline,
-                                highlighted: true)),
+                          title: Constants.library_headline,
+                          highlighted: false,
+                        ));
+                      },
+                    ),
                   ],
-                );
-              },
-            )),
+                ))),
       );
     });
   }
