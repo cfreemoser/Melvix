@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Git Secret Reveal Step
-        uses: entrostat/git-secret-action@v3.1.0
+        uses: entrostat/git-secret-action@v3.3.0
         with:
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
       - uses: actions/setup-java@v1
