@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:netflix_gallery/bloc/home_bloc.dart';
 import 'package:netflix_gallery/bloc/netflixbar_bloc.dart';
 import 'package:netflix_gallery/cubits/app_bar/app_bar_cubit.dart';
 import 'package:netflix_gallery/pages/home.dart';
@@ -48,6 +49,8 @@ class _NaveScreenState extends State<NavScreen> {
                       child: BlocConsumer<NetflixbarBloc, NetflixbarState>(
                         listener: (context, state) {
                           if (state is NetflxbarEnsureHomePage) {
+                            BlocProvider.of<HomeBloc>(context)
+                                .add(ContentRequested());
                             setState(() {
                               _selectedIndex = 0;
                             });
