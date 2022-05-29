@@ -7,6 +7,7 @@ import 'package:netflix_gallery/bloc/netflixbar_bloc.dart';
 import 'package:netflix_gallery/cubits/app_bar/app_bar_cubit.dart';
 import 'package:netflix_gallery/pages/home.dart';
 import 'package:netflix_gallery/pages/quick_content_screen.dart';
+import 'package:netflix_gallery/pages/upload_screen.dart';
 import 'package:netflix_gallery/widgets/adaptive_layout.dart';
 
 import '../widgets/netflix_app_bar.dart';
@@ -22,13 +23,13 @@ class _NaveScreenState extends State<NavScreen> {
       key: PageStorageKey('homeScreen'),
     ),
     QuickContentScreen(),
-    const Scaffold()
+    UploadScreen()
   ];
 
   final Map<String, IconData> _icons = const {
     'home': Icons.home,
     'Schnelle Lacher': Icons.photo_album,
-    'search': Icons.search,
+    'upload': Icons.upload,
   };
 
   int _selectedIndex = 0;
@@ -48,7 +49,7 @@ class _NaveScreenState extends State<NavScreen> {
                       preferredSize: Size(constraints.maxWidth, 50),
                       child: BlocConsumer<NetflixbarBloc, NetflixbarState>(
                         listener: (context, state) {
-                          if (state is NetflxbarEnsureHomePage) {
+                          if (state is NetflixbarEnsureHomePage) {
                             BlocProvider.of<HomeBloc>(context)
                                 .add(ContentRequested());
                             setState(() {
@@ -57,10 +58,17 @@ class _NaveScreenState extends State<NavScreen> {
                           }
                           if (state is NetflixbarOffsetChanged) {
                             setState(() {
-                              _selectedIndex = state.section ==
-                                      SelectedSection.quickLaughters
-                                  ? 1
-                                  : 0;
+                              switch (state.section) {
+                                case SelectedSection.quickLaughters:
+                                  _selectedIndex = 1;
+                                  break;
+                                case SelectedSection.upload:
+                                  _selectedIndex = 2;
+                                  break;
+                                default: 
+                                  _selectedIndex = 0;
+                                  break;
+                              }
                             });
                           }
                         },
@@ -74,19 +82,23 @@ class _NaveScreenState extends State<NavScreen> {
                                 : 0,
                             allTap: () =>
                                 BlocProvider.of<NetflixbarBloc>(context)
-                                    .add(NetflixbarAllRequested()),
+                                    .add(const NetflixbarAllRequested()),
                             highlightsTap: () =>
                                 BlocProvider.of<NetflixbarBloc>(context)
-                                    .add(NetflixbarHighlightsRequested()),
+                                    .add(const NetflixbarHighlightsRequested()),
                             friendsTap: () =>
                                 BlocProvider.of<NetflixbarBloc>(context)
-                                    .add(NetflixbarFriendsRequested()),
+                                    .add(const NetflixbarFriendsRequested()),
                             topTenTap: () =>
                                 BlocProvider.of<NetflixbarBloc>(context)
-                                    .add(NetflixbarTopRequested()),
+                                    .add(const NetflixbarTopRequested()),
                             quickLaughterTap: () => setState(() {
                               BlocProvider.of<NetflixbarBloc>(context)
-                                  .add(NetflixbarQuickLaughtersRequested());
+                                  .add(const NetflixbarQuickLaughtersRequested());
+                            }),
+                            uploadTap: () => setState(() {
+                              BlocProvider.of<NetflixbarBloc>(context)
+                                  .add(const NetflixbarUploadRequested());
                             }),
                           );
                         },

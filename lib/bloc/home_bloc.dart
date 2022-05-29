@@ -1,10 +1,7 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:netflix_gallery/domain/content.dart';
 import 'package:netflix_gallery/domain/content_ref.dart';
-import 'package:netflix_gallery/service/config_service.dart';
 import 'package:netflix_gallery/service/firestore_service.dart';
 import 'package:netflix_gallery/service/storage_service.dart';
 
@@ -40,21 +37,27 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       for (var element in awaitableContent) {
         var content = await element;
         if (content != null) {
-          allContent.add(content);
-          emit(AllContentUpdated(allContent));
-          if (content.categories.contains('top')) {
+          if (allContent.contains(content) == false) {
+            allContent.add(content);
+            emit(AllContentUpdated(allContent));
+          }
+          if (content.categories.contains('top') &&
+              topContent.contains(content) == false) {
             topContent.add(content);
             emit(TopContentUpdated(topContent));
           }
-          if (content.categories.contains('featured')) {
+          if (content.categories.contains('featured') &&
+              featuredContent.contains(content) == false) {
             featuredContent.add(content);
             emit(FeaturedContentUpdated(featuredContent));
           }
-          if (content.categories.contains('friends')) {
+          if (content.categories.contains('friends') &&
+              friendsContent.contains(content) == false) {
             friendsContent.add(content);
             emit(FriendsContentUpdated(friendsContent));
           }
-          if (content.categories.contains('stefan_original')) {
+          if (content.categories.contains('stefan_original') &&
+              stefanContent.contains(content) == false) {
             stefanContent.add(content);
             emit(StefanContentUpdated(stefanContent));
           }

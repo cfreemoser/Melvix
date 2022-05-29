@@ -12,19 +12,24 @@ class NetflixbarBloc extends Bloc<NetflixbarEvent, NetflixbarState> {
   NetflixbarBloc() : super(NetflixbarInitial()) {
     on<NetflixbarEvent>((event, emit) {});
     on<NetflixbarTopRequested>((event, emit) {
-      emit(NetflxbarEnsureHomePage());
+      emit(NetflixbarEnsureHomePage());
       emit(const NetflixbarOffsetRequested(offset: 0));
     });
+      on<NetflixbarUploadRequested>((event, emit) {
+      emit(NetflixbarEnsureHomePage());
+      emit(NetflixbarOffsetChanged(
+          offset: offset, section: SelectedSection.upload));
+    });
     on<NetflixbarFriendsRequested>((event, emit) {
-      emit(NetflxbarEnsureHomePage());
+      emit(NetflixbarEnsureHomePage());
       emit(NetflixbarOffsetRequested(offset: maxHeight + 1));
     });
     on<NetflixbarHighlightsRequested>((event, emit) {
-      emit(NetflxbarEnsureHomePage());
+      emit(NetflixbarEnsureHomePage());
       emit(NetflixbarOffsetRequested(offset: maxHeight + 161));
     });
     on<NetflixbarAllRequested>((event, emit) {
-      emit(NetflxbarEnsureHomePage());
+      emit(NetflixbarEnsureHomePage());
       emit(NetflixbarOffsetRequested(offset: maxHeight + 660));
     });
     on<NetflixbarQuickLaughtersRequested>((event, emit) {

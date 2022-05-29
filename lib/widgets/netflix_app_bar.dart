@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:netflix_gallery/helpers/constants.dart';
@@ -10,6 +8,7 @@ class NetflixAppBar extends StatelessWidget {
   final double scrollOffset;
   final int selectedIndex;
   final Function quickLaughterTap;
+  final Function uploadTap;
   final Function topTenTap;
   final Function friendsTap;
   final Function highlightsTap;
@@ -19,6 +18,7 @@ class NetflixAppBar extends StatelessWidget {
       {Key? key,
       this.scrollOffset = 0.0,
       required this.quickLaughterTap,
+      required this.uploadTap,
       required this.topTenTap,
       required this.friendsTap,
       required this.highlightsTap,
@@ -42,6 +42,7 @@ class NetflixAppBar extends StatelessWidget {
         ),
         desktop: _NetflixAppBarDesktop(
           highlightsTap: highlightsTap,
+          uploadTap: uploadTap,
           topTenTap: topTenTap,
           quickLaughterTap: quickLaughterTap,
           friendsTap: friendsTap,
@@ -106,6 +107,7 @@ class _NetflixAppBarMobile extends StatelessWidget {
 
 class _NetflixAppBarDesktop extends StatelessWidget {
   final Function quickLaughterTap;
+  final Function uploadTap;
   final Function topTenTap;
   final Function friendsTap;
   final Function highlightsTap;
@@ -115,6 +117,7 @@ class _NetflixAppBarDesktop extends StatelessWidget {
   const _NetflixAppBarDesktop(
       {Key? key,
       required this.quickLaughterTap,
+      required this.uploadTap,
       required this.topTenTap,
       required this.friendsTap,
       required this.highlightsTap,
@@ -169,6 +172,14 @@ class _NetflixAppBarDesktop extends StatelessWidget {
                   iconSize: 28,
                   color:
                       selectedIndex == 5 ? Constants.netflix_red : Colors.white,
+                ),
+                IconButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: () => uploadTap(),
+                  icon: const Icon(Icons.upload),
+                  iconSize: 28,
+                  color:
+                      selectedIndex == 6 ? Constants.netflix_red : Colors.white,
                 ),
               ],
             ),

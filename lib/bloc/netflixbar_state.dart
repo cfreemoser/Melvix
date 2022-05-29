@@ -28,7 +28,7 @@ class NetflixbarOffsetRequested extends NetflixbarState {
   List<Object> get props => [offset];
 }
 
-class NetflxbarEnsureHomePage extends NetflixbarState {}
+class NetflixbarEnsureHomePage extends NetflixbarState {}
 
 enum SelectedSection {
   top,
@@ -36,5 +36,6 @@ enum SelectedSection {
   highlights,
   stefanOriginals,
   library,
-  quickLaughters
+  quickLaughters,
+  upload
 }

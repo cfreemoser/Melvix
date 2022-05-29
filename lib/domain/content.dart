@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:netflix_gallery/helpers/constants.dart';
 
-class Content {
+class Content extends Equatable {
   final String headerImageURL;
   final String videoURL;
   final String title;
@@ -11,9 +12,9 @@ class Content {
   @override
   List<Object> get props => [headerImageURL, videoURL, title];
 
-  Content(
+  const Content(
       {this.headerImageURL = Constants.content_cover_image,
-      this.titleSvgURL = null,
+      this.titleSvgURL,
       this.description = "",
       this.videoURL =
           "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",

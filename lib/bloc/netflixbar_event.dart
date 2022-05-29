@@ -31,6 +31,10 @@ class NetflixbarQuickLaughtersRequested extends NetflixbarEvent {
   const NetflixbarQuickLaughtersRequested();
 }
 
+class NetflixbarUploadRequested extends NetflixbarEvent {
+  const NetflixbarUploadRequested();
+}
+
 class NetflixbarTopRequested extends NetflixbarEvent {
   const NetflixbarTopRequested();
 }
