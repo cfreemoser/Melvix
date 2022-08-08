@@ -1,8 +1,11 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:netflix_gallery/domain/melvix_file.dart';
 import 'package:netflix_gallery/domain/quick_content.dart';
+import 'package:path/path.dart';
 
 class StorageService {
   final firebase_storage.FirebaseStorage _storage;
@@ -19,6 +22,15 @@ class StorageService {
     } catch (e) {
       log(e.toString());
       return null;
+    }
+  }
+
+  Future uploadQuickContent(MelvixFile file, String folderRef) async {
+    final fileRef = _storage.ref().child(folderRef + "/" + file.name);
+    try {
+      await fileRef.putData(file.content);
+    } on FirebaseException catch (e) {
+      throw StorageUploadError();
     }
   }
 
@@ -46,12 +58,15 @@ class StorageService {
         return null;
       }
     } catch (e) {
-  
       return null;
     }
   }
 }
 
 class StorageQuotaExceeded implements Exception {
+  // can contain constructors, variables and methods
+}
+
+class StorageUploadError implements Exception {
   // can contain constructors, variables and methods
 }

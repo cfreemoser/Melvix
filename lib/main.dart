@@ -7,6 +7,7 @@ import 'package:netflix_gallery/bloc/error_bloc.dart';
 import 'package:netflix_gallery/bloc/home_bloc.dart';
 import 'package:netflix_gallery/bloc/profiles_bloc.dart';
 import 'package:netflix_gallery/bloc/quick_content_bloc.dart';
+import 'package:netflix_gallery/bloc/upload_bloc.dart';
 import 'package:netflix_gallery/pages/error_screen.dart';
 import 'package:netflix_gallery/pages/login.dart';
 import 'package:netflix_gallery/pages/nav_screen.dart';
@@ -87,6 +88,9 @@ class MyApp extends StatelessWidget {
                 create: (context) =>
                     QuickContentBloc(configService, storageService),
               ),
+              BlocProvider(
+                  create: (context) => UploadBloc(
+                      storageService, firestoreService, configService))
             ], child: NavScreen()),
         "/profiles/home/play": (context) => const Video(),
       },

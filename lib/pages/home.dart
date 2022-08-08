@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:netflix_gallery/bloc/home_bloc.dart';
 import 'package:netflix_gallery/bloc/netflixbar_bloc.dart';
-import 'package:netflix_gallery/cubits/app_bar/app_bar_cubit.dart';
 import 'package:netflix_gallery/domain/content.dart';
 import 'package:netflix_gallery/helpers/constants.dart';
 import 'package:netflix_gallery/navigation/video_args.dart';
@@ -11,7 +10,6 @@ import 'package:netflix_gallery/widgets/content_header.dart';
 import 'package:netflix_gallery/widgets/content_list.dart';
 import 'package:netflix_gallery/widgets/loading_content_header.dart';
 import 'package:netflix_gallery/widgets/loading_content_list.dart';
-import 'package:netflix_gallery/widgets/netflix_app_bar.dart';
 import 'package:netflix_gallery/widgets/previews.dart';
 
 class Home extends StatefulWidget {

@@ -1,13 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:netflix_gallery/bloc/home_bloc.dart';
 import 'package:netflix_gallery/bloc/netflixbar_bloc.dart';
-import 'package:netflix_gallery/cubits/app_bar/app_bar_cubit.dart';
 import 'package:netflix_gallery/pages/home.dart';
 import 'package:netflix_gallery/pages/quick_content_screen.dart';
-import 'package:netflix_gallery/pages/upload_screen.dart';
+import 'package:netflix_gallery/pages/setting_screen.dart';
 import 'package:netflix_gallery/widgets/adaptive_layout.dart';
 
 import '../widgets/netflix_app_bar.dart';
@@ -23,7 +20,7 @@ class _NaveScreenState extends State<NavScreen> {
       key: PageStorageKey('homeScreen'),
     ),
     QuickContentScreen(),
-    UploadScreen()
+    SettingScreen()
   ];
 
   final Map<String, IconData> _icons = const {
@@ -65,7 +62,7 @@ class _NaveScreenState extends State<NavScreen> {
                                 case SelectedSection.upload:
                                   _selectedIndex = 2;
                                   break;
-                                default: 
+                                default:
                                   _selectedIndex = 0;
                                   break;
                               }
@@ -93,8 +90,8 @@ class _NaveScreenState extends State<NavScreen> {
                                 BlocProvider.of<NetflixbarBloc>(context)
                                     .add(const NetflixbarTopRequested()),
                             quickLaughterTap: () => setState(() {
-                              BlocProvider.of<NetflixbarBloc>(context)
-                                  .add(const NetflixbarQuickLaughtersRequested());
+                              BlocProvider.of<NetflixbarBloc>(context).add(
+                                  const NetflixbarQuickLaughtersRequested());
                             }),
                             uploadTap: () => setState(() {
                               BlocProvider.of<NetflixbarBloc>(context)

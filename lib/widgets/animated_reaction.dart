@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:netflix_gallery/helpers/constants.dart';
 
 class AnimatedReaction extends StatefulWidget {
   final double duration;
@@ -101,7 +102,7 @@ class AnimatedReactionState extends State<AnimatedReaction>
         child: SizedBox(
             height: 50,
             width: 50,
-            child: Image.asset("assets/images/reaction.png")),
+            child: Image.asset(Constants.image_reaction_emoji)),
       ),
     );
   }
