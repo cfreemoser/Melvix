@@ -176,7 +176,7 @@ class _NetflixAppBarDesktop extends StatelessWidget {
                 IconButton(
                   padding: EdgeInsets.zero,
                   onPressed: () => uploadTap(),
-                  icon: const Icon(Icons.upload),
+                  icon: const Icon(Icons.settings),
                   iconSize: 28,
                   color:
                       selectedIndex == 6 ? Constants.netflix_red : Colors.white,

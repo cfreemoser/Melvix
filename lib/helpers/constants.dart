@@ -19,6 +19,8 @@ class Constants {
       "assets/images/Login-cover.jpeg";
   static const String melvix_cover = "assets/images/Melvix-cover.png";
   static const String image_reaction_emoji = "assets/images/reaction.png";
+  static const String image_construction =
+      "assets/images/under-construction-barrier-icon.png";
 
   // colors
   static Color netflix_red = Color.fromRGBO(229, 9, 20, 1);

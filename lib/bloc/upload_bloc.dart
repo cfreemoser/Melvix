@@ -35,8 +35,9 @@ class UploadBloc extends Bloc<UploadEvent, UploadState> {
     });
   }
 
-  Future<List<MelvixFile>> selectFiles() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+  Future<List<MelvixFile>> selectFiles({videoOnly = false}) async {
+    FilePickerResult? result = await FilePicker.platform
+        .pickFiles(type: videoOnly ? FileType.video : FileType.media);
 
     if (result != null) {
       return result.files
