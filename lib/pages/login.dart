@@ -5,7 +5,15 @@ import 'package:netflix_gallery/bloc/auth_bloc.dart';
 import 'package:netflix_gallery/helpers/constants.dart';
 import 'package:netflix_gallery/widgets/sign_in.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
   final textStyle = const TextStyle(
       color: Colors.white,
       fontSize: 16,
@@ -63,15 +71,16 @@ class Login extends StatelessWidget {
                         return const Center(child: CircularProgressIndicator());
                       }
                       if (state is UnAuthenticated) {
-                        return _buildLoginView(context, null, null, null);
+                        return _buildLoginView(context, null);
                       }
                       if (state is AuthError) {
-                        return _buildLoginView(
-                            context, state.error, null, null);
+                        return _buildLoginView(context, state.error);
                       }
                       if (state is AuthCredStored) {
-                        return _buildLoginView(
-                            context, null, state.username, state.password);
+                        emailController.text = state.username;
+                        passwordController.text = state.password;
+                        return _buildLoginView(context, null,
+                            injectedCred: true);
                       }
                       return Container();
                     },
@@ -83,12 +92,13 @@ class Login extends StatelessWidget {
     );
   }
 
-  Widget _buildLoginView(
-      BuildContext context, String? errorMessage, username, password) {
+  Widget _buildLoginView(BuildContext context, String? errorMessage,
+      {bool injectedCred = false}) {
     return SignIn(
         errorMessage: errorMessage,
-        username: username,
-        password: password,
+        usernameController: emailController,
+        passwordController: passwordController,
+        injectedCred: injectedCred,
         onSignIn: (username, password, storeCredentials) {
           BlocProvider.of<AuthBloc>(context).add(
             SignInRequested(username, password, storeCredentials),

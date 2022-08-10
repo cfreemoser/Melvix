@@ -9,7 +9,7 @@ class SecretService {
 
   Future storeCredentials(Credentials cred) async {
     await storage.write(key: _usernameKey, value: cred.username);
-    await storage.write(key: _passwordKey, value: cred.username);
+    await storage.write(key: _passwordKey, value: cred.password);
   }
 
   Future<Credentials?> receiveCredentials() async {

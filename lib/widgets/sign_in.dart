@@ -7,43 +7,27 @@ class SignIn extends StatefulWidget {
       onSignIn;
   final Function(String username, String password) onSignUp;
   final String? errorMessage;
-  final String? username;
-  final String? password;
+  final TextEditingController usernameController;
+  final TextEditingController passwordController;
+  final bool injectedCred;
 
-  const SignIn(
-      {Key? key,
-      required this.onSignIn,
-      required this.onSignUp,
-      this.errorMessage,
-      this.username,
-      this.password})
-      : super(key: key);
+  const SignIn({
+    Key? key,
+    required this.onSignIn,
+    required this.onSignUp,
+    required this.usernameController,
+    required this.passwordController,
+    this.errorMessage,
+    this.injectedCred = false,
+  }) : super(key: key);
 
   @override
   State<SignIn> createState() => _SignInState();
 }
 
 class _SignInState extends State<SignIn> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
   bool signUp = false;
   bool rememberMe = false;
-
-  @protected
-  @mustCallSuper
-  @override
-  void initState() {
-    super.initState();
-    if (widget.username != null) {
-      emailController.text = widget.username!;
-    }
-    if (widget.password != null) {
-      passwordController.text = widget.password!;
-      setState(() {
-        rememberMe = true;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +50,7 @@ class _SignInState extends State<SignIn> {
           padding: const EdgeInsets.all(16),
           child: TextFormField(
             style: const TextStyle(color: Colors.white),
-            controller: emailController,
+            controller: widget.usernameController,
             decoration: InputDecoration(
               labelText: 'Email or Phone',
               filled: true,
@@ -89,7 +73,7 @@ class _SignInState extends State<SignIn> {
           child: TextFormField(
             style: const TextStyle(color: Colors.white),
             obscureText: true,
-            controller: passwordController,
+            controller: widget.passwordController,
             decoration: InputDecoration(
               labelText: 'Password',
               filled: true,
@@ -107,8 +91,8 @@ class _SignInState extends State<SignIn> {
             width: double.infinity,
             child: TextButton(
               onPressed: () {
-                var username = emailController.text;
-                var password = passwordController.text;
+                var username = widget.usernameController.text;
+                var password = widget.passwordController.text;
                 if (signUp) {
                   widget.onSignUp(username, password);
                 } else {
@@ -165,7 +149,7 @@ class _SignInState extends State<SignIn> {
                             checkColor: Colors.white,
                             fillColor:
                                 MaterialStateProperty.resolveWith(getColor),
-                            value: rememberMe,
+                            value: rememberMe || widget.injectedCred,
                             onChanged: (v) => setState(() {
                               if (v != null) {
                                 rememberMe = v;
