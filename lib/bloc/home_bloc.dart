@@ -4,6 +4,7 @@ import 'package:netflix_gallery/domain/content.dart';
 import 'package:netflix_gallery/domain/content_ref.dart';
 import 'package:netflix_gallery/service/firestore_service.dart';
 import 'package:netflix_gallery/service/storage_service.dart';
+import 'package:collection/collection.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
@@ -11,11 +12,13 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final StorageService storageService;
   final FirestoreService firestoreService;
-  final List<Content> topContent = [];
-  final List<Content> featuredContent = [];
-  final List<Content> friendsContent = [];
-  final List<Content> stefanContent = [];
-  final List<Content> allContent = [];
+  final Set<Content> topContent = {};
+  final Set<Content> featuredContent = {};
+  final Set<Content> friendsContent = {};
+  final Set<Content> stefanContent = {};
+  final Set<Content> allContent = {};
+
+  List<ContentRef>? cachedRefs = [];
 
   HomeBloc(this.storageService, this.firestoreService) : super(HomeInitial()) {
     on<HomeEvent>((event, emit) {});
@@ -30,38 +33,63 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   Future loadContent(Emitter<HomeState> emit) async {
+    Function eq = const ListEquality().equals;
     var contentRefs = await firestoreService.getAllContent();
+    if (eq(cachedRefs, contentRefs)) {
+      if (allContent.isNotEmpty) {
+        emit(AllContentUpdated(allContent.toList()));
+      }
+      if (topContent.isNotEmpty) {
+        emit(TopContentUpdated(topContent.toList()));
+      }
+      if (friendsContent.isNotEmpty) {
+        emit(FriendsContentUpdated(friendsContent.toList()));
+      }
+      if (stefanContent.isNotEmpty) {
+        emit(StefanContentUpdated(stefanContent.toList()));
+      }
+
+      return;
+    }
+    cachedRefs = contentRefs;
     contentRefs?.shuffle();
-    var awaitableContent = contentRefs?.map(mapContentRefToContent);
-    if (awaitableContent != null) {
-      for (var element in awaitableContent) {
-        var content = await element;
-        if (content != null) {
-          if (allContent.contains(content) == false) {
-            allContent.add(content);
-            emit(AllContentUpdated(allContent));
-          }
-          if (content.categories.contains('top') &&
-              topContent.contains(content) == false) {
-            topContent.add(content);
-            emit(TopContentUpdated(topContent));
-          }
-          if (content.categories.contains('featured') &&
-              featuredContent.contains(content) == false) {
-            featuredContent.add(content);
-            emit(FeaturedContentUpdated(featuredContent));
-          }
-          if (content.categories.contains('friends') &&
-              friendsContent.contains(content) == false) {
-            friendsContent.add(content);
-            emit(FriendsContentUpdated(friendsContent));
-          }
-          if (content.categories.contains('stefan_original') &&
-              stefanContent.contains(content) == false) {
-            stefanContent.add(content);
-            emit(StefanContentUpdated(stefanContent));
-          }
-        }
+    var awaitableContents = contentRefs?.map(mapContentRefToContent);
+
+    if (awaitableContents == null) {
+      return;
+    }
+
+    for (var awaitableContent in awaitableContents) {
+      var content = await awaitableContent;
+      await addToCategory(content, emit);
+    }
+  }
+
+  Future addToCategory(Content? content, Emitter<HomeState> emit) async {
+    if (content == null) {
+      return;
+    }
+
+    for (var category in content.categories) {
+      allContent.add(content);
+      emit(AllContentUpdated(allContent.toList()));
+      switch (category) {
+        case "top":
+          topContent.add(content);
+          emit(TopContentUpdated(topContent.toList()));
+          continue;
+        case "featured":
+          featuredContent.add(content);
+          emit(FeaturedContentUpdated(topContent.toList()));
+          continue;
+        case "friends":
+          friendsContent.add(content);
+          emit(FriendsContentUpdated(friendsContent.toList()));
+          continue;
+        case "stefan_original":
+          stefanContent.add(content);
+          emit(StefanContentUpdated(stefanContent.toList()));
+          continue;
       }
     }
   }
