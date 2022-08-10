@@ -39,6 +39,9 @@ class _SignInState extends State<SignIn> {
     }
     if (widget.password != null) {
       passwordController.text = widget.password!;
+      setState(() {
+        rememberMe = true;
+      });
     }
   }
 

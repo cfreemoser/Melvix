@@ -87,6 +87,8 @@ class Login extends StatelessWidget {
       BuildContext context, String? errorMessage, username, password) {
     return SignIn(
         errorMessage: errorMessage,
+        username: username,
+        password: password,
         onSignIn: (username, password, storeCredentials) {
           BlocProvider.of<AuthBloc>(context).add(
             SignInRequested(username, password, storeCredentials),
