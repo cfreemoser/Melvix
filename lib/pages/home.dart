@@ -109,10 +109,10 @@ class HomeViewState extends State<Home> {
                             ),
                           );
                         }
-                        return SliverToBoxAdapter(
-                            child: LoadingContentHeader(
-                          hight: constrains.maxHeight,
-                          width: constrains.maxWidth,
+                        return const SliverToBoxAdapter(
+                            child: LoadingContentList(
+                          title: Constants.friends_headline,
+                          highlighted: false,
                         ));
                       },
                     ),
@@ -154,15 +154,13 @@ class HomeViewState extends State<Home> {
                           if (state is StefanContentUpdated) {
                             return Stack(
                               children: [
-                                SliverToBoxAdapter(
-                                  child: ContentList(
-                                      key: const PageStorageKey('stefan'),
-                                      title: Constants.stefan_headline,
-                                      highlighted: false,
-                                      onContentSelected: (content) =>
-                                          onContentSelected(content),
-                                      contentList: state.stefanContent),
-                                ),
+                                ContentList(
+                                    key: const PageStorageKey('stefan'),
+                                    title: Constants.stefan_headline,
+                                    highlighted: false,
+                                    onContentSelected: (content) =>
+                                        onContentSelected(content),
+                                    contentList: state.stefanContent),
                               ],
                             );
                           }
