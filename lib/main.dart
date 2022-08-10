@@ -18,6 +18,7 @@ import 'package:netflix_gallery/service/config_service.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:netflix_gallery/service/firestore_service.dart';
+import 'package:netflix_gallery/service/secret_service.dart';
 import 'package:netflix_gallery/service/storage_service.dart';
 import 'package:video_player/video_player.dart';
 import 'firebase_options.dart';
@@ -33,6 +34,7 @@ void main() async {
   StorageService myStorageService = StorageService();
   FirestoreService myFirestoreService = FirestoreService();
   AuthenticationService myAuthenticationService = AuthenticationService();
+  SecretService mySecretService = SecretService();
   String configYaml = await rootBundle.loadString("assets/config.yaml");
   myConfigService.loadConfigFromYaml(configYaml);
   await FirebaseAppCheck.instance.activate(
@@ -44,6 +46,7 @@ void main() async {
     storageService: myStorageService,
     authenticationService: myAuthenticationService,
     firestoreService: myFirestoreService,
+    secretService: mySecretService,
   );
 
   runApp(app);
@@ -54,13 +57,15 @@ class MyApp extends StatelessWidget {
   final StorageService storageService;
   final AuthenticationService authenticationService;
   final FirestoreService firestoreService;
+  final SecretService secretService;
 
   const MyApp(
       {Key? key,
       required this.configService,
       required this.storageService,
       required this.authenticationService,
-      required this.firestoreService})
+      required this.firestoreService,
+      required this.secretService})
       : super(key: key);
 
   // This widget is the root of your application.
@@ -74,7 +79,7 @@ class MyApp extends StatelessWidget {
             create: (context) => ErrorBloc(), child: ErrorScreen()),
         "/login": (context) => BlocProvider(
             create: (context) =>
-                AuthBloc(authenticationService)..add(InitRequested()),
+                AuthBloc(authenticationService, secretService)..add(InitRequested()),
             child: Login()),
         "/profiles": (context) => BlocProvider(
               create: (context) => ProfilesBloc(configService),

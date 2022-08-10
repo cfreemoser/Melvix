@@ -51,6 +51,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
       return;
     }
+    
     cachedRefs = contentRefs;
     contentRefs?.shuffle();
     var awaitableContents = contentRefs?.map(mapContentRefToContent);

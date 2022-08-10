@@ -7,8 +7,9 @@ abstract class AuthEvent {}
 class SignInRequested extends AuthEvent {
   final String email;
   final String password;
+  final bool storeCredentials;
 
-  SignInRequested(this.email, this.password);
+  SignInRequested(this.email, this.password, this.storeCredentials);
 }
 
 // When the user signing up with email and password this event is called and the [AuthenticationService] is called to sign up the user

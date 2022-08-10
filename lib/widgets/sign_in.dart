@@ -3,15 +3,20 @@ import 'package:netflix_gallery/helpers/constants.dart';
 import 'package:netflix_gallery/widgets/adaptive_layout.dart';
 
 class SignIn extends StatefulWidget {
-  final Function(String username, String password) onSignIn;
+  final Function(String username, String password, bool storeCredentials)
+      onSignIn;
   final Function(String username, String password) onSignUp;
   final String? errorMessage;
+  final String? username;
+  final String? password;
 
   const SignIn(
       {Key? key,
       required this.onSignIn,
       required this.onSignUp,
-      this.errorMessage})
+      this.errorMessage,
+      this.username,
+      this.password})
       : super(key: key);
 
   @override
@@ -22,9 +27,35 @@ class _SignInState extends State<SignIn> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool signUp = false;
+  bool rememberMe = false;
+
+  @protected
+  @mustCallSuper
+  @override
+  void initState() {
+    super.initState();
+    if (widget.username != null) {
+      emailController.text = widget.username!;
+    }
+    if (widget.password != null) {
+      passwordController.text = widget.password!;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    Color getColor(Set<MaterialState> states) {
+      const Set<MaterialState> interactiveStates = <MaterialState>{
+        MaterialState.pressed,
+        MaterialState.hovered,
+        MaterialState.focused,
+      };
+      if (states.any(interactiveStates.contains)) {
+        return Colors.blue;
+      }
+      return Colors.red;
+    }
+
     var signInView = Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -78,7 +109,7 @@ class _SignInState extends State<SignIn> {
                 if (signUp) {
                   widget.onSignUp(username, password);
                 } else {
-                  widget.onSignIn(username, password);
+                  widget.onSignIn(username, password, rememberMe);
                 }
               },
               style: TextButton.styleFrom(
@@ -94,27 +125,59 @@ class _SignInState extends State<SignIn> {
           padding: const EdgeInsets.all(16),
           child: SizedBox(
             width: double.infinity,
-            child: Row(
+            child: Column(
               children: [
-                AdaptiveLayout.isDesktop(context)
-                    ? Text(
-                        signUp
-                            ? "Already an account?"
-                            : "Don't have an account?",
-                        style: const TextStyle(color: Colors.grey),
-                      )
-                    : const SizedBox(),
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      signUp = !signUp;
-                    });
-                  },
-                  style: TextButton.styleFrom(primary: Colors.white),
-                  child: Text(
-                    signUp ? "Sign in instead" : "Sign up",
-                  ),
+                Row(
+                  children: [
+                    AdaptiveLayout.isDesktop(context)
+                        ? Text(
+                            signUp
+                                ? "Already an account?"
+                                : "Don't have an account?",
+                            style: const TextStyle(color: Colors.grey),
+                          )
+                        : const SizedBox(),
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          signUp = !signUp;
+                        });
+                      },
+                      style: TextButton.styleFrom(primary: Colors.white),
+                      child: Row(
+                        children: [
+                          Text(
+                            signUp ? "Sign in instead" : "Sign up",
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
+                signUp
+                    ? Container()
+                    : Row(
+                        children: [
+                          Checkbox(
+                            checkColor: Colors.white,
+                            fillColor:
+                                MaterialStateProperty.resolveWith(getColor),
+                            value: rememberMe,
+                            onChanged: (v) => setState(() {
+                              if (v != null) {
+                                rememberMe = v;
+                              }
+                            }),
+                          ),
+                          TextButton(
+                            onPressed: () => setState(() {
+                              rememberMe = !rememberMe;
+                            }),
+                            child: Text("Remember me",
+                                style: TextStyle(color: Constants.netflix_red)),
+                          )
+                        ],
+                      ),
               ],
             ),
           ),

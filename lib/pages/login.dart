@@ -63,10 +63,15 @@ class Login extends StatelessWidget {
                         return const Center(child: CircularProgressIndicator());
                       }
                       if (state is UnAuthenticated) {
-                        return _buildLoginView(context, null);
+                        return _buildLoginView(context, null, null, null);
                       }
                       if (state is AuthError) {
-                        return _buildLoginView(context, state.error);
+                        return _buildLoginView(
+                            context, state.error, null, null);
+                      }
+                      if (state is AuthCredStored) {
+                        return _buildLoginView(
+                            context, null, state.username, state.password);
                       }
                       return Container();
                     },
@@ -78,15 +83,13 @@ class Login extends StatelessWidget {
     );
   }
 
-  Widget _buildLoginView(BuildContext context, String? errorMessage) {
+  Widget _buildLoginView(
+      BuildContext context, String? errorMessage, username, password) {
     return SignIn(
         errorMessage: errorMessage,
-        onSignIn: (username, password) {
+        onSignIn: (username, password, storeCredentials) {
           BlocProvider.of<AuthBloc>(context).add(
-            SignInRequested(
-              username,
-              password,
-            ),
+            SignInRequested(username, password, storeCredentials),
           );
         },
         onSignUp: (username, password) {
