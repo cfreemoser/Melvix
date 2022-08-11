@@ -38,9 +38,9 @@ class _SignInState extends State<SignIn> {
         MaterialState.focused,
       };
       if (states.any(interactiveStates.contains)) {
-        return Colors.blue;
+        return Constants.netflix_grey;
       }
-      return Colors.red;
+      return Constants.netflix_red;
     }
 
     var signInView = Column(
