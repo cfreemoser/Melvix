@@ -83,6 +83,10 @@ class HomeViewState extends State<Home> {
                             ),
                           );
                         }
+
+                        BlocProvider.of<HomeBloc>(context)
+                            .add(ContentRequested());
+
                         return SliverToBoxAdapter(
                             child: LoadingContentHeader(
                           hight: constrains.maxHeight,
@@ -109,6 +113,10 @@ class HomeViewState extends State<Home> {
                             ),
                           );
                         }
+
+                        BlocProvider.of<HomeBloc>(context)
+                            .add(ContentRequested());
+
                         return const SliverToBoxAdapter(
                             child: LoadingContentList(
                           title: Constants.friends_headline,
@@ -136,6 +144,9 @@ class HomeViewState extends State<Home> {
                             ),
                           );
                         }
+                        BlocProvider.of<HomeBloc>(context)
+                            .add(ContentRequested());
+
                         return const SliverToBoxAdapter(
                             child: LoadingContentList(
                           title: Constants.highlights_headline,
@@ -164,6 +175,8 @@ class HomeViewState extends State<Home> {
                               ],
                             );
                           }
+                          BlocProvider.of<HomeBloc>(context)
+                              .add(ContentRequested());
                           return const LoadingContentList(
                             title: Constants.stefan_headline,
                             highlighted: false,
@@ -191,6 +204,8 @@ class HomeViewState extends State<Home> {
                             ),
                           );
                         }
+                        BlocProvider.of<HomeBloc>(context)
+                            .add(ContentRequested());
                         return const SliverToBoxAdapter(
                             child: LoadingContentList(
                           title: Constants.library_headline,
