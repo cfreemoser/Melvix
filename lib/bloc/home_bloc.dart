@@ -43,7 +43,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(TopContentUpdated(topContent.toList()));
       }
       if (friendsContent.isNotEmpty) {
-        emit(FriendsContentUpdated(friendsContent.toList()));
+        // emit(FriendsContentUpdated(friendsContent.toList()));
       }
       if (stefanContent.isNotEmpty) {
         emit(StefanContentUpdated(stefanContent.toList()));
@@ -51,7 +51,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
       return;
     }
-    
+
     cachedRefs = contentRefs;
     contentRefs?.shuffle();
     var awaitableContents = contentRefs?.map(mapContentRefToContent);
