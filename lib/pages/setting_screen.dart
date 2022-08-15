@@ -44,15 +44,27 @@ class SettingScreen extends StatelessWidget {
       backgroundColor: Constants.netflix_background,
       body: Padding(
         padding: const EdgeInsets.only(top: 80),
-        child: AdaptiveLayout(
-          mobile: PreloadPageView(
-            scrollDirection: Axis.horizontal,
-            children: settings,
-            controller: _pageController,
-          ),
-          desktop: ListView(
-            scrollDirection: Axis.horizontal,
-            children: settings,
+        child: BlocListener<UploadBloc, UploadState>(
+          listener: (context, state) {
+            if (state is QuickContentUploadedSuccess) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: Colors.green,
+                  content: Text('Uploaded ' + state.filename),
+                ),
+              );
+            }
+          },
+          child: AdaptiveLayout(
+            mobile: PreloadPageView(
+              scrollDirection: Axis.horizontal,
+              children: settings,
+              controller: _pageController,
+            ),
+            desktop: ListView(
+              scrollDirection: Axis.horizontal,
+              children: settings,
+            ),
           ),
         ),
       ),
