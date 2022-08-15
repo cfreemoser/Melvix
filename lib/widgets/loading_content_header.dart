@@ -34,7 +34,7 @@ class LoadingContentHeader extends StatelessWidget {
             child: SizedBox(
               height: 300,
               width: width,
-              child: LoadingTopContentList(title: "Top 10"),
+              child: const LoadingTopContentList(title: "Top 10"),
             )),
       ]),
     );

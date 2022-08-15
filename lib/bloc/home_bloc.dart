@@ -43,7 +43,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(TopContentUpdated(topContent.toList()));
       }
       if (friendsContent.isNotEmpty) {
-        // emit(FriendsContentUpdated(friendsContent.toList()));
+        emit(FriendsContentUpdated(friendsContent.toList()));
       }
       if (stefanContent.isNotEmpty) {
         emit(StefanContentUpdated(stefanContent.toList()));
@@ -84,8 +84,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           emit(FeaturedContentUpdated(topContent.toList()));
           continue;
         case "friends":
-          // friendsContent.add(content);
-          //emit(FriendsContentUpdated(friendsContent.toList()));
+          friendsContent.add(content);
+          emit(FriendsContentUpdated(friendsContent.toList()));
           continue;
         case "stefan_original":
           stefanContent.add(content);

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:netflix_gallery/domain/content.dart';
-import 'package:netflix_gallery/widgets/netflix_app_bar.dart';
-import 'package:shimmer/shimmer.dart';
 
 import '../helpers/constants.dart';
 
@@ -66,7 +64,7 @@ class ContentList extends StatelessWidget {
                                 left: 0,
                                 right: 0,
                                 child: Container(
-                                  margin: EdgeInsets.only(left: 8, right: 8),
+                                  margin: const EdgeInsets.only(left: 8, right: 8),
                                   child: SvgPicture.network(
                                     content.titleSvgURL!,
                                     fit: BoxFit.fitWidth,
