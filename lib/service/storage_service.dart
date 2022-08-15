@@ -29,10 +29,17 @@ class StorageService {
   Future uploadQuickContent(MelvixFile file, String folderRef) async {
     final fileRef = _storage.ref().child(folderRef + "/" + file.name);
     try {
+      var contentType = mime(file.name);
+      if (contentType == null ||
+          !contentType.startsWith("image") ||
+          !contentType.startsWith("vide")) {
+        throw StorageUnsupportedContentTypeError();
+      }
+
       await fileRef.putData(
           file.content,
           SettableMetadata(
-            contentType: mime(file.name),
+            contentType: contentType,
           ));
     } on FirebaseException catch (e) {
       throw StorageUploadError();
@@ -76,3 +83,5 @@ class StorageQuotaExceeded implements Exception {
 class StorageUploadError implements Exception {
   // can contain constructors, variables and methods
 }
+
+class StorageUnsupportedContentTypeError implements Exception {}
