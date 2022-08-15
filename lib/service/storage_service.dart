@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:mime_type/mime_type.dart';
 import 'package:netflix_gallery/domain/melvix_file.dart';
 import 'package:netflix_gallery/domain/quick_content.dart';
 import 'package:path/path.dart';
@@ -28,7 +29,11 @@ class StorageService {
   Future uploadQuickContent(MelvixFile file, String folderRef) async {
     final fileRef = _storage.ref().child(folderRef + "/" + file.name);
     try {
-      await fileRef.putData(file.content);
+      await fileRef.putData(
+          file.content,
+          SettableMetadata(
+            contentType: mime(file.name),
+          ));
     } on FirebaseException catch (e) {
       throw StorageUploadError();
     }
@@ -51,7 +56,8 @@ class StorageService {
       if (type == "video/mp4") {
         return QuickContent(
             contentUrl: downloadUrl, type: QuickContentType.video);
-      } else if (type == "image/jpeg") {
+      } else if (type != null && type.startsWith("image") ||
+          type != null && type.startsWith("video")) {
         return QuickContent(
             contentUrl: downloadUrl, type: QuickContentType.photo);
       } else {

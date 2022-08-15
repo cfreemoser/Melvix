@@ -54,6 +54,15 @@ class SettingScreen extends StatelessWidget {
                 ),
               );
             }
+
+            if (state is QuickContentUploadedFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: Colors.red,
+                  content: Text('Failed to upload ' + state.filename),
+                ),
+              );
+            }
           },
           child: AdaptiveLayout(
             mobile: PreloadPageView(

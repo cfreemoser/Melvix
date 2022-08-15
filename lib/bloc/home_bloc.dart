@@ -84,7 +84,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           emit(FeaturedContentUpdated(topContent.toList()));
           continue;
         case "friends":
-          friendsContent.add(content);
+          // friendsContent.add(content);
           //emit(FriendsContentUpdated(friendsContent.toList()));
           continue;
         case "stefan_original":
