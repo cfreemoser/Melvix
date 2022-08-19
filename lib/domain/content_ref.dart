@@ -1,5 +1,5 @@
 class ContentRef {
-  final String headerImagePath;
+  final String bucket;
   final String videoURLPath;
   final String title;
   final String description;
@@ -7,7 +7,7 @@ class ContentRef {
   final List<String> categories;
 
   ContentRef(
-      {required this.headerImagePath,
+      {required this.bucket,
       required this.videoURLPath,
       required this.title,
       required this.description,

@@ -99,16 +99,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     try {
       var videoURL =
           await storageService.getDownloadPathFromRef(ref.videoURLPath);
-      var imageURL =
-          await storageService.getDownloadPathFromRef(ref.headerImagePath);
+      var coverURL = await storageService
+          .getDownloadPathFromRef(ref.bucket + "/cover.webp");
+      var thumbnailURL = await storageService
+          .getDownloadPathFromRef(ref.bucket + "/thumbnail_cover.webp");
       var titleSvgURL = ref.titleSvgPath != null
           ? await storageService.getDownloadPathFromRef(ref.titleSvgPath!)
           : null;
-      if (videoURL == null || imageURL == null) {
+      if (videoURL == null || coverURL == null || thumbnailURL == null) {
         return null;
       }
       return Content(
-          headerImageURL: imageURL,
+          fullCoverURL: coverURL,
+          thumbnailCoverURL: thumbnailURL,
           videoURL: videoURL,
           title: ref.title,
           titleSvgURL: titleSvgURL,

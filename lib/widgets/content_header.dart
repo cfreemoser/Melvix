@@ -67,7 +67,7 @@ class _ContentHeaderMobile extends StatelessWidget {
             height: hight,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage(featuredContent.headerImageURL),
+                image: NetworkImage(featuredContent.thumbnailCoverURL),
                 fit: BoxFit.cover,
               ),
             ),

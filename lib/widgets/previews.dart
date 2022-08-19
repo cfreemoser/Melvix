@@ -41,7 +41,7 @@ class Previews extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 final Content content = contentList[index];
-                var img = Image.network(content.headerImageURL);
+                var img = Image.network(content.thumbnailCoverURL);
 
                 BlocProvider.of<ColorGeneratorCubit>(context)
                     .generateColorFromImage(img);

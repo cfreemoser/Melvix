@@ -29,7 +29,7 @@ class FirestoreService {
       List<String> categories = dyn.map((e) => e as String).toList();
       try {
         return ContentRef(
-          headerImagePath: snapshot['headerImagePath'],
+          bucket: snapshot['bucket'],
           videoURLPath: snapshot['videoPath'],
           description: snapshot['description'],
           title: snapshot['title'],
@@ -38,7 +38,7 @@ class FirestoreService {
         );
       } catch (e) {
         return ContentRef(
-          headerImagePath: snapshot['headerImagePath'],
+          bucket: snapshot['bucket'],
           videoURLPath: snapshot['videoPath'],
           description: snapshot['description'],
           title: snapshot['title'],
