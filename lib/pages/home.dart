@@ -62,6 +62,7 @@ class HomeViewState extends State<Home> {
                   }
                 },
                 child: CustomScrollView(
+                  physics: const ClampingScrollPhysics(),
                   controller: _scrollController,
                   slivers: [
                     BlocBuilder<HomeBloc, HomeState>(
