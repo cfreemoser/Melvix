@@ -1,12 +1,10 @@
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:netflix_gallery/domain/melvix_file.dart';
 import 'package:netflix_gallery/domain/quick_content.dart';
-import 'package:path/path.dart';
 
 class StorageService {
   final firebase_storage.FirebaseStorage _storage;
@@ -30,18 +28,13 @@ class StorageService {
     final fileRef = _storage.ref().child(folderRef + "/" + file.name);
     try {
       var contentType = mime(file.name);
-      if (contentType == null ||
-          !contentType.startsWith("image") ||
-          !contentType.startsWith("vide")) {
-        throw StorageUnsupportedContentTypeError();
-      }
 
       await fileRef.putData(
           file.content,
           SettableMetadata(
             contentType: contentType,
           ));
-    } on FirebaseException catch (e) {
+    } on FirebaseException {
       throw StorageUploadError();
     }
   }
