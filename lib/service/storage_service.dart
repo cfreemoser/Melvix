@@ -60,7 +60,7 @@ class StorageService {
     try {
       var downloadUrl = await reference.getDownloadURL();
       var type = await reference.getMetadata().then((e) => e.contentType);
-      if (type == "video/mp4") {
+      if (type == "video/mp4" || type == "video/webm") {
         return QuickContent(
             contentUrl: downloadUrl, type: QuickContentType.video);
       } else if (type != null && type.startsWith("image") ||
