@@ -9,11 +9,12 @@ class ColorGeneratorCubit extends Cubit<Color> {
       emit(await generateFromImage(image));
 
   Future<Color> generateColorFromImage(Image image) async {
-    var paletteGenerator =
-        await PaletteGenerator.fromImageProvider(image.image);
+    return Colors.white;
+    // var paletteGenerator =
+    //     await PaletteGenerator.fromImageProvider(image.image);
 
-    var color = paletteGenerator.dominantColor?.color;
+    // var color = paletteGenerator.dominantColor?.color;
 
-    return color ?? Colors.white;
+    // return color ?? Colors.white;
   }
 }
