@@ -25,8 +25,8 @@ class _NaveScreenState extends State<NavScreen> {
 
   final Map<String, IconData> _icons = const {
     'home': Icons.home,
-    'Schnelle Lacher': Icons.photo_album,
-    'upload': Icons.upload,
+    'Schnelle Lacher': Icons.emoji_emotions,
+    'upload': Icons.settings,
   };
 
   int _selectedIndex = 0;
