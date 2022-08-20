@@ -98,9 +98,8 @@ class _ContentCardState extends State<ContentCard> {
         child: SizedBox(
           height: 220,
           width: 140,
-          child: FadeInImage.assetNetwork(
-            placeholder: Constants.melvix_cover,
-            image: widget.content.thumbnailCoverURL,
+          child: Image.network(
+            widget.content.thumbnailCoverURL,
             fit: BoxFit.cover,
           ),
         ),

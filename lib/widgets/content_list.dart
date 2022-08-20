@@ -53,9 +53,8 @@ class ContentList extends StatelessWidget {
                     child: Stack(
                       children: [
                         Positioned.fill(
-                            child: FadeInImage.assetNetwork(
-                          placeholder: Constants.melvix_cover,
-                          image: content.thumbnailCoverURL,
+                            child: Image.network(
+                          content.thumbnailCoverURL,
                           fit: BoxFit.cover,
                         )),
                         content.titleSvgURL != null
