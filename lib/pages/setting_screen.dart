@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:netflix_gallery/bloc/upload_bloc.dart';
 import 'package:netflix_gallery/helpers/constants.dart';
 import 'package:netflix_gallery/widgets/adaptive_layout.dart';
@@ -11,16 +12,33 @@ class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var settings = [
-      _cardButton(
-          context,
-          "Quickcontent hochladen",
-          "Quickvideos und photos hochladen",
-          Icon(Icons.emoji_emotions),
-          Image.asset(Constants.image_reaction_emoji),
-          onTap: () => {
-                BlocProvider.of<UploadBloc>(context)
-                    .add(UploadQuickContentEvent())
-              }),
+      BlocBuilder<UploadBloc, UploadState>(
+        builder: (context, state) {
+          double progress = 0;
+          String filename = "";
+
+          if (state is QuickContentUploadedProgress) {
+            progress = state.progress;
+            filename = state.filename;
+          } else {
+            progress = 0;
+            filename = "";
+          }
+
+          return _cardButton(
+              context,
+              "Quickcontent hochladen",
+              "Quickvideos und photos hochladen",
+              Icon(Icons.emoji_emotions),
+              Image.asset(Constants.image_reaction_emoji),
+              progressValue: progress,
+              filename: filename,
+              onTap: () => {
+                    BlocProvider.of<UploadBloc>(context)
+                        .add(UploadQuickContentEvent())
+                  });
+        },
+      ),
       _cardButton(
         context,
         "Video hochladen",
@@ -82,37 +100,59 @@ class SettingScreen extends StatelessWidget {
 
   Widget _cardButton(BuildContext context, String title, String subtitle,
       Icon icon, Image mainImage,
-      {Function()? onTap}) {
+      {Function()? onTap, String filename = "", double progressValue = 0}) {
     var enabled = onTap != null;
+
+    var progress = SizedBox(
+      height: AdaptiveLayout.isDesktop(context) ? 300 : 100,
+      width: AdaptiveLayout.isDesktop(context) ? 300 : 100,
+      child: LiquidCircularProgressIndicator(
+        value: progressValue,
+        valueColor: const AlwaysStoppedAnimation(Colors.green),
+        backgroundColor: Colors.white,
+        borderColor: Colors.white,
+        borderWidth: 0.0,
+        direction: Axis.vertical,
+        center: Text(filename),
+      ),
+    );
 
     return Padding(
       padding: AdaptiveLayout.isDesktop(context)
-          ? EdgeInsets.all(32.0)
-          : EdgeInsets.only(top: 32, bottom: 32),
+          ? const EdgeInsets.all(32.0)
+          : const EdgeInsets.only(top: 32, bottom: 32),
       child: SizedBox(
         width: 450,
         height: 300,
         child: Card(
             color: enabled ? Colors.white : Colors.grey.shade400,
             elevation: 8,
-            child: InkWell(
-              onTap: onTap,
-              child: Column(
-                children: [
-                  ListTile(
-                    leading: icon,
-                    title: Text(title),
-                    subtitle: Text(subtitle),
-                  ),
-                  Expanded(
-                      child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: mainImage,
+            child: BlocBuilder<UploadBloc, UploadState>(
+              builder: (context, state) {
+                return Stack(
+                  children: [
+                    InkWell(
+                      onTap: onTap,
+                      child: Column(
+                        children: [
+                          ListTile(
+                            leading: icon,
+                            title: Text(title),
+                            subtitle: Text(subtitle),
+                          ),
+                          Expanded(
+                              child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: progressValue == 0 ? mainImage : progress,
+                            ),
+                          ))
+                        ],
+                      ),
                     ),
-                  ))
-                ],
-              ),
+                  ],
+                );
+              },
             )),
       ),
     );

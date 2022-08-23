@@ -18,6 +18,16 @@ class QuickContentUploadedSuccess extends UploadState {
   List<Object> get props => [filename];
 }
 
+class QuickContentUploadedProgress extends UploadState {
+  final String filename;
+  final double progress;
+
+  const QuickContentUploadedProgress(this.filename, this.progress);
+
+  @override
+  List<Object> get props => [filename, progress];
+}
+
 class QuickContentUploadedFailure extends UploadState {
   final String filename;
 

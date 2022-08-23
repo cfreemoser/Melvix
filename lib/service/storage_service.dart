@@ -24,16 +24,24 @@ class StorageService {
     }
   }
 
-  Future uploadQuickContent(MelvixFile file, String folderRef) async {
+  Future uploadQuickContent(
+      MelvixFile file, String folderRef, Function(double) onProgress) async {
     final fileRef = _storage.ref().child(folderRef + "/" + file.name);
     try {
       var contentType = mime(file.name);
 
-      await fileRef.putData(
+      var task = fileRef.putData(
           file.content,
           SettableMetadata(
             contentType: contentType,
           ));
+
+      task.snapshotEvents
+          .map((event) =>
+              event.bytesTransferred.toDouble() / event.totalBytes.toDouble())
+          .forEach(onProgress);
+
+      return await task;
     } on FirebaseException {
       throw StorageUploadError();
     }

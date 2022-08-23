@@ -26,7 +26,9 @@ class UploadBloc extends Bloc<UploadEvent, UploadState> {
       for (var element in files) {
         try {
           await storageService.uploadQuickContent(
-              element, configService.getQuickContentRef().storagePath);
+              element,
+              configService.getQuickContentRef().storagePath,
+              (v) => emit(QuickContentUploadedProgress(element.name, v)));
           emit(QuickContentUploadedSuccess(element.name));
         } on StorageUploadError {
           emit(QuickContentUploadedFailure(element.name));
