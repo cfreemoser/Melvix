@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:netflix_gallery/domain/content.dart';
 import 'package:netflix_gallery/widgets/adaptive_layout.dart';
@@ -60,9 +58,6 @@ class _ContentHeaderMobile extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         Positioned(
-          left: 0,
-          right: 0,
-          bottom: -1.0,
           child: Container(
             height: hight,
             decoration: BoxDecoration(
@@ -73,13 +68,18 @@ class _ContentHeaderMobile extends StatelessWidget {
             ),
           ),
         ),
-        Container(
-          height: hight,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(colors: [
-              Colors.black,
-              Colors.transparent,
-            ], begin: Alignment.bottomCenter, end: Alignment.topCenter),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: -1.0,
+          child: Container(
+            height: hight,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(colors: [
+                Colors.black,
+                Colors.transparent,
+              ], begin: Alignment.bottomCenter, end: Alignment.topCenter),
+            ),
           ),
         ),
         Positioned(
