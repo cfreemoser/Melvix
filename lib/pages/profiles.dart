@@ -1,15 +1,10 @@
-import 'dart:async';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:netflix_gallery/bloc/profiles_bloc.dart';
-import 'package:netflix_gallery/domain/profile.dart';
 import 'package:netflix_gallery/helpers/constants.dart';
 import 'package:netflix_gallery/navigation/home_args.dart';
 import 'package:netflix_gallery/widgets/animated_profile_card.dart';
-import 'package:netflix_gallery/widgets/pin_dialog.dart';
 
 class Profiles extends StatelessWidget {
   const Profiles({Key? key}) : super(key: key);
@@ -110,16 +105,7 @@ class Profiles extends StatelessWidget {
   }
 
   Widget _buildListView(BoxConstraints constraints) {
-    return BlocConsumer<ProfilesBloc, ProfilesState>(
-      listener: (context, state) {
-        if (state is PinSecuredProfileSelected) {
-          _buildPinDialog(context, state.profile);
-        }
-        if (state is PinCorrect) {
-          Navigator.of(context).pushNamed("/profiles/home",
-              arguments: HomeArguments(state.profile));
-        }
-      },
+    return BlocBuilder<ProfilesBloc, ProfilesState>(
       buildWhen: (previous, current) => current is ProfilesInitial,
       builder: (context, state) {
         if (state is ProfilesInitial) {
@@ -138,10 +124,7 @@ class Profiles extends StatelessWidget {
                           profileImage: state.profiles[index].profileImage,
                           onTap: () => Navigator.of(context).pushNamed(
                               "/profiles/home",
-                              arguments: HomeArguments(state.profiles[index]))
-                          // BlocProvider.of<ProfilesBloc>(context)
-                          //   .add(ProfileSelected(state.profiles[index])),
-                          ),
+                              arguments: HomeArguments(state.profiles[index]))),
                       const SizedBox(
                         width: 20,
                       ),
@@ -159,16 +142,7 @@ class Profiles extends StatelessWidget {
   }
 
   Widget _buildGridView(BoxConstraints constraints) {
-    return BlocConsumer<ProfilesBloc, ProfilesState>(
-      listener: (context, state) {
-        if (state is PinSecuredProfileSelected) {
-          _buildPinDialog(context, state.profile);
-        }
-        if (state is PinCorrect) {
-          Navigator.of(context).pushNamed("/profiles/home",
-              arguments: HomeArguments(state.profile));
-        }
-      },
+    return BlocBuilder<ProfilesBloc, ProfilesState>(
       buildWhen: (previous, current) => current is ProfilesInitial,
       builder: (context, state) {
         if (state is ProfilesInitial) {
@@ -234,22 +208,5 @@ class Profiles extends StatelessWidget {
       style: TextStyle(
           color: Colors.white, fontSize: fontSize, fontFamily: "NetflixSans"),
     );
-  }
-
-  Future<void> _buildPinDialog(BuildContext ctx, Profile profile) async {
-    return showDialog<void>(
-        context: ctx,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return PinDialog(
-            targetPin: profile.profilePin!,
-            onSuccess: () {
-              Navigator.of(context, rootNavigator: true).pop();
-              BlocProvider.of<ProfilesBloc>(ctx).add(
-                ProfilePinEntered(profile),
-              );
-            },
-          );
-        });
   }
 }

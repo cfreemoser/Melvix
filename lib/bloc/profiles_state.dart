@@ -8,17 +8,3 @@ class ProfilesInitial extends ProfilesState {
 
   ProfilesInitial({required this.profiles});
 }
-
-class PinSecuredProfileSelected extends ProfilesState {
-  final Profile profile;
-
-  PinSecuredProfileSelected(this.profile);
-}
-
-class FakeProfileSelected extends ProfilesState {}
-
-class PinCorrect extends ProfilesState {
-  final Profile profile;
-
-  PinCorrect(this.profile);
-}

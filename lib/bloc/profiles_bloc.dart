@@ -9,20 +9,6 @@ class ProfilesBloc extends Bloc<ProfilesEvent, ProfilesState> {
   final ConfigService _configService;
 
   ProfilesBloc(this._configService)
-      : super(
-            ProfilesInitial(profiles: _configService.getProfilesFromConfig())) {
-    on<ProfileSelected>(
-        (event, emit) => emit(_mapProfileSelectedToState(event)));
-
-    on<ProfilePinEntered>(
-        (event, emit) => emit(PinCorrect(event.selectedProfile)));
-  }
-
-  _mapProfileSelectedToState(ProfileSelected event) {
-    if (event.selectedProfile.profilePin != null) {
-      return PinSecuredProfileSelected(event.selectedProfile);
-    } else {
-      return FakeProfileSelected();
-    }
-  }
+      : super(ProfilesInitial(
+            profiles: _configService.getProfilesFromConfig())) {}
 }
