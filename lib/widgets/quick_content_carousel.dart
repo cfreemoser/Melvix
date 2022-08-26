@@ -3,10 +3,11 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:netflix_gallery/domain/quick_content.dart';
+import 'package:netflix_gallery/helpers/constants.dart';
 import 'package:netflix_gallery/widgets/adaptive_layout.dart';
 import 'package:netflix_gallery/widgets/animated_reaction.dart';
-import 'package:netflix_gallery/widgets/netflix_app_bar.dart';
 import 'package:netflix_gallery/widgets/vertical_icon_button.dart';
 import 'package:preload_page_view/preload_page_view.dart';
 import 'package:video_player/video_player.dart';
@@ -146,10 +147,7 @@ class _QuickContentCarouselState extends State<QuickContentCarousel> {
                     onTap: () => setState(() {
                           showPicture = false;
                         }),
-                    imageURL: widget
-                        .quickContents[_pageController.page!.toInt() %
-                            widget.quickContents.length]
-                        .contentUrl)
+                    imageURL: widget.quickContents[current].contentUrl)
                 : Container()),
       ],
     );
@@ -196,6 +194,9 @@ class _QuickContentCarouselState extends State<QuickContentCarousel> {
             : Image.network(
                 content.contentUrl,
                 fit: BoxFit.cover,
+                errorBuilder: (BuildContext context, Object exception,
+                        StackTrace? stackTrace) =>
+                    Image.asset(Constants.image_construction),
               ));
   }
 }
