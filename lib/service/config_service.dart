@@ -13,15 +13,13 @@ class ProfileConfig {
   final String name;
   final String? imageURL;
   final String? assetID;
-  final int? pinCode;
 
-  ProfileConfig(this.name, this.imageURL, this.assetID, this.pinCode);
+  ProfileConfig(this.name, this.imageURL, this.assetID);
 
   ProfileConfig.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         imageURL = json['imageURL'],
-        assetID = json['assetID'],
-        pinCode = json['pinCode'];
+        assetID = json['assetID'];
 }
 
 class ConfigService {
@@ -34,11 +32,7 @@ class ConfigService {
     YamlList profileConfig = yamlMap['Profiles'];
     conf._profiles = profileConfig
         .map((element) => ProfileConfig(
-              element['name'],
-              element['assetURL'],
-              element['assetID'],
-              element['pinCode'],
-            ))
+            element['name'], element['assetURL'], element['assetID']))
         .toList();
 
     String quickContentRef = yamlMap['QuickContentPath'];
@@ -50,7 +44,7 @@ class ConfigService {
   List<Profile> getProfilesFromConfig() {
     return _config._profiles.map(_mapProfileConfigToProfile).toList();
   }
-  
+
   QuickContentRef getQuickContentRef() {
     return _config._quickContentRef;
   }
@@ -60,9 +54,6 @@ class ConfigService {
         ? Image.network(profileConfig.imageURL!)
         : Image.asset(profileConfig.assetID!);
 
-    return Profile(
-        name: profileConfig.name,
-        profilePin: profileConfig.pinCode,
-        profileImage: image);
+    return Profile(name: profileConfig.name, profileImage: image);
   }
 }
