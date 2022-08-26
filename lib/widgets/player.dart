@@ -227,14 +227,7 @@ class _overlayControlState extends State<_overlayControl> {
                   iconSize: 60,
                   color: Colors.white,
                 ),
-                const Spacer(),
-                IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () => log("search"),
-                  icon: const Icon(Icons.flag),
-                  iconSize: 60,
-                  color: Colors.white,
-                )
+                const Spacer()
               ],
             ),
           ),
@@ -335,13 +328,6 @@ class _overlayControlState extends State<_overlayControl> {
                   textAlign: TextAlign.center,
                   style: const TextStyle(color: Colors.white),
                 )),
-                IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () => log("search"),
-                  icon: const Icon(Icons.flag),
-                  iconSize: 60,
-                  color: Colors.white,
-                )
               ],
             ),
           ),
