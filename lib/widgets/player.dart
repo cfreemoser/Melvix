@@ -3,6 +3,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:netflix_gallery/cubits/player/player_cubit.dart';
+import 'package:netflix_gallery/cubits/video/video_cubit.dart';
 import 'package:netflix_gallery/domain/content.dart';
 import 'package:netflix_gallery/widgets/adaptive_layout.dart';
 import 'package:netflix_gallery/widgets/fullscreen_button.dart';
@@ -10,16 +13,34 @@ import 'package:netflix_gallery/widgets/playbackspeed_button.dart';
 import 'package:netflix_gallery/widgets/volume_button.dart';
 import 'package:video_player/video_player.dart';
 
-class Player extends StatefulWidget {
+class Player extends StatelessWidget {
   final Content content;
 
   const Player({Key? key, required this.content}) : super(key: key);
 
   @override
-  State<Player> createState() => _PlayerState();
+  Widget build(BuildContext context) {
+    return BlocProvider<PlayerCubit>(
+      create: (_) => PlayerCubit(landscape: !AdaptiveLayout.isMobile(context)),
+      child: BlocBuilder<PlayerCubit, PlayerState?>(
+        builder: (context, state) {
+          return _Player(content: content);
+        },
+      ),
+    );
+  }
 }
 
-class _PlayerState extends State<Player> {
+class _Player extends StatefulWidget {
+  final Content content;
+
+  const _Player({Key? key, required this.content}) : super(key: key);
+
+  @override
+  State<_Player> createState() => _PlayerState();
+}
+
+class _PlayerState extends State<_Player> {
   late VideoPlayerController _videoPlayerController;
 
   @override
@@ -56,9 +77,19 @@ class _PlayerState extends State<Player> {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.black,
-      child: PortraitVideoPlayer(
-          videoPlayerController: _videoPlayerController,
-          content: widget.content),
+      child: BlocBuilder<PlayerCubit, PlayerState>(
+        builder: (context, state) {
+          if (state is PlayerLandscapeMode) {
+            return LandscapeVideoPlayer(
+                videoPlayerController: _videoPlayerController,
+                content: widget.content);
+          }
+
+          return PortraitVideoPlayer(
+              videoPlayerController: _videoPlayerController,
+              content: widget.content);
+        },
+      ),
     );
   }
 }
@@ -367,7 +398,26 @@ class _overlayControlState extends State<_overlayControl> {
                 Expanded(
                     child: VideoProgressIndicator(widget.controller,
                         allowScrubbing: true)),
-                const FullscreenButton(),
+                BlocBuilder<PlayerCubit, PlayerState>(
+                  builder: (context, state) {
+                    if (state is PlayerLandscapeMode) {
+                      return IconButton(
+                        onPressed: () =>
+                            BlocProvider.of<PlayerCubit>(context).setPortrait(),
+                        icon: const Icon(Icons.open_in_full),
+                        iconSize: 60,
+                        color: Colors.white,
+                      );
+                    }
+                    return IconButton(
+                      onPressed: () =>
+                          BlocProvider.of<PlayerCubit>(context).setLandscape(),
+                      icon: const Icon(Icons.close_fullscreen),
+                      iconSize: 60,
+                      color: Colors.white,
+                    );
+                  },
+                ),
               ],
             ),
           ),
