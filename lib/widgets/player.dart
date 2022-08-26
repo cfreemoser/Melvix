@@ -56,22 +56,82 @@ class _PlayerState extends State<Player> {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.black,
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: AspectRatio(
-                aspectRatio: _videoPlayerController.value.isInitialized
-                    ? _videoPlayerController.value.aspectRatio
-                    : 2.344,
-                child: VideoPlayer(_videoPlayerController)),
-          ),
-          _overlayControl(
-            controller: _videoPlayerController,
-            content: widget.content,
-          )
-        ],
-      ),
+      child: PortraitVideoPlayer(
+          videoPlayerController: _videoPlayerController,
+          content: widget.content),
     );
+  }
+}
+
+class LandscapeVideoPlayer extends StatelessWidget {
+  const LandscapeVideoPlayer({
+    Key? key,
+    required VideoPlayerController videoPlayerController,
+    required this.content,
+  })  : _videoPlayerController = videoPlayerController,
+        super(key: key);
+
+  final VideoPlayerController _videoPlayerController;
+  final Content content;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: AspectRatio(
+              aspectRatio: _videoPlayerController.value.isInitialized
+                  ? _videoPlayerController.value.aspectRatio
+                  : 2.344,
+              child: VideoPlayer(_videoPlayerController)),
+        ),
+        _overlayControl(
+          controller: _videoPlayerController,
+          content: content,
+        )
+      ],
+    );
+  }
+}
+
+class PortraitVideoPlayer extends StatelessWidget {
+  const PortraitVideoPlayer({
+    Key? key,
+    required VideoPlayerController videoPlayerController,
+    required this.content,
+  })  : _videoPlayerController = videoPlayerController,
+        super(key: key);
+
+  final VideoPlayerController _videoPlayerController;
+  final Content content;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        Positioned.fill(
+          child: AspectRatio(
+              aspectRatio: _videoPlayerController.value.aspectRatio,
+              child: buildFullscreen(VideoPlayer(_videoPlayerController))),
+        ),
+        _overlayControl(
+          controller: _videoPlayerController,
+          content: content,
+        )
+      ],
+    );
+  }
+
+  Widget buildFullscreen(Widget child) {
+    final size = _videoPlayerController.value.size;
+    final height = size.height;
+    final width = size.width;
+
+    return FittedBox(
+        fit: BoxFit.cover,
+        alignment: Alignment.topCenter,
+        child: SizedBox(width: width, height: height, child: child));
   }
 }
 
