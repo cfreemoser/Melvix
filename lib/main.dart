@@ -2,6 +2,7 @@ import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:netflix_gallery/bloc/auth_bloc.dart';
 import 'package:netflix_gallery/bloc/error_bloc.dart';
 import 'package:netflix_gallery/bloc/home_bloc.dart';
@@ -113,7 +114,8 @@ class _MyAppState extends State<MyApp> {
           // or simply save your changes to "hot reload" in a Flutter IDE).
           // Notice that the counter didn't reset back to zero; the application
           // is not restarted.
-          primarySwatch: Colors.red),
+          primarySwatch: Colors.red,
+          textTheme: GoogleFonts.robotoCondensedTextTheme()),
     );
   }
 }

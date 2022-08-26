@@ -205,10 +205,10 @@ class _AppBarButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var textStyle = TextStyle(
-        color: selected ? Constants.netflix_red : Colors.white,
-        fontSize: 16,
-        fontWeight: FontWeight.w600,
-        fontFamily: "NetflixSans");
+      color: selected ? Constants.netflix_red : Colors.white,
+      fontSize: 16,
+      fontWeight: FontWeight.w600,
+    );
 
     return MouseRegion(
       cursor: SystemMouseCursors.click,

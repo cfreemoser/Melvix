@@ -8,8 +8,7 @@ class ErrorScreen extends StatelessWidget {
     const textStyle = TextStyle(
         color: Colors.white,
         fontSize: 32,
-        fontWeight: FontWeight.w600,
-        fontFamily: "NetflixSans");
+        fontWeight: FontWeight.w600);
 
     return Scaffold(
       backgroundColor: Colors.black,

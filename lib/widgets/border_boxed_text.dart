@@ -27,7 +27,6 @@ class BorderBoxedText extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 70,
-                  fontFamily: "NetflixSans",
                   foreground: Paint()
                     ..style = PaintingStyle.stroke
                     ..strokeWidth = 2
@@ -47,7 +46,6 @@ class BorderBoxedText extends StatelessWidget {
               style: const TextStyle(
                 color: Colors.black,
                 fontSize: 70,
-                fontFamily: "NetflixSans",
                 fontWeight: FontWeight.bold,
               ),
             ),

@@ -15,10 +15,7 @@ class _LoginState extends State<Login> {
   final passwordController = TextEditingController();
 
   final textStyle = const TextStyle(
-      color: Colors.white,
-      fontSize: 16,
-      fontWeight: FontWeight.w600,
-      fontFamily: "NetflixSans");
+      color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600);
 
   @override
   Widget build(BuildContext context) {
