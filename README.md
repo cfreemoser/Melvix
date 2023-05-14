@@ -1,6 +1,4 @@
-# Melvix
-
-![Melvix Demo](screenshots/Home.png)
+# <img src="assets/images/Melvix-logo.svg" alt="Melvix" width="400px" />
 
 Melvix is a special project created as a birthday gift for my boyfriend, Melvin. It is a Flutter app inspired by the design of Netflix, hence the name "Melvix" (a combination of "Melvin" and "Netflix"). The app showcases a collection of personal videos featuring Melvin and me. Please note that this project is purely for fun and is not intended to be a clean, properly tested software solution.
 
