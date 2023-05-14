@@ -31,6 +31,6 @@ I would like to thank the Flutter community for their incredible support and the
 
 ## Contact
 
-If you have any questions or suggestions regarding Melvix, please feel free to reach out to me at [your-email@example.com].
+If you have any questions or suggestions regarding Melvix, please feel free to reach out.
 
 Thank you for checking out Melvix! Enjoy the personalized video collection and have fun celebrating with your loved ones.
