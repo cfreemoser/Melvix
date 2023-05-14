@@ -15,7 +15,7 @@ Melvix is a special project created as a birthday gift for my boyfriend, Melvin.
 
 Here's a glimpse of Melvix in action:
 
-![Melvix Demo](screenshots/Melfix.png)
+![Melvix Demo](screenshots/Melvix.gif)
 
 ## Contributions
 
