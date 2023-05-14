@@ -3,7 +3,6 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:netflix_gallery/domain/quick_content.dart';
 import 'package:netflix_gallery/helpers/constants.dart';
 import 'package:netflix_gallery/widgets/adaptive_layout.dart';

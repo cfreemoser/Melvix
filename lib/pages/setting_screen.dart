@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:netflix_gallery/bloc/upload_bloc.dart';
 import 'package:netflix_gallery/helpers/constants.dart';
 import 'package:netflix_gallery/widgets/adaptive_layout.dart';
@@ -106,17 +105,8 @@ class SettingScreen extends StatelessWidget {
     var progress = SizedBox(
       height: AdaptiveLayout.isDesktop(context) ? 300 : 100,
       width: AdaptiveLayout.isDesktop(context) ? 300 : 100,
-      child: LiquidCircularProgressIndicator(
-        value: progressValue,
-        valueColor: const AlwaysStoppedAnimation(Colors.green),
-        backgroundColor: Colors.white,
-        borderColor: Colors.white,
-        borderWidth: 0.0,
-        direction: Axis.vertical,
-        center: Text(filename),
-      ),
+      child: LinearProgressIndicator(value: progressValue),
     );
-
     return Padding(
       padding: AdaptiveLayout.isDesktop(context)
           ? const EdgeInsets.all(32.0)
